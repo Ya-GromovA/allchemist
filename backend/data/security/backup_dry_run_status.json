@@ -1,0 +1,52 @@
+{
+  "status": "ok",
+  "startedAt": "2026-05-26T11:13:24.318599+00:00",
+  "finishedAt": "2026-05-26T11:13:24.341572+00:00",
+  "checks": {
+    "userStateExists": true,
+    "userStateJsonValid": true,
+    "userStateRestoreReadable": true,
+    "contentDbQuickCheck": true,
+    "contentPacksDirExists": true,
+    "contentPacksReadable": true
+  },
+  "evidence": [
+    {
+      "key": "userStateExists",
+      "label": "Найден user_state.json",
+      "ok": true,
+      "value": true
+    },
+    {
+      "key": "userStateJsonValid",
+      "label": "JSON user_state.json валиден",
+      "ok": true,
+      "value": true
+    },
+    {
+      "key": "userStateRestoreReadable",
+      "label": "Копия user_state читается после restore",
+      "ok": true,
+      "value": true
+    },
+    {
+      "key": "contentDbQuickCheck",
+      "label": "SQLite quick_check для контентной БД",
+      "ok": true,
+      "value": true
+    },
+    {
+      "key": "contentPacksDirExists",
+      "label": "Директория content packs существует",
+      "ok": true,
+      "value": true
+    },
+    {
+      "key": "contentPacksReadable",
+      "label": "Директория content packs доступна для чтения",
+      "ok": true,
+      "value": true
+    }
+  ],
+  "error": null
+}

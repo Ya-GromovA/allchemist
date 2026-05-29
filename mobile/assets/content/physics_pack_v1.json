@@ -1,0 +1,371 @@
+{
+  "pack_id": "physics_pack",
+  "version": 1,
+  "generated_at": "2025-12-18T18:19:12Z",
+  "modules": [
+    {
+      "id": "physics",
+      "title_ru": "Физика",
+      "title_en": "Physics",
+      "description_ru": "Уроки, задачи, сценарии.",
+      "description_en": "Lessons, tasks, scenarios.",
+      "available": true
+    }
+  ],
+  "lesson_blocks": [
+    {
+      "id": 110000,
+      "module_id": "physics",
+      "title": "Равномерное движение",
+      "content": "Формулы: v=s/t, s=v·t, t=s/v. Единицы: м/с, м, с.",
+      "type": "lesson",
+      "order_index": 1,
+      "payload": {
+        "lang": "ru",
+        "task_ids": [
+          "phys_t_001_ru"
+        ]
+      }
+    },
+    {
+      "id": 110001,
+      "module_id": "physics",
+      "title": "Uniform motion",
+      "content": "Formulas: v=s/t, s=v·t, t=s/v. Units: m/s, m, s.",
+      "type": "lesson",
+      "order_index": 2,
+      "payload": {
+        "lang": "en",
+        "task_ids": [
+          "phys_t_001_en"
+        ]
+      }
+    },
+    {
+      "id": 111000,
+      "module_id": "physics",
+      "title": "Второй закон Ньютона",
+      "content": "ΣF = m·a. Единицы: Н, кг, м/с².",
+      "type": "lesson",
+      "order_index": 3,
+      "payload": {
+        "lang": "ru",
+        "task_ids": [
+          "phys_t_002_ru"
+        ]
+      }
+    },
+    {
+      "id": 111001,
+      "module_id": "physics",
+      "title": "Newton's second law",
+      "content": "ΣF = m·a. Units: N, kg, m/s².",
+      "type": "lesson",
+      "order_index": 4,
+      "payload": {
+        "lang": "en",
+        "task_ids": [
+          "phys_t_002_en"
+        ]
+      }
+    },
+    {
+      "id": 112000,
+      "module_id": "physics",
+      "title": "Закон Ома и мощность",
+      "content": "I=U/R. P=U·I=I²R=U²/R.",
+      "type": "lesson",
+      "order_index": 5,
+      "payload": {
+        "lang": "ru",
+        "task_ids": [
+          "phys_t_003_ru"
+        ]
+      }
+    },
+    {
+      "id": 112001,
+      "module_id": "physics",
+      "title": "Ohm's law and power",
+      "content": "I=U/R. P=U·I=I²R=U²/R.",
+      "type": "lesson",
+      "order_index": 6,
+      "payload": {
+        "lang": "en",
+        "task_ids": [
+          "phys_t_003_en"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "phys_t_001_ru",
+      "module_id": "physics",
+      "lesson_id": 110000,
+      "title": "Найти скорость",
+      "description": "Тело прошло 120 м за 30 с. Найдите v.",
+      "type": "numeric",
+      "estimated_minutes": 4,
+      "payload": {
+        "answer": {
+          "value": 4,
+          "unit": "m/s"
+        },
+        "solution": "v=s/t=120/30=4 м/с",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "kinematics",
+        "ru"
+      ]
+    },
+    {
+      "id": "phys_t_001_en",
+      "module_id": "physics",
+      "lesson_id": 110001,
+      "title": "Find speed",
+      "description": "An object travels 120 m in 30 s. Find v.",
+      "type": "numeric",
+      "estimated_minutes": 4,
+      "payload": {
+        "answer": {
+          "value": 4,
+          "unit": "m/s"
+        },
+        "solution": "v=s/t=120/30=4 m/s",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "kinematics",
+        "en"
+      ]
+    },
+    {
+      "id": "phys_t_002_ru",
+      "module_id": "physics",
+      "lesson_id": 111000,
+      "title": "Тест: F=ma",
+      "description": "Тело массой 2 кг ускоряется 3 м/с². Чему равна сила?",
+      "type": "quiz",
+      "estimated_minutes": 4,
+      "payload": {
+        "options": [
+          "3 Н",
+          "6 Н",
+          "9 Н"
+        ],
+        "correct_index": 1,
+        "explain": "F=m·a=2·3=6 Н",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "dynamics",
+        "ru"
+      ]
+    },
+    {
+      "id": "phys_t_002_en",
+      "module_id": "physics",
+      "lesson_id": 111001,
+      "title": "Quiz: F=ma",
+      "description": "A 2 kg body accelerates at 3 m/s². Force?",
+      "type": "quiz",
+      "estimated_minutes": 4,
+      "payload": {
+        "options": [
+          "3 N",
+          "6 N",
+          "9 N"
+        ],
+        "correct_index": 1,
+        "explain": "F=m·a=2·3=6 N",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "dynamics",
+        "en"
+      ]
+    },
+    {
+      "id": "phys_t_003_ru",
+      "module_id": "physics",
+      "lesson_id": 112000,
+      "title": "Открытый ответ: применить закон Ома",
+      "description": "Объясни, как найти ток, если известны U и R.",
+      "type": "open",
+      "estimated_minutes": 6,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 30,
+          "criteria": [
+            {
+              "id": "formula",
+              "weight": 0.6,
+              "keywords": [
+                "I",
+                "U",
+                "R",
+                "I=U/R",
+                "ток",
+                "напряжение",
+                "сопротивление"
+              ]
+            },
+            {
+              "id": "units",
+              "weight": 0.4,
+              "keywords": [
+                "ампер",
+                "вольт",
+                "ом",
+                "единиц"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "electricity",
+        "open",
+        "ru"
+      ]
+    },
+    {
+      "id": "phys_t_003_en",
+      "module_id": "physics",
+      "lesson_id": 112001,
+      "title": "Open answer: apply Ohm's law",
+      "description": "Explain how to find current from U and R.",
+      "type": "open",
+      "estimated_minutes": 6,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 30,
+          "criteria": [
+            {
+              "id": "formula",
+              "weight": 0.6,
+              "keywords": [
+                "I",
+                "U",
+                "R",
+                "I=U/R",
+                "current",
+                "voltage",
+                "resistance"
+              ]
+            },
+            {
+              "id": "units",
+              "weight": 0.4,
+              "keywords": [
+                "ampere",
+                "volt",
+                "ohm",
+                "units"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "electricity",
+        "open",
+        "en"
+      ]
+    }
+  ],
+  "physics_scenarios": [
+    {
+      "id": "phys_sc_001_ru",
+      "module_id": "physics",
+      "title": "Сценарий: поезд и платформа",
+      "payload": {
+        "lang": "ru",
+        "prompt": "Поезд движется равномерно...",
+        "hints": [
+          "v=s/t",
+          "перевод единиц"
+        ]
+      }
+    },
+    {
+      "id": "phys_sc_001_en",
+      "module_id": "physics",
+      "title": "Scenario: train and platform",
+      "payload": {
+        "lang": "en",
+        "prompt": "A train moves uniformly...",
+        "hints": [
+          "v=s/t",
+          "unit conversion"
+        ]
+      }
+    }
+  ],
+  "ai_knowledge": [
+    {
+      "id": "phys_k_ru_kin",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Кинематика: v, s, t",
+      "body": "Равномерное движение: v=s/t, s=v·t, t=s/v. Всегда следи за единицами.",
+      "tags": [
+        "kinematics",
+        "ru"
+      ],
+      "source": "physics_pack"
+    },
+    {
+      "id": "phys_k_en_kin",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Kinematics: v, s, t",
+      "body": "Uniform motion: v=s/t, s=v·t, t=s/v. Keep units consistent.",
+      "tags": [
+        "kinematics",
+        "en"
+      ],
+      "source": "physics_pack"
+    },
+    {
+      "id": "phys_k_ru_dyn",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Динамика: ΣF=ma",
+      "body": "Второй закон Ньютона: сумма сил равна произведению массы на ускорение.",
+      "tags": [
+        "dynamics",
+        "ru"
+      ],
+      "source": "physics_pack"
+    },
+    {
+      "id": "phys_k_en_dyn",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Dynamics: ΣF=ma",
+      "body": "Newton's 2nd law: net force equals mass times acceleration.",
+      "tags": [
+        "dynamics",
+        "en"
+      ],
+      "source": "physics_pack"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Алхимик One-Page Checklist</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #1f2f35; margin: 20px; }
+    h1 { margin: 0 0 8px; }
+    .muted { color: #5e727a; margin-bottom: 12px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    th, td { border: 1px solid #c5d5dc; padding: 7px; text-align: left; font-size: 13px; }
+    .check { margin: 6px 0; font-size: 14px; }
+    @media print {
+      body { margin: 10mm; }
+      .noprint { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Алхимик: One-Page инструкция дежурного администратора</h1>
+  <div class="muted">Актуально на: 2026-02-25 11:18 UTC</div>
+  <table>
+    <thead><tr><th>Ситуация</th><th>Действие</th><th>SLA</th></tr></thead>
+    <tbody>
+      <tr><td>High алерт</td><td>Подтвердить/снять + комментарий + эскалация</td><td>до 15 минут</td></tr>
+      <tr><td>Ошибка backup test</td><td>Повторный запуск + проверка практических действий</td><td>до 30 минут</td></tr>
+      <tr><td>Ошибка mobile smoke</td><td>Сохранить результат + проверить readiness</td><td>до 30 минут</td></tr>
+      <tr><td>UI не реагирует</td><td>Ctrl+F5 + повторный вход</td><td>до 10 минут</td></tr>
+    </tbody>
+  </table>
+  <h3>Чеклист передачи смены</h3>
+  <div class="check">[ ] Обработаны high-алерты</div>
+  <div class="check">[ ] Проверен тест восстановления</div>
+  <div class="check">[ ] Проверены mobile/content readiness</div>
+  <div class="check">[ ] При отклонениях выгружен отчет JSON/CSV</div>
+  <div class="check">[ ] Комментарий передан следующему администратору</div>
+  <div class="check">[ ] Выполнен выход из системы</div>
+  <button class="noprint" onclick="window.print()">Печать</button>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "versionName": "1.0.11",
+  "versionCode": 12,
+  "releaseTitle": "Версия 1.0.11: массы элементов в mobile",
+  "releaseDate": "2026-05-27",
+  "apkFile": "allchemist-release-20260527-1.0.11-periodic-mass-smoke-verified.apk",
+  "sha256": "f1812e569bc20f9dc771e50d726055b8d67aaf9f6e96b83b4ac3793e7ee7f7bf",
+  "size": 105472239,
+  "releaseNotes": [
+    "В mobile-таблице Менделеева атомная масса показывается для всех 118 элементов.",
+    "Сохранены режимы изучения, свойств, тренировки и запоминания с подсказкой поворота телефона.",
+    "APK собран как release и проверен emulator smoke."
+  ],
+  "version": "1.0.11",
+  "label": "Алхимик Android 1.0.11"
+}

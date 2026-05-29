@@ -1,0 +1,56 @@
+{
+  "expo": {
+    "name": "Алхимик",
+    "slug": "mobile",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#050816"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.usgromov.allchemist"
+    },
+    "android": {
+      "package": "com.usgromov.allchemist",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon.png",
+        "backgroundColor": "#050816"
+      },
+      "usesCleartextTraffic": true
+    },
+    "androidStatusBar": {
+      "backgroundColor": "#050816",
+      "barStyle": "light-content",
+      "translucent": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      "expo-asset",
+      "expo-sqlite",
+      "expo-font",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#0ea5e9"
+        }
+      ]
+    ],
+    "assetBundlePatterns": [
+      "assets/**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "2a3fa4e8-2aa0-49b6-b1fb-6b935f5c3441"
+      }
+    }
+  }
+}

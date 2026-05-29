@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Алхимик</title>
+  <link rel="icon" type="image/png" href="/api/v1/web/assets/favicon.png" />
+  <link rel="preload" as="image" href="/api/v1/web/assets/fon.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="/api/v1/web/assets/allchemist.webp" type="image/webp" fetchpriority="high" />
+  <link rel="stylesheet" href="/api/v1/web/assets/styles.css?v=20260520a" />
+</head>
+<body>
+  <main class="page">
+    <section class="hero card">
+      <div class="heroTop">
+        <div>
+          <div class="brandRow">
+            <div class="alchemyScene" aria-hidden="true">
+              <picture>
+                <source srcset="/api/v1/web/assets/allchemist.webp" type="image/webp" />
+                <img class="sceneImage" src="/api/v1/web/assets/allchemist.png" alt="Алхимик-ученый" width="1254" height="1254" fetchpriority="high" decoding="sync" />
+              </picture>
+            </div>
+            <div class="brandTitleWrap">
+              <div class="brandTitle">Алхимик</div>
+              <div class="brandSubtitle">Научная платформа по химии, физике и биологии</div>
+              <div class="heroMetaLine">Уроки · Задания · Лабораторные · AI-помощник · Прогресс</div>
+            </div>
+          </div>
+        </div>
+        <div class="heroActions">
+          <a class="btn btn-primary" href="/api/v1/content/downloads/apk/latest">Скачать Android APK</a>
+          <p class="muted small">Если у вас была ранняя тестовая версия, перед установкой новой может понадобиться удалить старое приложение.</p>
+        </div>
+      </div>
+      <div id="apkReleaseNotice" class="releaseNotice hidden" aria-live="polite"></div>
+    </section>
+
+    <section class="card appCard">
+      <div class="sectionHeader">
+        <div>
+          <h2 id="authSectionTitle">Войти в кабинет</h2>
+          <p id="authSectionSubtitle" class="muted">Полноценный вход в веб-кабинет: выберите способ входа в Алхимик</p>
+        </div>
+        <div class="sessionMeta" id="sessionMeta">Гость</div>
+      </div>
+
+      <div id="authPanel" class="authGrid landingGrid">
+        <div class="authColumn loginPanel">
+          <h3>Как войти?</h3>
+          <div class="roleCards" id="roleRow">
+            <button class="roleCard" data-auth-action="login" data-audience="learner" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4"/></svg></span><strong>Я учусь</strong><small>Войти в учебный кабинет. Роль и доступы определятся по аккаунту после проверки сервером.</small></button>
+            <button class="roleCard" data-auth-action="login" data-audience="teacher" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h18v12H3z"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></span><strong>Я учитель</strong><small>Войти в рабочий кабинет школы. Назначение учителя или классного руководителя берётся из аккаунта.</small></button>
+            <button class="roleCard" data-auth-action="login" data-audience="parent" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg></span><strong>Я родитель</strong><small>Войти, чтобы смотреть прогресс ребёнка, риски, задания и рекомендации.</small></button>
+            <button class="roleCard" data-auth-action="access-code" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M8 11h8"/><path d="M8 14h5"/></svg></span><strong>У меня есть код доступа</strong><small>Активируйте персональный школьный код и создайте логин с паролем.</small></button>
+            <button class="roleCard" data-auth-action="login" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg></span><strong>Войти по логину и паролю</strong><small>Для уже созданного аккаунта. Кабинет откроется по роли, назначенной школой или системой.</small></button>
+          </div>
+
+          <div class="authActions primaryActionRow">
+            <button id="roleContinueBtn" class="btn btn-primary btn-wide" type="button">Войти по логину и паролю</button>
+          </div>
+
+          <div id="phoneLoginPanel" class="phoneLoginPanel">
+            <label class="fieldLabel" for="loginInput">Логин</label>
+            <input id="loginInput" class="input" type="text" placeholder="Например: ivan_10f" autocomplete="username" />
+            <label class="fieldLabel" for="passwordInput">Пароль</label>
+            <div class="passwordWrap">
+              <input id="passwordInput" class="input passwordInput" type="password" placeholder="Ваш пароль" autocomplete="current-password" />
+              <button class="passwordToggle" type="button" data-toggle-password="passwordInput" aria-label="Показать пароль">Показать</button>
+            </div>
+            <div class="authActions">
+              <button id="loginPasswordBtn" class="btn btn-primary" type="button">Войти по логину</button>
+            </div>
+            <p class="muted small">Если вы ещё не создавали логин и пароль, активируйте школьный код ниже.</p>
+            <div class="formDivider">или вход по телефону</div>
+            <label class="fieldLabel" for="phoneInput">Телефон</label>
+            <input id="phoneInput" class="input" type="tel" placeholder="+7 900 000 00 00" />
+            <div class="authActions">
+              <button id="requestCodeBtn" class="btn btn-primary" type="button">Продолжить</button>
+            </div>
+            <div id="codeStep" class="hidden">
+              <label class="fieldLabel" for="codeInput">Код из SMS</label>
+              <input id="codeInput" class="input" type="text" placeholder="Введите код" />
+              <div class="authActions">
+                <button id="verifyCodeBtn" class="btn btn-primary" type="button">Войти</button>
+              </div>
+            </div>
+            <div id="authDebugCode" class="devBadge hidden"></div>
+          </div>
+
+          <div class="accessPrompt">
+            <div>
+              <strong>Есть код доступа от школы?</strong>
+              <p class="muted small">Активируйте персональный код от школы, учителя или ребёнка.</p>
+            </div>
+            <button id="openAccessCodeBtn" class="btn btn-secondary" type="button">Активировать код</button>
+          </div>
+
+          <div id="accessCodePanel" class="accessCodePanel hidden">
+            <h3>Активировать код доступа</h3>
+            <p class="muted small">Введите персональный код, который вы получили от школы, учителя или ребёнка.</p>
+            <label class="fieldLabel" for="accessCodeInput">Код доступа</label>
+            <input id="accessCodeInput" class="input" type="text" placeholder="Например: STD-2070-NZ-0000" autocomplete="one-time-code" />
+            <div class="authActions">
+              <button id="previewAccessCodeBtn" class="btn btn-secondary" type="button">Проверить код</button>
+            </div>
+            <div id="accessCodePreview" class="statusBox softStatus">Сначала проверьте код, затем создайте логин и пароль.</div>
+            <label class="fieldLabel" for="accessDisplayNameInput">Имя в кабинете</label>
+            <input id="accessDisplayNameInput" class="input" type="text" placeholder="Например: Иван Иванов" autocomplete="name" />
+            <label class="fieldLabel" for="accessLoginInput">Новый логин</label>
+            <input id="accessLoginInput" class="input" type="text" placeholder="4-32 символа: латиница, цифры, _ или -" autocomplete="username" />
+            <label class="fieldLabel" for="accessPasswordInput">Новый пароль</label>
+            <div class="passwordWrap">
+              <input id="accessPasswordInput" class="input passwordInput" type="password" placeholder="Минимум 8 символов, буквы и цифры" autocomplete="new-password" />
+              <button class="passwordToggle" type="button" data-toggle-password="accessPasswordInput" aria-label="Показать пароль">Показать</button>
+            </div>
+            <div class="passwordHint">Требования: минимум 8 символов, должна быть хотя бы одна буква и хотя бы одна цифра. Логин: 4-32 символа, латиница, цифры, _ или -.</div>
+            <label class="fieldLabel" for="accessPasswordConfirmInput">Повторите пароль</label>
+            <div class="passwordWrap">
+              <input id="accessPasswordConfirmInput" class="input passwordInput" type="password" placeholder="Повторите пароль" autocomplete="new-password" />
+              <button class="passwordToggle" type="button" data-toggle-password="accessPasswordConfirmInput" aria-label="Показать пароль">Показать</button>
+            </div>
+            <div class="authActions">
+              <button id="activateAccessCodeBtn" class="btn btn-primary" type="button">Активировать</button>
+              <button id="closeAccessCodeBtn" class="btn btn-secondary" type="button">Закрыть</button>
+            </div>
+            <div id="accessCodeStatus" class="statusBox">Код доступа ещё не вводился.</div>
+          </div>
+
+          <div id="authStatus" class="statusBox softStatus">Войдите по логину и паролю или активируйте персональный код доступа.</div>
+          <button id="logoutBtn" class="btn btn-secondary hidden" type="button">Выйти</button>
+        </div>
+
+        <div class="authColumn authExplain">
+          <h3>Что откроется после входа</h3>
+          <div class="benefitGrid">
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4"/></svg></span><strong>Учащийся</strong><p>Задания, предметы, прогресс, AI-помощник и офлайн-материалы.</p></article>
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h18v12H3z"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></span><strong>Учитель</strong><p>Классы, уроки, демонстрации, онлайн-работа, проверка и отчёты.</p></article>
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg></span><strong>Родитель</strong><p>Прогресс ребёнка, сроки, слабые темы, рекомендации и уведомления.</p></article>
+            <article class="benefitCard schoolBenefit"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span><strong>Школа</strong><p>Управление доступами, классами, лицензией и аналитикой.</p></article>
+          </div>
+          <div class="snapshotCard compactSnapshot hidden">
+            <div class="snapshotLine"><span>Выбрано</span><strong id="snapshotRole">Не выбрано</strong></div>
+            <div class="snapshotLine"><span>Вход</span><strong id="snapshotSession">Ожидает</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="appShell" class="hidden">
+        <div class="appLayout">
+          <aside class="workspaceSidebar" aria-label="Навигация кабинета">
+            <div class="sidebarTitle">Личный кабинет</div>
+            <div class="workspaceTabs" id="workspaceTabs">
+              <button class="chip active" type="button" data-workspace-tab="modules">Учёба</button>
+              <button class="chip" type="button" data-workspace-tab="cabinet">Главная</button>
+              <button class="chip" type="button" data-workspace-tab="access">Доступ и тарифы</button>
+              <button class="chip" type="button" data-workspace-tab="more">Ещё</button>
+            </div>
+          </aside>
+          <div class="workspaceMain">
+            <header class="workspaceTopbar">
+              <div>
+                <div class="workspaceEyebrow">Кабинет Алхимика</div>
+                <h2 id="workspaceTitle">Главная</h2>
+                <p id="workspaceSubtitle" class="muted small">Роль и доступы загружаются с сервера.</p>
+              </div>
+              <div class="workspaceTopActions">
+                <div id="workspaceUserBadge" class="sessionMeta">Пользователь</div>
+                <a id="workspaceApkLink" class="btn btn-secondary" href="/api/v1/content/downloads/apk/latest">Скачать APK</a>
+              </div>
+            </header>
+
+        <div id="workspaceModules">
+          <section class="subcard">
+            <h3>Модули платформы</h3>
+            <p class="muted small">Доступные модули подсвечены ярче. Недоступные открываются после подписки.</p>
+            <div id="catalogStatus" class="statusBox softStatus">Учебный каталог загружается.</div>
+            <div id="moduleTabs" class="moduleTabs"></div>
+            <div id="modulePanel" class="modulePanel"></div>
+          </section>
+        </div>
+
+        <div id="workspaceCabinet" class="hidden">
+          <div class="gridTwo topGrid">
+            <section class="subcard">
+              <h3>Профиль</h3>
+              <div id="profileSummary" class="kvList"></div>
+              <div id="roleModeSwitcher" class="inlinePanel hidden"></div>
+              <div class="inlinePanel passwordPanel">
+                <h4>Сменить пароль</h4>
+                <label class="fieldLabel" for="currentPasswordInput">Текущий пароль</label>
+                <div class="passwordWrap">
+                  <input id="currentPasswordInput" class="input passwordInput" type="password" autocomplete="current-password" />
+                  <button class="passwordToggle" type="button" data-toggle-password="currentPasswordInput" aria-label="Показать пароль">Показать</button>
+                </div>
+                <label class="fieldLabel" for="newPasswordInput">Новый пароль</label>
+                <div class="passwordWrap">
+                  <input id="newPasswordInput" class="input passwordInput" type="password" autocomplete="new-password" />
+                  <button class="passwordToggle" type="button" data-toggle-password="newPasswordInput" aria-label="Показать пароль">Показать</button>
+                </div>
+                <div class="passwordHint">Требования: минимум 8 символов, буквы и цифры.</div>
+                <label class="fieldLabel" for="newPasswordConfirmInput">Повторите новый пароль</label>
+                <div class="passwordWrap">
+                  <input id="newPasswordConfirmInput" class="input passwordInput" type="password" autocomplete="new-password" />
+                  <button class="passwordToggle" type="button" data-toggle-password="newPasswordConfirmInput" aria-label="Показать пароль">Показать</button>
+                </div>
+                <button id="changePasswordBtn" class="btn btn-secondary" type="button">Сохранить новый пароль</button>
+                <div id="changePasswordStatus" class="statusBox">Пароль не изменялся.</div>
+              </div>
+              <div class="modulePanelActions">
+                <button id="cabinetLogoutBtn" class="btn btn-secondary" type="button">Выйти из кабинета</button>
+              </div>
+            </section>
+            <section class="subcard">
+              <h3>Доступ и модули</h3>
+              <div id="entitlementsSummary" class="kvList"></div>
+            </section>
+          </div>
+
+          <div class="gridTwo">
+            <section class="subcard">
+              <h3>Роль и быстрые действия</h3>
+              <div id="roleSummary" class="kvList"></div>
+              <div id="quickActions" class="tagWrap"></div>
+            </section>
+            <section class="subcard">
+              <h3>Рабочий сценарий по роли</h3>
+              <div id="roleWorkspace"></div>
+            </section>
+          </div>
+        </div>
+
+        <div id="workspaceBilling" class="hidden" aria-hidden="true">
+          <section class="subcard">
+            <div class="sectionHeader compact">
+              <div>
+                <h3>Подписка и оплата</h3>
+                <p class="muted small">Выберите подписку, чтобы открыть закрытые модули и расширенный функционал.</p>
+              </div>
+            </div>
+            <div class="planGrid"></div>
+            <div class="statusBox">Платежи перенесены в раздел «Доступ и тарифы».</div>
+          </section>
+        </div>
+
+        <div id="workspaceAccess" class="hidden">
+          <section class="subcard">
+            <h3>Доступ и тарифы</h3>
+            <p class="muted small">Школьная лицензия, личные покупки и тарифы складываются и не перетирают друг друга.</p>
+            <div id="accessSummary" class="accessSummaryGrid"></div>
+            <div class="sectionHeader compact accessTariffsHeader">
+              <div>
+                <h4>Тарифы</h4>
+                <p class="muted small">Если школьный доступ уже подключён, покупать ничего не требуется. Личные модули можно добавить отдельно.</p>
+              </div>
+            </div>
+            <div class="planGrid" id="paymentPlans"></div>
+            <div id="paymentStatus" class="statusBox">Платежи ещё не запускались.</div>
+          </section>
+        </div>
+
+        <div id="workspaceMore" class="hidden">
+          <section class="subcard">
+            <h3>Ещё</h3>
+            <p class="muted small">Профиль, безопасность, устройства, офлайн-материалы, помощь и выход.</p>
+            <div class="moreGrid">
+              <article class="inlinePanel"><h4>Профиль</h4><p class="muted small">Имя, роль, школа, класс и пароль находятся в разделе «Главная».</p></article>
+              <article class="inlinePanel"><h4>Безопасность</h4><p class="muted small">Ниже можно привязать устройство, посмотреть список устройств и использовать код восстановления.</p></article>
+              <article class="inlinePanel"><h4>Офлайн-материалы</h4><p class="muted small">Веб-кабинет сохраняет лёгкие материалы в кэше браузера; тяжёлые лабораторные и модели загружаются по требованию.</p></article>
+              <article class="inlinePanel"><h4>Помощь</h4><p class="muted small">Если доступ не появился, обратитесь к учителю или администратору школы.</p></article>
+            </div>
+          </section>
+        </div>
+
+        <div id="workspaceDevices" class="hidden">
+          <section class="subcard">
+            <div class="sectionHeader compact">
+              <div>
+                <h3>Мои устройства</h3>
+                <p class="muted small">Здесь видно, какие телефоны, планшеты и браузеры привязаны к аккаунту.</p>
+              </div>
+              <button id="refreshDevicesBtn" class="btn btn-secondary" type="button">Обновить</button>
+            </div>
+            <div class="gridTwo">
+              <div class="inlinePanel">
+                <h4>Текущее устройство</h4>
+                <label class="fieldLabel" for="deviceLabelInput">Название устройства</label>
+                <input id="deviceLabelInput" class="input" type="text" placeholder="Например: Домашний ноутбук" />
+                <button id="registerDeviceBtn" class="btn btn-primary" type="button">Привязать это устройство</button>
+                <div id="deviceStatus" class="statusBox">Устройства еще не загружены.</div>
+              </div>
+              <div class="inlinePanel">
+                <h4>Код восстановления</h4>
+                <p class="muted small">Если учитель или администратор сбросил привязки, введите выданный код восстановления.</p>
+                <label class="fieldLabel" for="deviceRecoveryCodeInput">Код восстановления</label>
+                <input id="deviceRecoveryCodeInput" class="input" type="text" placeholder="RST-000000" />
+                <label class="fieldLabel" for="deviceRecoveryPhoneInput">Телефон</label>
+                <input id="deviceRecoveryPhoneInput" class="input" type="tel" placeholder="+7 900 000 00 00" />
+                <button id="activateRecoveryBtn" class="btn btn-secondary" type="button">Войти по коду восстановления</button>
+              </div>
+            </div>
+            <div id="devicesSummary" class="statusBox devicesSummary">Список устройств не загружен.</div>
+            <div id="devicesList" class="deviceList"></div>
+          </section>
+        </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/api/v1/web/assets/app.js?v=20260520a"></script>
+</body>
+</html>

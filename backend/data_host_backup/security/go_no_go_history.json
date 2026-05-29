@@ -1,0 +1,136 @@
+[
+  {
+    "recordedAt": "2026-02-25T13:49:19.183707+00:00",
+    "generatedAt": "2026-02-25T13:49:19.183701+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 6,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "yellow",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-02-25T13:20:48.416061+00:00",
+    "generatedAt": "2026-02-25T13:20:48.416051+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 6,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков"
+    ],
+    "gates": [
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "yellow",
+        "note": "Должны быть валидные content packs без parse errors"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page"
+      },
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts"
+      }
+    ]
+  }
+]

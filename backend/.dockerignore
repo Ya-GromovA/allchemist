@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.git
+.gitignore
+
+.env
+.venv/
+venv/
+
+# Node/Expo мусор (если вдруг попадает в контекст)
+node_modules/

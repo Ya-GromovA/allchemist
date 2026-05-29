@@ -1,0 +1,1054 @@
+{
+  "pack_id": "chemistry_pack",
+  "version": 2,
+  "generated_at": "2026-02-15T00:57:01Z",
+  "modules": [
+    {
+      "id": "chemistry",
+      "title_ru": "Химия",
+      "title_en": "Chemistry",
+      "description_ru": "Молекулы, реакции, задачи.",
+      "description_en": "Molecules, reactions, tasks.",
+      "available": true
+    }
+  ],
+  "lesson_blocks": [
+    {
+      "id": 210000,
+      "module_id": "chemistry",
+      "title": "Моль: n=m/M",
+      "content": "Основная формула: n=m/M. Пример: 36 г H2O, M=18 → n=2 моль.",
+      "type": "lesson",
+      "order_index": 1,
+      "payload": {
+        "lang": "ru",
+        "task_ids": [
+          "chem_t_001_ru"
+        ],
+        "branch": "general"
+      },
+      "branch": "general"
+    },
+    {
+      "id": 210001,
+      "module_id": "chemistry",
+      "title": "Mole: n=m/M",
+      "content": "Key relation: n=m/M. Example: 36 g H2O, M=18 → n=2 mol.",
+      "type": "lesson",
+      "order_index": 2,
+      "payload": {
+        "lang": "en",
+        "task_ids": [
+          "chem_t_001_en"
+        ],
+        "branch": "general"
+      },
+      "branch": "general"
+    },
+    {
+      "id": 211000,
+      "module_id": "chemistry",
+      "title": "Уравнивание реакций",
+      "content": "Подбирай коэффициенты, чтобы число атомов совпало.",
+      "type": "lesson",
+      "order_index": 3,
+      "payload": {
+        "lang": "ru",
+        "task_ids": [
+          "chem_t_002_ru",
+          "chem_t_003_ru"
+        ],
+        "branch": "inorganic"
+      },
+      "branch": "inorganic"
+    },
+    {
+      "id": 211001,
+      "module_id": "chemistry",
+      "title": "Balancing reactions",
+      "content": "Choose coefficients to make atom counts equal.",
+      "type": "lesson",
+      "order_index": 4,
+      "payload": {
+        "lang": "en",
+        "task_ids": [
+          "chem_t_002_en",
+          "chem_t_003_en"
+        ],
+        "branch": "inorganic"
+      },
+      "branch": "inorganic"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "chem_t_001_ru",
+      "module_id": "chemistry",
+      "lesson_id": 210000,
+      "title": "Найти количество вещества",
+      "description": "Масса воды 36 г. M(H2O)=18 г/моль. Найдите n.",
+      "type": "numeric",
+      "estimated_minutes": 4,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "mol"
+        },
+        "solution": "n=m/M=36/18=2 моль",
+        "rubric": {
+          "type": "numeric",
+          "unit": "mol",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mole",
+        "ru"
+      ],
+      "branch": "general"
+    },
+    {
+      "id": "chem_t_001_en",
+      "module_id": "chemistry",
+      "lesson_id": 210001,
+      "title": "Find amount of substance",
+      "description": "Mass of water is 36 g. M(H2O)=18 g/mol. Find n.",
+      "type": "numeric",
+      "estimated_minutes": 4,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "mol"
+        },
+        "solution": "n=m/M=36/18=2 mol",
+        "rubric": {
+          "type": "numeric",
+          "unit": "mol",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mole",
+        "en"
+      ],
+      "branch": "general"
+    },
+    {
+      "id": "chem_t_002_ru",
+      "module_id": "chemistry",
+      "lesson_id": 211000,
+      "title": "Уравнять реакцию",
+      "description": "Уравняйте: H2 + O2 → H2O",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "H2 + O2 → H2O",
+          "2H2 + O2 → 2H2O",
+          "H2 + 2O2 → H2O2"
+        ],
+        "correct_index": 1,
+        "explain": "Слева 4 H и 2 O, справа 4 H и 2 O: 2H2 + O2 → 2H2O",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "balancing",
+        "ru"
+      ],
+      "branch": "inorganic"
+    },
+    {
+      "id": "chem_t_002_en",
+      "module_id": "chemistry",
+      "lesson_id": 211001,
+      "title": "Balance the equation",
+      "description": "Balance: H2 + O2 → H2O",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "H2 + O2 → H2O",
+          "2H2 + O2 → 2H2O",
+          "H2 + 2O2 → H2O2"
+        ],
+        "correct_index": 1,
+        "explain": "Left 4 H and 2 O, right 4 H and 2 O: 2H2 + O2 → 2H2O",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "balancing",
+        "en"
+      ],
+      "branch": "inorganic"
+    },
+    {
+      "id": "chem_t_003_ru",
+      "module_id": "chemistry",
+      "lesson_id": 211000,
+      "title": "Открытый ответ: алгоритм уравнивания",
+      "description": "Опиши алгоритм уравнивания реакций своими словами.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "coeff",
+              "weight": 0.45,
+              "keywords": [
+                "коэффициент",
+                "коэффициенты",
+                "перед",
+                "формул"
+              ]
+            },
+            {
+              "id": "atoms",
+              "weight": 0.35,
+              "keywords": [
+                "атом",
+                "число атомов",
+                "слева",
+                "справа"
+              ]
+            },
+            {
+              "id": "reduce",
+              "weight": 0.2,
+              "keywords": [
+                "сократить",
+                "наименьших",
+                "целых"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "balancing",
+        "open",
+        "ru"
+      ],
+      "branch": "inorganic"
+    },
+    {
+      "id": "chem_t_003_en",
+      "module_id": "chemistry",
+      "lesson_id": 211001,
+      "title": "Open answer: balancing algorithm",
+      "description": "Describe the balancing algorithm in your own words.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "coeff",
+              "weight": 0.45,
+              "keywords": [
+                "coefficient",
+                "coefficients",
+                "in front"
+              ]
+            },
+            {
+              "id": "atoms",
+              "weight": 0.35,
+              "keywords": [
+                "atoms",
+                "left",
+                "right",
+                "equal"
+              ]
+            },
+            {
+              "id": "reduce",
+              "weight": 0.2,
+              "keywords": [
+                "reduce",
+                "smallest",
+                "integers"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "balancing",
+        "open",
+        "en"
+      ],
+      "branch": "inorganic"
+    }
+  ],
+  "molecules": [
+    {
+      "id": "mol_c2h6",
+      "name": "Этан (Ethane)",
+      "formula": "C2H6",
+      "atoms": [
+        {
+          "el": "C",
+          "x": -0.77,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "C",
+          "x": 0.77,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -1.4,
+          "y": 0.63,
+          "z": 0.63
+        },
+        {
+          "el": "H",
+          "x": -1.4,
+          "y": -0.63,
+          "z": 0.63
+        },
+        {
+          "el": "H",
+          "x": -1.4,
+          "y": 0.0,
+          "z": -0.63
+        },
+        {
+          "el": "H",
+          "x": 1.4,
+          "y": 0.63,
+          "z": -0.63
+        },
+        {
+          "el": "H",
+          "x": 1.4,
+          "y": -0.63,
+          "z": -0.63
+        },
+        {
+          "el": "H",
+          "x": 1.4,
+          "y": 0.0,
+          "z": 0.63
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "organic"
+    },
+    {
+      "id": "mol_ch4",
+      "name": "Метан (Methane)",
+      "formula": "CH4",
+      "atoms": [
+        {
+          "el": "C",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.63,
+          "y": 0.63,
+          "z": 0.63
+        },
+        {
+          "el": "H",
+          "x": -0.63,
+          "y": -0.63,
+          "z": 0.63
+        },
+        {
+          "el": "H",
+          "x": -0.63,
+          "y": 0.63,
+          "z": -0.63
+        },
+        {
+          "el": "H",
+          "x": 0.63,
+          "y": -0.63,
+          "z": -0.63
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "organic"
+    },
+    {
+      "id": "mol_cl2",
+      "name": "Хлор (Chlorine)",
+      "formula": "Cl2",
+      "atoms": [
+        {
+          "el": "Cl",
+          "x": -0.995,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "Cl",
+          "x": 0.995,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_co",
+      "name": "Угарный газ (Carbon monoxide)",
+      "formula": "CO",
+      "atoms": [
+        {
+          "el": "C",
+          "x": -0.565,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.565,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_co2",
+      "name": "Углекислый газ (Carbon dioxide)",
+      "formula": "CO2",
+      "atoms": [
+        {
+          "el": "C",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -1.16,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.16,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_h2",
+      "name": "Водород (Hydrogen)",
+      "formula": "H2",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -0.37,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.37,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_h2o",
+      "name": "Вода (Water)",
+      "formula": "H2O",
+      "atoms": [
+        {
+          "el": "O",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.96,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -0.32,
+          "y": 0.9,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_h2o2",
+      "name": "Пероксид водорода (Hydrogen peroxide)",
+      "formula": "H2O2",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -1.4,
+          "y": 0.2,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.7,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.7,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 1.4,
+          "y": -0.2,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_h2s",
+      "name": "Сероводород (Hydrogen sulfide)",
+      "formula": "H2S",
+      "atoms": [
+        {
+          "el": "S",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 1.34,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -0.45,
+          "y": 1.26,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_h2so4",
+      "name": "Серная кислота (Sulfuric acid)",
+      "formula": "H2SO4",
+      "atoms": [
+        {
+          "el": "S",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.25,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -1.25,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.0,
+          "y": 1.25,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.0,
+          "y": -1.25,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.0,
+          "y": 2.05,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.0,
+          "y": -2.05,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "organic"
+    },
+    {
+      "id": "mol_hbr",
+      "name": "Бромоводород (Hydrogen bromide)",
+      "formula": "HBr",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -0.705,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "Br",
+          "x": 0.705,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_hcl",
+      "name": "Хлороводород (Hydrogen chloride)",
+      "formula": "HCl",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -0.64,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "Cl",
+          "x": 0.64,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_hf",
+      "name": "Фтороводород (Hydrogen fluoride)",
+      "formula": "HF",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -0.46,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "F",
+          "x": 0.46,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_hi",
+      "name": "Йодоводород (Hydrogen iodide)",
+      "formula": "HI",
+      "atoms": [
+        {
+          "el": "H",
+          "x": -0.805,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "I",
+          "x": 0.805,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_hno3",
+      "name": "Азотная кислота (Nitric acid)",
+      "formula": "HNO3",
+      "atoms": [
+        {
+          "el": "N",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.2,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.62,
+          "y": 1.06,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.62,
+          "y": -1.06,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -1.35,
+          "y": 1.06,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "organic"
+    },
+    {
+      "id": "mol_n2",
+      "name": "Азот (Nitrogen)",
+      "formula": "N2",
+      "atoms": [
+        {
+          "el": "N",
+          "x": -0.55,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "N",
+          "x": 0.55,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_n2o",
+      "name": "Закись азота (Nitrous oxide)",
+      "formula": "N2O",
+      "atoms": [
+        {
+          "el": "N",
+          "x": -0.7,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "N",
+          "x": 0.3,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.45,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_nh3",
+      "name": "Аммиак (Ammonia)",
+      "formula": "NH3",
+      "atoms": [
+        {
+          "el": "N",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": 0.94,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -0.47,
+          "y": 0.81,
+          "z": 0.0
+        },
+        {
+          "el": "H",
+          "x": -0.47,
+          "y": -0.81,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_no",
+      "name": "Оксид азота (Nitric oxide)",
+      "formula": "NO",
+      "atoms": [
+        {
+          "el": "N",
+          "x": -0.575,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.575,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_no2",
+      "name": "Диоксид азота (Nitrogen dioxide)",
+      "formula": "NO2",
+      "atoms": [
+        {
+          "el": "N",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.18,
+          "y": 0.1,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.9,
+          "y": 0.78,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_o2",
+      "name": "Кислород (Oxygen)",
+      "formula": "O2",
+      "atoms": [
+        {
+          "el": "O",
+          "x": -0.605,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 0.605,
+          "y": 0.0,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "general"
+    },
+    {
+      "id": "mol_so2",
+      "name": "Диоксид серы (Sulfur dioxide)",
+      "formula": "SO2",
+      "atoms": [
+        {
+          "el": "S",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.2,
+          "y": 0.2,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -1.0,
+          "y": 0.8,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    },
+    {
+      "id": "mol_so3",
+      "name": "Триоксид серы (Sulfur trioxide)",
+      "formula": "SO3",
+      "atoms": [
+        {
+          "el": "S",
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": 1.25,
+          "y": 0.0,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.62,
+          "y": 1.08,
+          "z": 0.0
+        },
+        {
+          "el": "O",
+          "x": -0.62,
+          "y": -1.08,
+          "z": 0.0
+        }
+      ],
+      "updated_at": "2026-02-15T00:57:01Z",
+      "branch": "inorganic"
+    }
+  ],
+  "reactions": [
+    {
+      "id": "rx_h2_o2_h2o",
+      "title": "Synthesis of water",
+      "equation": "2H2 + O2 → 2H2O",
+      "conditions": "spark/heat",
+      "reactants": [
+        {
+          "formula": "H2",
+          "coeff": 2
+        },
+        {
+          "formula": "O2",
+          "coeff": 1
+        }
+      ],
+      "products": [
+        {
+          "formula": "H2O",
+          "coeff": 2
+        }
+      ],
+      "branch": "general"
+    },
+    {
+      "id": "rx_hcl_naoh",
+      "title": "Neutralization",
+      "equation": "HCl + NaOH → NaCl + H2O",
+      "conditions": "aq",
+      "reactants": [
+        {
+          "formula": "HCl",
+          "coeff": 1
+        },
+        {
+          "formula": "NaOH",
+          "coeff": 1
+        }
+      ],
+      "products": [
+        {
+          "formula": "NaCl",
+          "coeff": 1
+        },
+        {
+          "formula": "H2O",
+          "coeff": 1
+        }
+      ],
+      "branch": "inorganic"
+    }
+  ],
+  "ai_knowledge": [
+    {
+      "id": "chem_k_ru_mole",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Моль: n=m/M",
+      "body": "n=m/M. Масса в граммах, M в г/моль → n в молях.",
+      "tags": [
+        "mole",
+        "ru"
+      ],
+      "source": "chemistry_pack"
+    },
+    {
+      "id": "chem_k_en_mole",
+      "subject": "chemistry",
+      "lang": "en",
+      "title": "Mole: n=m/M",
+      "body": "n=m/M. With m in grams and M in g/mol, n is in moles.",
+      "tags": [
+        "mole",
+        "en"
+      ],
+      "source": "chemistry_pack"
+    },
+    {
+      "id": "chem_k_ru_bal",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Балансировка",
+      "body": "Меняются только коэффициенты перед формулами, индексы в формулах не меняют.",
+      "tags": [
+        "balancing",
+        "ru"
+      ],
+      "source": "chemistry_pack"
+    },
+    {
+      "id": "chem_k_en_bal",
+      "subject": "chemistry",
+      "lang": "en",
+      "title": "Balancing",
+      "body": "Change only coefficients in front; do not change subscripts inside formulas.",
+      "tags": [
+        "balancing",
+        "en"
+      ],
+      "source": "chemistry_pack"
+    }
+  ],
+  "updated_at": "2026-02-15T00:57:01Z"
+}

@@ -1,0 +1,94 @@
+name: Production Release Gate
+
+on:
+  workflow_dispatch:
+    inputs:
+      apk_version:
+        description: Expected latest APK versionName, for example 1.0.11
+        required: true
+        type: string
+      confirm_provider_blockers:
+        description: Confirm external blockers are tracked outside CI
+        required: true
+        type: boolean
+
+concurrency:
+  group: allchemist-production-release
+  cancel-in-progress: false
+
+jobs:
+  release-gate:
+    name: Metadata and regression gate
+    runs-on: ubuntu-latest
+    if: ${{ inputs.confirm_provider_blockers }}
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: synapse
+          POSTGRES_USER: synapse
+          POSTGRES_PASSWORD: synapse_ci_password
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U synapse -d synapse"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          python -m pip install pytest
+      - name: Verify latest APK metadata file
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          path = Path('content_packs/allchemist-apk-latest.json')
+          data = json.loads(path.read_text(encoding='utf-8'))
+          expected = os.environ['EXPECTED_APK_VERSION']
+          if data.get('versionName') != expected:
+              raise SystemExit(f"versionName mismatch: {data.get('versionName')} != {expected}")
+          for key in ['versionName', 'versionCode', 'apkFile', 'sha256', 'size']:
+              if not data.get(key):
+                  raise SystemExit(f'missing metadata key: {key}')
+          apk = path.parent / data['apkFile']
+          if not apk.exists():
+              raise SystemExit(f'APK artifact missing: {apk}')
+          if apk.stat().st_size != int(data['size']):
+              raise SystemExit('APK size mismatch')
+          print('APK metadata OK')
+          PY
+        env:
+          EXPECTED_APK_VERSION: ${{ inputs.apk_version }}
+      - name: Run release regression
+        working-directory: backend
+        env:
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: '5433'
+          POSTGRES_DB: synapse
+          POSTGRES_USER: synapse
+          POSTGRES_PASSWORD: synapse_ci_password
+          PYTHONPATH: ${{ github.workspace }}/backend
+        run: |
+          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py
+      - name: Check web syntax and ops scripts
+        run: |
+          node --check backend/app/web_public/app.js
+          node --check backend/app/web_admin/app.js
+          bash -n tools/backup_synapse.sh tools/stage11-production-preflight.sh tools/stage15-production-hardening-check.sh
+          python -m py_compile tools/revoke_sessions.py

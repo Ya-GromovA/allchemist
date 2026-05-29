@@ -1,0 +1,1404 @@
+[
+  {
+    "recordedAt": "2026-05-26T11:14:43.974402+00:00",
+    "generatedAt": "2026-05-26T11:14:43.974389+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-26T11:12:21.071891+00:00",
+    "generatedAt": "2026-05-26T11:12:21.071886+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-26T07:20:49.990354+00:00",
+    "generatedAt": "2026-05-26T07:20:49.989831+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-26T07:20:05.775020+00:00",
+    "generatedAt": "2026-05-26T07:20:05.775009+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T17:37:31.742597+00:00",
+    "generatedAt": "2026-05-25T17:37:31.742585+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T17:35:30.995755+00:00",
+    "generatedAt": "2026-05-25T17:35:30.995746+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T09:46:47.680955+00:00",
+    "generatedAt": "2026-05-25T09:46:47.680945+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T09:45:56.102117+00:00",
+    "generatedAt": "2026-05-25T09:45:56.102107+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T09:04:31.444141+00:00",
+    "generatedAt": "2026-05-25T09:04:31.444116+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T09:03:14.820926+00:00",
+    "generatedAt": "2026-05-25T09:03:14.820914+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T08:00:27.862747+00:00",
+    "generatedAt": "2026-05-25T08:00:27.862733+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-25T07:59:53.841470+00:00",
+    "generatedAt": "2026-05-25T07:59:53.841460+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-24T23:13:05.975630+00:00",
+    "generatedAt": "2026-05-24T23:13:05.975621+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-24T23:12:42.897103+00:00",
+    "generatedAt": "2026-05-24T23:12:42.897080+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 2,
+    "totalGates": 7,
+    "blockers": [
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": true,
+        "value": "0",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-24T23:12:42.592444+00:00",
+    "generatedAt": "2026-05-24T23:12:42.592433+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 1,
+    "totalGates": 7,
+    "blockers": [
+      "Неподтвержденные high-алерты",
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": false,
+        "value": "2",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": true,
+        "value": "ok",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Пользовательское соглашение; Политика обработки персональных данных; Согласие на обработку ПДн; Подписание go-live legal memo",
+        "owner": "Legal owner"
+      }
+    ]
+  },
+  {
+    "recordedAt": "2026-05-13T12:36:01.550573+00:00",
+    "generatedAt": "2026-05-13T12:36:01.550562+00:00",
+    "go": false,
+    "status": "no-go",
+    "passedGates": 0,
+    "totalGates": 7,
+    "blockers": [
+      "Неподтвержденные high-алерты",
+      "Безопасность и секреты",
+      "Платежный контур",
+      "Mobile onboarding",
+      "Контент и импорт паков",
+      "Документы и сменный регламент",
+      "Юридический комплаенс РФ"
+    ],
+    "gates": [
+      {
+        "key": "high_alerts",
+        "title": "Неподтвержденные high-алерты",
+        "ok": false,
+        "value": "2",
+        "note": "Перед cutover должно быть 0 unacked high-alerts",
+        "priority": "P0",
+        "action": "Разобрать и подтвердить все high-алерты с комментарием",
+        "owner": "Security on-call"
+      },
+      {
+        "key": "security_hardening",
+        "title": "Безопасность и секреты",
+        "ok": false,
+        "value": "attention",
+        "note": "JWT/admin secrets + SLA теста восстановления",
+        "priority": "P0",
+        "action": "Закрыть checklist secrets и обновить evidence по backup restore SLA",
+        "owner": "Security owner"
+      },
+      {
+        "key": "payments_readiness",
+        "title": "Платежный контур",
+        "ok": false,
+        "value": "attention",
+        "note": "Проверка credentials и webhook secrets",
+        "priority": "P1",
+        "action": "Проверить payment credentials, webhook secrets и smoke webhook delivery",
+        "owner": "Payments owner"
+      },
+      {
+        "key": "mobile_onboarding",
+        "title": "Mobile onboarding",
+        "ok": false,
+        "value": "yellow",
+        "note": "Green уровень readiness + smoke SLA",
+        "priority": "P1",
+        "action": "Довести mobile readiness до green и обновить smoke evidence",
+        "owner": "Mobile owner"
+      },
+      {
+        "key": "content_ingestion",
+        "title": "Контент и импорт паков",
+        "ok": false,
+        "value": "red",
+        "note": "Должны быть валидные content packs без parse errors",
+        "priority": "P1",
+        "action": "Устранить parse errors и подтвердить свежий import run",
+        "owner": "Content owner"
+      },
+      {
+        "key": "governance_docs",
+        "title": "Документы и сменный регламент",
+        "ok": false,
+        "value": "missing",
+        "note": "Наличие инструкции v3 и printable one-page",
+        "priority": "P2",
+        "action": "Проверить доступность v3 документов и printable one-page в runtime",
+        "owner": "Ops owner"
+      },
+      {
+        "key": "legal_compliance",
+        "title": "Юридический комплаенс РФ",
+        "ok": false,
+        "value": "no-go",
+        "note": "Блокирующие документы и финальный legal memo должны быть APPROVED",
+        "priority": "P0",
+        "action": "Довести до APPROVED: Файл legal-rf-compliance-status-ru.md не найден",
+        "owner": "Legal owner"
+      }
+    ]
+  }
+]

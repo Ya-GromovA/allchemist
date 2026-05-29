@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Алхимик Web-кабинет</title>
+  <link rel="stylesheet" href="/api/v1/admin/web/assets/styles.css?v=20260520qa2" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <div class="heroBrand">
+        <img class="heroIcon" src="/api/v1/admin/web/assets/icon.webp?v=20260517a" onerror="this.src='/api/v1/admin/web/assets/icon.png'" alt="Алхимик icon" />
+        <div>
+          <h1>Алхимик: панель управления</h1>
+          <p>Школы, пользователи, доступы, безопасность и журнал операций.</p>
+        </div>
+      </div>
+      <div class="heroAuthControls">
+        <button id="btnOpenAuth" class="heroAuthBtn" title="Открыть окно авторизации">Войти</button>
+        <button id="btnLogout" class="heroLogoutBtn danger authOnly" title="Выйти из панели">Выйти</button>
+      </div>
+      <div class="heroGlow" aria-hidden="true"></div>
+    </header>
+
+
+    <section class="panel eduShowcase authOnly" aria-label="Учебные направления Алхимик">
+      <div class="eduBubble eduBubbleA" aria-hidden="true"></div>
+      <div class="eduBubble eduBubbleB" aria-hidden="true"></div>
+      <h2>Учебная среда Алхимик</h2>
+      <p class="muted">Атмосфера обучения: химия, физика, биология и AI-помощник в единой экосистеме.</p>
+      <div class="eduCards">
+        <article class="eduCard">
+          <img src="/api/v1/admin/web/assets/chemistry_lab_hero.png" alt="Химическая лаборатория" />
+          <h3>Химия и реакции</h3>
+          <p>Практика, разборы и визуализация сложных тем.</p>
+        </article>
+        <article class="eduCard">
+          <img src="/api/v1/admin/web/assets/physics_simulator_hero.png" alt="Физический симулятор" />
+          <h3>Физика и модели</h3>
+          <p>Сценарии экспериментов и формульное мышление.</p>
+        </article>
+        <article class="eduCard">
+          <img src="/api/v1/admin/web/assets/module_ai.png" alt="AI-наставник" />
+          <h3>AI-наставник</h3>
+          <p>Персональные подсказки и путь от ошибки к пониманию.</p>
+        </article>
+        <article class="eduCard">
+          <img src="/api/v1/admin/web/assets/biology_microscope_hero.png" alt="Виртуальный микроскоп" />
+          <h3>Биология и системы</h3>
+          <p>Понятные схемы, живые процессы и связь тем с практикой.</p>
+        </article>
+      </div>
+    </section>
+
+    <div id="authOverlay" class="authOverlay hidden">
+    <section class="panel authModal">
+      <h2>Доступ</h2>
+      <div class="row">
+        <div class="muted">После успешного входа откроется рабочая панель.</div>
+        <button id="btnCloseAuth" class="danger">Закрыть окно</button>
+      </div>
+      <div class="row">
+        <input id="adminLogin" placeholder="Логин администратора" />
+        <input id="adminPassword" type="password" placeholder="Пароль администратора" />
+        <button id="btnAdminLogin">Войти по логину и паролю</button>
+      </div>
+      <div class="row">
+        <input id="phone" placeholder="Телефон" />
+        <button id="btnCode">Получить код по телефону</button>
+      </div>
+      <div class="row">
+        <input id="code" placeholder="Код" />
+        <button id="btnLogin">Войти по телефону</button>
+      </div>
+      <div id="authMsg" class="muted">Нет токена</div>
+    </section>
+    </div>
+
+    <section class="panel navPanel authOnly">
+      <div class="viewNav" id="viewNav">
+        <button class="viewBtn active" data-view="home">⌂ Главная</button>
+        <button class="viewBtn" data-view="schools">🏫 Школы</button>
+        <button class="viewBtn" data-view="users">👥 Пользователи</button>
+        <button class="viewBtn" data-view="subscriptions">🔑 Доступы</button>
+        <button class="viewBtn" data-view="content">📚 Контент</button>
+        <button class="viewBtn" data-view="ai">✦ AI</button>
+        <button class="viewBtn" data-view="security">🛡 Безопасность</button>
+        <button class="viewBtn" data-view="audit">☰ Журнал</button>
+        <button class="viewBtn" data-view="rights">⚙ Роли и права</button>
+        <button class="viewBtn" data-view="docs">? Помощь</button>
+      </div>
+      <details class="navToolsDetails">
+        <summary>Настройки интерфейса</summary>
+      <div class="row navToolsRow">
+        <button id="btnCompactMode" class="hintable" data-hint="Переключает компактный режим: таблицы и формы становятся плотнее" title="Компактный режим">Включить компактный режим</button>
+        <button id="btnShortcuts" class="hintable" data-hint="Показывает быстрые клавиши для оператора" title="Горячие клавиши">Горячие клавиши</button>
+                <div id="compactModeState" class="muted">Режим оператора: стандартный</div>
+      </div>
+      </details>
+      <div id="actionStatus" class="actionStatus hidden">Операция не запускалась</div>
+    </section>
+
+
+    <div id="shortcutsOverlay" class="shortcutsOverlay hidden">
+      <section class="panel shortcutsModal">
+        <h2>Горячие клавиши оператора</h2>
+        <div class="muted">Работают только когда курсор не в поле ввода.</div>
+        <table>
+          <thead><tr><th>Клавиша</th><th>Действие</th></tr></thead>
+          <tbody>
+            <tr><td>Alt+1..6</td><td>Быстрое переключение основных разделов панели</td></tr>
+            <tr><td>/</td><td>Фокус в основной поиск текущей вкладки</td></tr>
+            <tr><td>Esc</td><td>Закрыть открытое модальное окно</td></tr>
+          </tbody>
+        </table>
+        <div class="row">
+          <button id="btnCloseShortcuts">Понятно</button>
+        </div>
+      </section>
+    </div>
+
+    <div id="guideOverlay" class="guideOverlay hidden">
+      <section class="panel guideModal">
+        <h2>Инструкция администратора (v3)</h2>
+        <div class="muted">Краткая операционная памятка с SLA и чеклистом передачи смены.</div>
+        <div class="guideGrid">
+          <div>
+            <h3>Типовые ошибки и SLA реакции</h3>
+            <table>
+              <thead><tr><th>Ситуация</th><th>Действие</th><th>Целевое время</th></tr></thead>
+              <tbody>
+                <tr><td>High алерт безопасности</td><td>Обновить алерты, подтвердить/снять с комментарием, эскалировать owner</td><td>до 15 минут</td></tr>
+                <tr><td>Провален тест восстановления</td><td>Запустить тест повторно, проверить практические действия и SLA</td><td>до 30 минут</td></tr>
+                <tr><td>Сбой мобильного smoke</td><td>Сохранить результат, проверить mobile readiness и контент</td><td>до 30 минут</td></tr>
+                <tr><td>Кнопка/экран не реагирует</td><td>Ctrl+F5, повторный вход, проверка runbook-статусов</td><td>до 10 минут</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div>
+            <h3>Чеклист передачи смены</h3>
+            <label class="guideCheck"><input type="checkbox" /> Обработаны все high-алерты</label>
+            <label class="guideCheck"><input type="checkbox" /> Проверен тест восстановления (статус/история)</label>
+            <label class="guideCheck"><input type="checkbox" /> Обновлены mobile/content readiness</label>
+            <label class="guideCheck"><input type="checkbox" /> Выгружен технический отчет при отклонениях</label>
+            <label class="guideCheck"><input type="checkbox" /> Передан комментарий следующему администратору</label>
+            <label class="guideCheck"><input type="checkbox" /> Выполнен выход из системы</label>
+            <h3>Акт передачи смены</h3>
+            <label class="guideField">Время передачи <input id="handoverTime" type="datetime-local" /></label>
+            <label class="guideField">Сдающий смену (ФИО) <input id="handoverOutgoing" placeholder="Например: Петров П.П." /></label>
+            <label class="guideField">Принимающий смену (ФИО) <input id="handoverIncoming" placeholder="Например: Иванова И.И." /></label>
+            <label class="guideField">Инциденты за смену
+              <textarea id="handoverIncidents" rows="4" placeholder="Кратко: время, симптом, действия, статус"></textarea>
+            </label>
+            <label class="guideField">Комментарий следующей смене
+              <textarea id="handoverComment" rows="4" placeholder="Что важно проверить в первую очередь"></textarea>
+            </label>
+            <div class="row">
+              <button id="btnSaveHandover" class="hintable" data-hint="Сохраняет акт в браузере этого рабочего места" title="Сохранить акт передачи">Сохранить акт</button>
+              <button id="btnExportHandover" class="danger hintable" data-hint="Скачивает акт передачи смены" title="Скачать акт передачи">Скачать акт</button>
+              <button id="btnArchiveHandover" class="hintable" data-hint="Сохраняет акт передачи в серверный архив и audit" title="Архивировать акт">Архивировать акт</button>
+              <button id="btnExportHandoverArchiveCsv" class="hintable" data-hint="Скачивает архив актов передачи смены" title="Скачать архив">Скачать архив</button>
+            </div>
+            <div id="handoverStatus" class="inlineStatus" aria-live="polite">Акт передачи не заполнен</div>
+          </div>
+        </div>
+        <div class="row">
+          <a class="guideLink" href="/api/v1/admin/web/assets/admin-manual-ru-v3.docx?v=20260226j" target="_blank" rel="noopener">Скачать Word v3</a>
+          <a class="guideLink" href="/api/v1/admin/web/assets/admin-manual-ru-v3.txt?v=20260226j" target="_blank" rel="noopener">Скачать TXT v3</a>
+          <a class="guideLink" href="/api/v1/admin/web/assets/admin-one-page-ru-v3.html?v=20260226j" target="_blank" rel="noopener">Printable one-page v3</a>
+          <button id="btnGuidePrint" class="hintable" data-hint="Открывает отдельный printable one-page файл для печати" title="Печатная версия">Открыть для печати</button>
+          <button id="btnCloseGuide" class="danger">Закрыть инструкцию</button>
+        </div>
+      </section>
+    </div>
+
+    <section class="panel viewSection active authOnly" data-view-content="home">
+      <h2>Главная</h2>
+      <div class="muted">Операционная сводка по школам, пользователям, доступам и безопасности.</div>
+      <div class="adminDashboardGrid">
+        <article class="adminMetric"><span>🏫</span><strong>Активные школы</strong><b>1</b><small>Школа №2070</small></article>
+        <article class="adminMetric"><span>👥</span><strong>Пользователи</strong><b id="homeUsersMetric">Загрузка</b><small>Ученики, учителя, родители</small></article>
+        <article class="adminMetric"><span>🔑</span><strong>Активные доступы</strong><b>Партнёрская лицензия</b><small>Школьные и личные источники</small></article>
+        <article class="adminMetric"><span>🎟</span><strong>Неактивированные коды</strong><b id="homeInvitesMetric">Проверить</b><small>Коды учеников и учителей</small></article>
+        <article class="adminMetric"><span>✦</span><strong>AI-запросы</strong><b>в лимите</b><small>Онлайн и офлайн режимы</small></article>
+        <article class="adminMetric"><span>🛡</span><strong>Инциденты</strong><b>нет критичных</b><small>Проверки безопасности</small></article>
+      </div>
+      <h3>Быстрые действия</h3>
+      <div class="quickActionGrid">
+        <button data-jump-view="schools" data-jump-school-tab="classes" data-focus-target="schoolClassTitle">Создать класс</button>
+        <button data-jump-view="schools" data-jump-school-tab="codes" data-invite-role="teacher" data-focus-target="inviteTitle">Создать код учителя</button>
+        <button data-jump-view="schools" data-jump-school-tab="codes" data-invite-role="student" data-focus-target="inviteStudentLabel">Создать коды учеников</button>
+        <button data-jump-view="users" data-focus-target="usersQuery">Найти пользователя</button>
+        <button data-jump-view="subscriptions" data-focus-target="grantSourceType">Выдать доступ</button>
+        <button data-jump-view="security">Сбросить устройство</button>
+        <button data-jump-view="audit">Открыть журнал</button>
+      </div>
+      <section class="adminGuardRail" aria-label="Границы полномочий администратора">
+        <h3>Границы полномочий</h3>
+        <div class="guardRailGrid">
+          <article><b>Администратор школы</b><p>Работает внутри своей школы: классы, коды, ученики, учителя и школьные доступы.</p></article>
+          <article><b>Администратор системы</b><p>Создаёт школы, управляет глобальными формами и проверяет tenant-настройки.</p></article>
+          <article><b>Владелец</b><p>Меняет критичные права и принимает финальные решения по доступам и релизным гейтам.</p></article>
+        </div>
+      </section>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="users">
+      <div>
+        <h2>Пользователи</h2>
+        <div class="muted">Поиск человека независимо от школы: учащиеся, учителя, родители и администраторы.</div>
+        <div class="row">
+          <input id="newUserPhone" placeholder="Телефон нового пользователя" />
+          <select id="newUserRole"><option value="">Роль</option></select>
+          <button id="btnCreateUser">Создать пользователя и проверить</button>
+        </div>
+        <div class="row">
+          <select id="newUserPlan"><option value="">План (опционально)</option></select>
+          <select id="newUserModule"><option value="">Модуль (опционально)</option></select>
+        </div>
+        <div class="row">
+          <input id="newUserPlanManual" placeholder="План вручную (если нет в списке)" />
+          <input id="newUserModuleManual" placeholder="Модуль вручную (если нет в списке)" />
+        </div>
+        <div id="createUserResult" class="muted">Пользователь еще не создан.</div>
+        <div id="usersActionStatus" class="inlineStatus" aria-live="polite">Ожидает действий по пользователям</div>
+        <div class="row">
+          <input id="usersQuery" placeholder="Поиск userId/телефон" />
+          <button id="btnUsers">Обновить</button>
+        </div>
+        <div class="row">
+          <select id="setRoleValue"><option value="">Новая роль</option></select>
+          <button id="btnSetRole">Назначить роль выбранному</button>
+        </div>
+        <div class="row">
+          <button id="btnUsersPrev" class="danger">Назад</button>
+          <button id="btnUsersNext">Вперед</button>
+          <div id="usersPageInfo" class="muted">Страница 1</div>
+        </div>
+        <table>
+          <thead><tr><th>Выбор</th><th>Пользователь</th><th>Телефон</th><th>Роль</th><th>Доступы</th><th>Планы</th><th>Модули</th></tr></thead>
+          <tbody id="usersTbody"></tbody>
+        </table>
+        <section id="userCard" class="userCard hidden">
+          <div class="userCardHeader"><div><h3>Карточка пользователя</h3><div id="userCardTitle" class="muted">Пользователь не выбран</div></div><button id="btnCloseUserCard" type="button">Закрыть</button></div>
+          <div class="userCardTabs"><button class="userCardTab active" data-user-card-tab="access">Доступы</button><button class="userCardTab" data-user-card-tab="devices">Устройства</button><button class="userCardTab" data-user-card-tab="role">Роль</button><button class="userCardTab" data-user-card-tab="audit">Журнал</button></div>
+          <div class="userCardPanel active" data-user-card-panel="access"><div id="userCardAccess">Доступы не загружены.</div></div>
+          <div class="userCardPanel" data-user-card-panel="devices"><div id="userCardDevices">Устройства не загружены.</div><button id="btnUserCardResetDevices" class="danger" type="button">Сбросить устройства</button><button id="btnUserCardPasswordResetCode" type="button">Выдать код сброса пароля</button><div id="userCardDevicesStatus" class="inlineStatus">Ожидает действий</div></div>
+          <div class="userCardPanel" data-user-card-panel="role"><div class="row"><select id="userCardRole"><option value="">Роль</option></select><button id="btnUserCardSetRole" type="button">Сохранить роль</button></div><div id="userCardRoleStatus" class="inlineStatus">Роль не изменялась</div></div>
+          <div class="userCardPanel" data-user-card-panel="audit"><div id="userCardAudit">Журнал пользователя будет расширен на следующем шаге. Сейчас используйте общий Журнал с фильтром по userId.</div></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="panel viewSection two authOnly" data-view-content="subscriptions">
+      <div>
+        <h2>Доступы</h2>
+        <div class="muted">Личные, семейные, школьные, партнёрские, промо и ручные источники доступа складываются в итоговый доступ пользователя.</div>
+        <div id="selected" class="muted">Пользователь не выбран</div>
+        <div class="row">
+          <select id="plan"><option value="">План</option></select>
+          <select id="module"><option value="">Модуль</option></select>
+        </div>
+        <div class="row">
+          <button id="btnGrant">Выдать</button>
+          <button id="btnRevoke" class="danger">Отозвать</button>
+        </div>
+        <div id="subscriptionsActionStatus" class="inlineStatus" aria-live="polite">Ожидает действий по подпискам</div>
+        <button id="btnKpi">Обновить статистику доступов</button>
+        <div id="kpi" class="kpi"></div>
+
+        <h3>Источники доступа пользователя</h3>
+        <div class="row">
+          <select id="accessSourceType"><option value="">Источник доступа</option></select>
+          <select id="accessSchool"><option value="">Школа / площадка</option></select>
+        </div>
+        <div class="row">
+          <select id="accessPlan"><option value="">План доступа</option></select>
+          <select id="accessModule"><option value="">Модуль</option></select>
+        </div>
+        <div class="row">
+          <input id="accessTitle" placeholder="Название доступа (опционально)" />
+          <input id="accessExpiresAt" type="datetime-local" placeholder="Срок окончания" />
+          <button id="btnGrantAccess">Выдать источник доступа</button>
+        </div>
+        <div id="userAccessSummary" class="muted">Доступы пользователя не загружены.</div>
+
+        <h3>Массовые операции</h3>
+        <div class="row">
+          <select id="bulkAction"><option value="grant">Выдать массово</option><option value="revoke">Отозвать массово</option></select>
+          <select id="bulkRole"><option value="">Все роли</option></select>
+        </div>
+        <div class="row">
+          <input id="bulkQuery" placeholder="Фильтр (userId/телефон)" />
+          <input id="bulkLimit" type="number" min="1" max="1000" value="200" placeholder="Лимит" />
+        </div>
+        <div class="row">
+          <button id="btnBulkPreview">Предпросмотр</button>
+          <button id="btnBulkApply" class="danger">Применить массово</button>
+        </div>
+      </div>
+      <div>
+        <h2>Подсказка</h2>
+        <div class="muted">Сначала выберите пользователя во вкладке Пользователи, затем вернитесь в Доступы.</div>
+      </div>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="schools">
+      <h2>Школы</h2>
+      <div class="muted">Партнёрские и платные школьные лицензии, площадки, лимиты и доступные модули.</div>
+      <div class="schoolScenarioNav" id="schoolTabs"><button class="schoolTab active" data-school-tab="overview" type="button">Обзор</button><button class="schoolTab" data-school-tab="license" type="button">Лицензия</button><button class="schoolTab" data-school-tab="classes" type="button">Классы</button><button class="schoolTab" data-school-tab="codes" type="button">Коды доступа</button><button class="schoolTab" data-school-tab="ai" type="button">AI и лимиты</button><button class="schoolTab" data-school-tab="reports" type="button">Отчёты</button><button class="schoolTab" data-school-tab="settings" type="button">Настройки</button></div>
+      <section class="schoolPanel active" data-school-panel="overview">
+        <h3>Создать школу</h3>
+        <div class="row">
+          <input id="schoolTitle" placeholder="Название школы" />
+          <input id="schoolOrganizationTitle" placeholder="Организация" />
+          <input id="schoolSiteTitle" placeholder="Площадка" />
+        </div>
+        <div class="row">
+          <select id="schoolStatus"><option value="active">Активна</option><option value="paused">На паузе</option><option value="archived">Архив</option></select>
+          <button id="btnCreateSchool" type="button">Создать школу</button>
+        </div>
+        <div id="createSchoolStatus" class="inlineStatus" aria-live="polite">Введите название школы и площадку.</div>
+      </section>
+      <section class="school2070Card schoolPanel active" data-school-panel="overview">
+        <div class="schoolVisualStrip" aria-hidden="true"><img src="/api/v1/admin/web/assets/module_chemistry.png" alt="" /><img src="/api/v1/admin/web/assets/module_physics.png" alt="" /><img src="/api/v1/admin/web/assets/module_biology.png" alt="" /></div>
+        <h3>Школа №2070</h3>
+        <div class="schoolFacts"><span>Площадка: <b>Новая звезда</b></span><span>Статус: <b>активна</b></span><span>Тип лицензии: <b>Партнёрская школьная лицензия</b></span><span>Стоимость: <b>0 ₽</b></span><span>Срок: <b>01.09.2026 — 31.05.2027</b></span></div>
+        <div class="quickActionGrid compact"><button data-jump-view="schools" type="button">Создать класс</button><button data-jump-view="schools" type="button">Создать код учителя</button><button data-jump-view="schools" type="button">Создать коды учеников</button><button data-jump-view="audit" type="button">Открыть журнал</button></div>
+      </section>
+      <section class="schoolPanel" data-school-panel="license">
+        <h3>Партнёрская школьная лицензия</h3>
+        <div class="licenseVisualGrid" aria-label="Визуальные модули лицензии"><img src="/api/v1/admin/web/assets/periodic_table_trainer.png" alt="Тренажёр периодической таблицы" /><img src="/api/v1/admin/web/assets/physics_simulator_hero.png" alt="Физический симулятор" /><img src="/api/v1/admin/web/assets/biology_microscope_hero.png" alt="Виртуальный микроскоп" /></div>
+        <div class="schoolFacts"><span>Статус: <b>активна</b></span><span>Стоимость: <b>0 ₽</b></span><span>Срок: <b>01.09.2026 — 31.05.2027</b></span><span>Тип доступа: <b>полный доступ школы</b></span><span>Организация: <b>Школа №2070</b></span><span>Площадка: <b>Новая звезда</b></span></div>
+        <div class="codeTypeTabs"><span>Химия</span><span>Физика</span><span>Биология</span><span>Виртуальные лабораторные</span><span>3D-модели</span><span>AI-помощник</span><span>Офлайн-режим</span><span>Кабинет учителя</span><span>Live-урок</span><span>Родительский просмотр</span></div>
+        <div class="licenseChecklist" aria-label="Чеклист школьной лицензии">
+          <h4>Чеклист перед выдачей лицензии</h4>
+          <label><input type="checkbox" disabled checked /> Организация и площадка выбраны из tenant-списка</label>
+          <label><input type="checkbox" disabled checked /> Модули и лимиты лицензии видны администратору до выдачи</label>
+          <label><input type="checkbox" disabled checked /> Доступы складываются с личными/семейными/промо-источниками</label>
+          <label><input type="checkbox" disabled /> Изменение прав и создание новой школы доступно только admin/owner</label>
+        </div>
+      </section>
+      <section class="schoolPanel" data-school-panel="overview">
+      <div class="row">
+        <button id="btnSchoolsOverview">Обновить школы и лицензии</button>
+      </div>
+      <div id="schoolsSummary" class="inlineStatus" aria-live="polite">Данные о школах не загружены.</div>
+      <div id="schoolCards" class="kpi"></div>
+      </section>
+
+      <section class="schoolPanel" data-school-panel="classes"><h3>Классы и группы</h3>
+      <div class="row">
+        <select id="schoolClassSchool"><option value="">Школа</option></select>
+        <input id="schoolClassTitle" placeholder="Например: 9ИТ" />
+        <select id="schoolClassSubject"><option value="">Предмет</option><option value="Химия">Химия</option><option value="Физика">Физика</option><option value="Биология">Биология</option></select>
+      </div>
+      <div class="row">
+        <input id="schoolClassTeacherUserId" placeholder="userId учителя (опционально)" />
+        <button id="btnCreateSchoolClass">Создать класс</button>
+        <button id="btnLoadSchoolClasses">Обновить классы</button>
+      </div>
+      <div id="schoolClassesSummary" class="inlineStatus" aria-live="polite">Классы не загружены.</div>
+      <table>
+        <thead><tr><th>Класс</th><th>Предмет</th><th>Учитель</th><th>Учеников</th><th>Учителей</th></tr></thead>
+        <tbody id="schoolClassesTbody"></tbody>
+      </table>
+      </section>
+
+      <section class="schoolPanel" data-school-panel="codes"><h3>Коды доступа</h3>
+      <div class="codeTypeTabs"><span>Коды учеников</span><span>Коды учителей</span><span>Коды родителей</span><span>Коды восстановления</span></div>
+      <div class="row">
+        <select id="inviteSchool"><option value="">Школа</option></select>
+        <select id="inviteClass"><option value="">Класс</option></select>
+        <select id="inviteRole"><option value="teacher">Учитель</option><option value="homeroom_teacher">Классный руководитель</option><option value="student">Ученик</option><option value="learner">Учащийся</option></select>
+      </div>
+      <div class="row">
+        <input id="inviteTitle" placeholder="Мария Александровна / название приглашения" />
+        <select id="inviteSubject"><option value="">Предмет</option><option value="Химия">Химия</option><option value="Физика">Физика</option><option value="Биология">Биология</option></select>
+        <input id="inviteStudentLabel" placeholder="Метка ученика (опционально)" />
+      </div>
+      <div class="row">
+        <input id="inviteExpiresAt" type="datetime-local" placeholder="Срок действия" />
+        <input id="inviteTeacherUserId" placeholder="userId учителя (опционально)" />
+        <button id="btnCreateInvite">Создать код</button>
+        <button id="btnLoadInvites">Обновить коды</button>
+      </div>
+      <div id="schoolInvitesSummary" class="inlineStatus" aria-live="polite">Коды не загружены.</div>
+      <table>
+        <thead><tr><th>Код</th><th>Тип</th><th>Класс</th><th>Название/метка</th><th>Статус</th><th>Срок</th><th>Действия</th></tr></thead>
+        <tbody id="schoolInvitesTbody"></tbody>
+      </table>
+      <div class="row"><button id="btnExportStudentCodesCsv" type="button">Скачать коды учеников</button><button id="btnExportStudentCodesXls" type="button">Скачать коды учеников для таблицы</button></div>
+      </section>
+      <section class="schoolPanel" data-school-panel="ai"><h3>AI и лимиты</h3><div class="muted">AI-запросы школы, онлайн/offline режимы, запрет AI для контрольных и лимиты будут управляться здесь.</div></section>
+      <section class="schoolPanel" data-school-panel="reports"><h3>Отчёты</h3><div class="muted">Отчёты по классам, доступам, кодам и активности школы.</div></section>
+      <section class="schoolPanel" data-school-panel="settings"><h3>Настройки школы</h3><div class="muted">Площадки, лимиты, политика устройств и параметры школьного доступа.</div></section>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="rights">
+      <h2>Роли и права</h2>
+      <details class="mobileCollapse" data-mobile-collapse="roles-help">
+        <summary>Пояснение по ролям и доступам</summary>
+        <div class="muted">Короткая карта возможностей. Если включаете доступ вручную, учитывайте риски и аудит.</div>
+        <table>
+          <thead><tr><th>Роль</th><th>Что может</th><th>Ограничения</th></tr></thead>
+          <tbody>
+            <tr><td>Учащийся</td><td>Учебные модули, задачи, личный прогресс</td><td>Нет доступа к админ-функциям и правам других пользователей</td></tr>
+            <tr><td>Учитель</td><td>Классы, уроки, задания, отчёты и сброс устройств учеников своего класса</td><td>Не управляет критичными настройками системы</td></tr>
+            <tr><td>Родитель</td><td>Просмотр прогресса ребёнка и рекомендаций</td><td>Нет доступа к админ-операциям и изменению ролей</td></tr>
+            <tr><td>Администратор школы</td><td>Школа, классы, учителя, ученики, коды и школьные доступы</td><td>Не управляет owner-настройками</td></tr>
+            <tr><td>Администратор системы</td><td>Пользователи, доступы, безопасность, помощь и журнал</td><td>Не назначает владельца</td></tr>
+            <tr><td>Владелец</td><td>Полный контроль</td><td>Использовать только для финальных решений и аварийных сценариев</td></tr>
+          </tbody>
+        </table>
+      </details>
+      <div class="row">
+        <select id="scopeRole"><option value="">Роль</option></select>
+        <select id="scopeName"><option value="">Действие</option></select>
+        <select id="scopeAllow"><option value="true">Разрешить</option><option value="false">Запретить</option></select>
+        <button id="btnScope">Сохранить</button>
+      </div>
+      <div id="rightsActionStatus" class="inlineStatus" aria-live="polite">Ожидает изменений прав</div>
+      <button id="btnMatrix">Обновить матрицу прав</button>
+      <details class="mobileCollapse" data-mobile-collapse="rights-matrix">
+        <summary>Матрица прав (подробно)</summary>
+        <table>
+          <thead><tr><th>Действие</th><th>Ученик</th><th>Учитель</th><th>Родитель</th><th>Администратор системы</th><th>Владелец</th></tr></thead>
+          <tbody id="matrixTbody"></tbody>
+        </table>
+      </details>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="audit">
+      <h2>Журнал</h2>
+      <div class="row">
+        <input id="auditAction" placeholder="Фильтр action" />
+        <button id="btnAudit">Обновить журнал</button>
+        <button id="btnAuditCsv" class="danger">Скачать таблицу</button>
+      </div>
+      <div id="auditActionStatus" class="inlineStatus" aria-live="polite">Ожидает действий по журналу</div>
+      <div class="row">
+        <button id="btnAuditPrev" class="danger">Назад</button>
+        <button id="btnAuditNext">Вперед</button>
+        <div id="auditPageInfo" class="muted">Страница 1</div>
+      </div>
+      <details class="mobileCollapse" data-mobile-collapse="audit-table">
+        <summary>Таблица журнала (подробно)</summary>
+        <table>
+          <thead><tr><th>Когда</th><th>Кто</th><th>Действие</th><th>Кому</th></tr></thead>
+          <tbody id="auditTbody"></tbody>
+        </table>
+      </details>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="content">
+      <h2>Контент</h2>
+      <div class="muted">Раздел для управления учебным контентом: предметы, темы, задания, лабораторные и офлайн-пакеты.</div>
+      <div class="placeholderGrid"><article><b>Предметы</b><p>Химия, физика, биология; школьный, вузовский и самостоятельный уровни.</p></article><article><b>Темы и задания</b><p>Модули, билеты, экзамены, практические работы и соответствие учебным программам.</p></article><article><b>Лабораторные и 3D</b><p>Виртуальные лабораторные, реакции, модели и офлайн-пакеты.</p></article></div>
+      <section class="operationFlow" aria-label="Редакционный маршрут контента">
+        <h3>Редакционный маршрут без автопубликации</h3>
+        <ol>
+          <li><b>Источник</b><span>Сохранить автора, организацию, ссылку и license metadata.</span></li>
+          <li><b>Черновик</b><span>Добавить авторский блок без копирования учебника.</span></li>
+          <li><b>Проверки</b><span>Автор, научред, методист, content QA и legal review.</span></li>
+          <li><b>Publish gate</b><span>Публикация разрешается только после источников, лицензии и проверки.</span></li>
+        </ol>
+      </section>
+      <section class="contentQueuePanel" aria-label="Очереди контентного workflow">
+        <h3>Очереди workflow и дедупликация</h3>
+        <p class="muted">Материалы распределяются по статусам review. Дубли по content hash блокируются, а публикация требует юридической проверки и существующих источников в реестре.</p>
+        <div id="contentQueues" class="contentQueues"><div class="muted">Очереди workflow не загружены.</div></div>
+      </section>
+      <div class="row contentQaActions">
+        <button id="btnContentQaSummary" class="hintable" data-hint="Показывает статусы QA workflow и готовность публикации контента">QA workflow</button>
+        <div id="contentQaStatus" class="inlineStatus" aria-live="polite">QA workflow не загружен.</div>
+      </div>
+      <div class="contentQaGrid">
+        <article class="contentQaCard">
+          <h3>Статусы публикации</h3>
+          <div id="contentQaCounts" class="muted">Нет данных.</div>
+        </article>
+        <article class="contentQaCard">
+          <h3>Publish gate</h3>
+          <div id="contentQaGate" class="muted">Контент нельзя публиковать без источников, лицензии и проверки.</div>
+        </article>
+      </div>
+      <details class="mobileCollapse" data-mobile-collapse="content-qa-editors" open>
+        <summary>Добавить источник и контентный блок</summary>
+        <div class="contentQaEditorGrid">
+          <section class="contentQaCard">
+            <h3>Источник</h3>
+            <input id="contentSourceId" placeholder="ID источника, например src_methodist_chemistry_001" />
+            <input id="contentSourceTitle" placeholder="Название источника" />
+            <input id="contentSourceOrg" placeholder="Автор / организация" />
+            <input id="contentSourceUrl" placeholder="Ссылка или библиография" />
+            <select id="contentSourceLicense">
+              <option value="owned_or_commissioned">Собственный / заказной материал</option>
+              <option value="open_license">Открытая лицензия</option>
+              <option value="reference_only">Только reference</option>
+              <option value="unknown">Требует проверки</option>
+            </select>
+            <input id="contentSourceUsage" placeholder="Допустимость использования" />
+            <button id="btnContentSourceSave" class="hintable" data-hint="Сохраняет источник и license metadata">Сохранить источник</button>
+          </section>
+          <section class="contentQaCard">
+            <h3>Контентный блок</h3>
+            <input id="contentBlockId" placeholder="ID блока, можно оставить пустым" />
+            <select id="contentBlockSubject"><option value="chemistry">Химия</option><option value="physics">Физика</option><option value="biology">Биология</option></select>
+            <input id="contentBlockSection" placeholder="Раздел" />
+            <input id="contentBlockTopic" placeholder="Тема" />
+            <select id="contentBlockType"><option value="theory">Теория</option><option value="task">Задача</option><option value="lab">Лабораторная</option><option value="reaction">Реакция</option><option value="exam">Экзамен</option></select>
+            <input id="contentBlockTitle" placeholder="Название блока" />
+            <textarea id="contentBlockBody" placeholder="Авторский текст блока без копирования учебника"></textarea>
+            <input id="contentBlockSources" placeholder="ID источников через запятую" />
+            <select id="contentBlockLicense"><option value="unknown">Лицензия требует проверки</option><option value="owned_or_commissioned">Собственный / заказной материал</option><option value="open_license">Открытая лицензия</option><option value="reference_only">Reference only</option></select>
+            <select id="contentBlockLegal"><option value="pending">Юрпроверка ожидается</option><option value="owned_or_commissioned">Права подтверждены</option><option value="approved">Одобрено</option><option value="reference_only">Только reference</option></select>
+            <input id="contentBlockVerifiedBy" placeholder="Научред / verified_by" />
+            <input id="contentBlockReviewedBy" placeholder="Методист / reviewed_by" />
+            <button id="btnContentBlockSave" class="hintable" data-hint="Сохраняет блок как черновик или обновляет существующий">Сохранить блок</button>
+          </section>
+          <section class="contentQaCard">
+            <h3>Workflow</h3>
+            <input id="contentTransitionId" placeholder="ID контентного блока" />
+            <select id="contentTransitionStatus"><option value="author_review">Автор</option><option value="scientific_review">Научред</option><option value="methodist_review">Методист</option><option value="content_qa">Content QA</option><option value="legal_review">Юридическая проверка</option><option value="published">Публикация</option><option value="archived">Архив</option></select>
+            <input id="contentTransitionComment" placeholder="Комментарий к переходу" />
+            <button id="btnContentTransition" class="danger hintable" data-hint="Переводит материал по редакционному маршруту; публикация доступна только после проверки источников и лицензии">Перевести статус</button>
+            <div id="contentQaEditStatus" class="inlineStatus">Операции с контентом не выполнялись.</div>
+          </section>
+        </div>
+      </details>
+      <section class="contentQaRegistryPanel" aria-labelledby="contentQaRegistryTitle">
+        <h3 id="contentQaRegistryTitle">Поиск источников и блоков</h3>
+        <p class="muted">Найдите существующий источник или блок и нажмите «Выбрать», чтобы заполнить формы редактирования и workflow ID.</p>
+        <div class="contentQaRegistryGrid">
+          <section>
+            <h3>Источники</h3>
+            <div class="row">
+              <input id="contentSourceSearch" placeholder="Поиск по ID, названию, организации" />
+              <select id="contentSourceFilterLicense"><option value="">Все лицензии</option><option value="owned_or_commissioned">Собственный / заказной</option><option value="open_license">Открытая лицензия</option><option value="reference_only">Reference only</option><option value="unknown">Требует проверки</option></select>
+              <button id="btnContentSourcesSearch" class="hintable" data-hint="Ищет сохранённые источники">Найти источники</button>
+            </div>
+            <div id="contentSourcesStatus" class="inlineStatus">Список источников не загружен.</div>
+            <table>
+              <thead><tr><th>ID</th><th>Название</th><th>Лицензия</th><th>Действие</th></tr></thead>
+              <tbody id="contentSourcesTbody"></tbody>
+            </table>
+          </section>
+          <section>
+            <h3>Контентные блоки</h3>
+            <div class="row">
+              <input id="contentBlockSearch" placeholder="Поиск по ID, названию, разделу, теме" />
+              <select id="contentBlockFilterSubject"><option value="">Все предметы</option><option value="chemistry">Химия</option><option value="physics">Физика</option><option value="biology">Биология</option></select>
+              <select id="contentBlockFilterStatus"><option value="">Все статусы</option><option value="draft">Черновик</option><option value="author_review">Автор</option><option value="scientific_review">Научред</option><option value="methodist_review">Методист</option><option value="content_qa">Content QA</option><option value="legal_review">Юридическая проверка</option><option value="published">Опубликовано</option><option value="archived">Архив</option></select>
+              <button id="btnContentBlocksSearch" class="hintable" data-hint="Ищет сохранённые контентные блоки">Найти блоки</button>
+            </div>
+            <div id="contentBlocksStatus" class="inlineStatus">Список блоков не загружен.</div>
+            <table>
+              <thead><tr><th>ID</th><th>Название</th><th>Предмет</th><th>Статус</th><th>Действие</th></tr></thead>
+              <tbody id="contentBlocksTbody"></tbody>
+            </table>
+          </section>
+        </div>
+      </section>
+      <details class="mobileCollapse" data-mobile-collapse="content-qa-blocks" open>
+        <summary>Последние контентные блоки</summary>
+        <table>
+          <thead><tr><th>ID</th><th>Название</th><th>Предмет</th><th>Тема</th><th>Статус</th><th>Готовность</th><th>Действие</th></tr></thead>
+          <tbody id="contentQaTbody"></tbody>
+        </table>
+      </details>
+      <details class="mobileCollapse" data-mobile-collapse="content-qa-history" open>
+        <summary>История QA выбранного блока</summary>
+        <div class="row">
+          <input id="contentHistoryId" placeholder="ID контентного блока" />
+          <button id="btnContentHistoryLoad" class="hintable" data-hint="Показывает историю переходов выбранного блока">Показать историю</button>
+        </div>
+        <div id="contentHistoryStatus" class="inlineStatus">История не загружена.</div>
+        <table>
+          <thead><tr><th>Когда</th><th>Из</th><th>В</th><th>Кто</th><th>Комментарий</th></tr></thead>
+          <tbody id="contentHistoryTbody"></tbody>
+        </table>
+      </details>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="ai">
+      <h2>AI</h2>
+      <div class="muted">Раздел для управления AI-режимами, лимитами, офлайн-моделью и проверкой работ.</div>
+      <div class="placeholderGrid"><article><b>AI-лимиты</b><p>Онлайн-AI, офлайн-AI, лимиты школы и пользователей.</p></article><article><b>Контрольные работы</b><p>AI может быть отключён учителем или для конкретной работы.</p></article><article><b>Состояния</b><p>AI онлайн, AI офлайн, AI отключён, AI недоступен.</p></article></div>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="security">
+      <h2>Безопасность</h2>
+      <div class="muted">Устройства, сессии, подозрительная активность, сброс устройств и журнал безопасности.</div>
+      <div class="row">
+        <button id="btnSecurity" class="hintable" data-hint="Обновляет таблицу проверок безопасности" title="Обновляет таблицу проверок безопасности">Проверить безопасность</button>
+        <button id="btnSecurityActions" class="danger hintable" data-hint="Показывает практические шаги с ответственными и сроками" title="Показывает практические шаги с ответственными и сроками">Практические действия</button>
+        <button id="btnGoNoGo" class="hintable" data-hint="Показывает сводный релизный статус go/no-go по ключевым гейтам" title="Релизный go/no-go">Go/No-Go</button>
+        <button id="btnGoNoGoHistory" class="hintable" data-hint="Показывает историю изменений статуса go/no-go" title="История go/no-go">История Go/No-Go</button>
+        <button id="btnMorningCheck" class="hintable" data-hint="Быстрый утренний чек: обновляет ключевые метрики и алерты" title="Утренний чек">Утренний чек</button>
+        <button id="btnIncidentCheck" class="danger hintable" data-hint="Инцидент-проверка: полный ускоренный прогон критичных разделов" title="Инцидент-проверка">Инцидент-проверка</button>
+        <button id="btnSecurityAutoRefresh" class="hintable" data-hint="Автоматически обновляет ключевые данные безопасности раз в 90 секунд" title="Автообновление безопасности">Автообновление: выключено</button>
+        <select id="restoreAction" class="hintable" data-hint="Выберите действие: запуск теста, текущее состояние или история запусков" title="Действие проверки восстановления">
+          <option value="run">Запустить тест восстановления</option>
+          <option value="status">Показать текущее состояние теста</option>
+          <option value="history">Показать историю тестов восстановления</option>
+        </select>
+        <button id="btnRestoreAction" class="hintable" data-hint="Выполняет выбранное действие для проверки восстановления" title="Выполнить действие проверки восстановления">Выполнить действие проверки восстановления</button>
+        <div id="restoreActionStatus" class="inlineStatus" aria-live="polite">Ожидает запуска</div>
+        <select id="securityExportMode" class="hintable" data-hint="Все записи, только проблемы или только критичные сбои" title="Режим фильтрации для выгрузки безопасности">
+          <option value="all">Выгрузка: все записи</option>
+          <option value="alerts">Выгрузка: только проблемы</option>
+          <option value="failures">Выгрузка: критичные сбои</option>
+        </select>
+        <input id="securityDateFrom" class="hintable" data-hint="Начало периода для истории тестов и выгрузки" type="datetime-local" title="Начало периода" />
+        <input id="securityDateTo" class="hintable" data-hint="Конец периода для истории тестов и выгрузки" type="datetime-local" title="Конец периода" />
+        <select id="securityPreset" class="hintable" data-hint="Быстрый выбор периода для отчета и истории" title="Быстрый выбор периода">
+          <option value="24">Последние 24 часа</option>
+          <option value="168">Последние 7 дней</option>
+          <option value="720">Последние 30 дней</option>
+          <option value="custom">Оставить выбранные даты вручную</option>
+        </select>
+        <button id="btnApplyPeriod" class="hintable" data-hint="Применяет выбранный период" title="Применить период">Применить период</button>
+        <button id="btnSecurityResetFilters" class="hintable" data-hint="Сбрасывает период и фильтры алертов до стандартных значений" title="Сбросить фильтры">Сбросить фильтры</button>
+        <select id="securityExportFormat" class="hintable" data-hint="Формат файла выгрузки безопасности" title="Формат выгрузки">
+          <option value="json">Формат: технический отчет</option>
+          <option value="csv">Формат: таблица</option>
+        </select>
+        <button id="btnSecurityExport" class="danger hintable" data-hint="Скачивает отчет безопасности в выбранном формате" title="Скачать отчет безопасности">Скачать отчет безопасности</button>
+        <div id="exportActionStatus" class="inlineStatus" aria-live="polite">Ожидает выгрузки</div>
+      </div>
+      <div id="runbookActionStatus" class="inlineStatus" aria-live="polite">Ожидает команд дежурства</div>
+      <div id="goNoGoSummary" class="inlineStatus" aria-live="polite">Релизный статус не рассчитан</div>
+      <div id="goNoGoActionSummary" class="muted">Приоритетные действия по релизному гейту не рассчитаны.</div>
+      <div id="goNoGoHistorySummary" class="muted">История go/no-go не загружена.</div>
+      <details class="mobileCollapse" data-mobile-collapse="go-no-go-gates">
+        <summary>Гейты go/no-go (что не хватает)</summary>
+        <table>
+          <thead><tr><th>Гейт</th><th>Приоритет</th><th>Статус</th><th>Значение</th><th>Что нужно закрыть</th><th>Ответственный</th></tr></thead>
+          <tbody id="goNoGoGatesTbody"></tbody>
+        </table>
+      </details>
+      <div id="securitySummary" class="muted">Проверка не запускалась.</div>
+      <div id="securityAlertsSummary" class="muted">Алерты не загружены.</div>
+      <div id="mobileReadinessSummary" class="muted">Готовность мобильного приложения не загружена.</div>
+      <div id="contentIngestionSummary" class="muted">Готовность загрузки контента не загружена.</div>
+      <div id="mobileSecuritySummary" class="mobileSecuritySummary">
+        <div><b>Проверки</b><span id="mobileSecChecks">нет данных</span></div>
+        <div><b>Алерты</b><span id="mobileSecAlerts">нет данных</span></div>
+        <div><b>Тест восстановления</b><span id="mobileSecDryRun">нет данных</span></div>
+        <div><b>Тренд</b><span id="mobileSecTrend">нет данных</span></div>
+        <div><b>Период</b><span id="mobileSecRange">нет данных</span></div>
+      </div>
+      <div class="row">
+        <select id="mobileSmokeStatus" class="hintable" data-hint="Результат ручного smoke onboarding прогона">
+          <option value="ok">Проверка: успешно</option>
+          <option value="failed">Проверка: ошибка</option>
+        </select>
+        <input id="mobileSmokeNotes" class="hintable" data-hint="Короткий комментарий с деталями проверки" placeholder="Комментарий проверки мобильного сценария" />
+        <button id="btnMobileReadiness" class="hintable" data-hint="Обновляет сводку готовности мобильного приложения">Готовность мобильного приложения</button>
+        <button id="btnMobileSmokeSave" class="danger hintable" data-hint="Сохраняет результат проверки мобильного сценария" title="Сохраняет результат проверки мобильного сценария">Сохранить результат проверки</button>
+        <button id="btnContentIngestion" class="hintable" data-hint="Проверяет готовность файлов контента к загрузке">Готовность загрузки контента</button>
+        <div id="mobileActionStatus" class="inlineStatus" aria-live="polite">Ожидает проверки</div>
+      </div>
+      <div class="row">
+        <input id="securityAlertCode" class="hintable" data-hint="Код алерта из таблицы ниже" placeholder="Код алерта (например backup_dry_run_sla)" />
+        <input id="securityAlertComment" class="hintable" data-hint="Комментарий для журнала действий при подтверждении/снятии подтверждения" placeholder="Комментарий подтверждения" />
+        <select id="securityAlertAckFilter" class="hintable" data-hint="Фильтр по подтверждению алертов" title="Фильтр подтверждения">
+          <option value="all">Подтверждение: все</option>
+          <option value="unacked">Подтверждение: не подтверждено</option>
+          <option value="acked">Подтверждение: подтверждено</option>
+        </select>
+        <select id="securityAlertSeverityFilter" class="hintable" data-hint="Фильтр по уровню критичности алерта" title="Фильтр критичности">
+          <option value="all">Критичность: все</option>
+          <option value="high">Критичность: высокая</option>
+          <option value="medium">Критичность: средняя</option>
+          <option value="low">Критичность: низкая</option>
+        </select>
+        <button id="btnSecurityAlerts" class="hintable" data-hint="Перезагружает список алертов с текущими фильтрами" title="Обновляет список алертов и их ack-статус">Обновить алерты</button>
+        <button id="btnSecurityAck" class="hintable" data-hint="Подтверждает выбранный код алерта" title="Подтверждает алерт с указанным кодом">Подтвердить алерт</button>
+        <button id="btnSecurityUnack" class="danger hintable" data-hint="Снимает подтверждение и возвращает алерт в работу" title="Снимает подтверждение для указанного кода">Снять подтверждение</button>
+        <div id="alertsActionStatus" class="inlineStatus" aria-live="polite">Ожидает обновления</div>
+      </div>
+      <details class="mobileCollapse" data-mobile-collapse="alerts">
+        <summary>Алерты безопасности</summary>
+        <table>
+          <thead><tr><th>Код</th><th>Критичность</th><th>Описание</th><th>Статус</th><th>Подтвердил</th><th>Когда подтверждено</th></tr></thead>
+          <tbody id="securityAlertsTbody"></tbody>
+        </table>
+      </details>
+      <div id="backupDryRunSummary" class="muted">Тест восстановления еще не запускался.</div>
+      <div id="backupDryRunHistorySummary" class="muted">История тестов восстановления не загружена.</div>
+      <div id="backupDryRunTrendSummary" class="muted">Тренд тестов восстановления не рассчитан.</div>
+      <details class="mobileCollapse" data-mobile-collapse="checklist">
+        <summary>Чеклист безопасности</summary>
+        <table>
+          <thead><tr><th>Проверка</th><th>Статус</th><th>Значение</th><th>Рекомендация</th></tr></thead>
+          <tbody id="securityTbody"></tbody>
+        </table>
+      </details>
+      <details class="mobileCollapse" data-mobile-collapse="evidence">
+        <summary>Доказательства теста восстановления</summary>
+        <table>
+          <thead><tr><th>Проверка</th><th>Статус</th><th>Факт</th></tr></thead>
+          <tbody id="backupDryRunChecksTbody"></tbody>
+        </table>
+      </details>
+      <details class="mobileCollapse" data-mobile-collapse="actions">
+        <summary>Практические действия</summary>
+        <table>
+          <thead><tr><th>Действие</th><th>Готовность</th><th>Команда/шаг</th><th>Ответственный</th><th>SLA</th><th>Примечание</th></tr></thead>
+          <tbody id="securityActionsTbody"></tbody>
+        </table>
+      </details>
+      <details class="mobileCollapse" data-mobile-collapse="go-no-go-history">
+        <summary>История go/no-go</summary>
+        <table>
+          <thead><tr><th>Зафиксировано</th><th>Статус</th><th>Гейты</th><th>Блокеры</th></tr></thead>
+          <tbody id="goNoGoHistoryTbody"></tbody>
+        </table>
+      </details>
+      <details class="mobileCollapse" data-mobile-collapse="history">
+        <summary>История тестов восстановления</summary>
+        <table>
+          <thead><tr><th>Завершено</th><th>Статус</th><th>Ошибка</th></tr></thead>
+          <tbody id="backupDryRunHistoryTbody"></tbody>
+        </table>
+      </details>
+    </section>
+
+    <section class="panel viewSection authOnly" data-view-content="docs">
+      <h2>Помощь</h2>
+      <div class="muted">Единая точка для инструкций администратора, пользователей и юридического чеклиста по РФ.</div>
+      <div class="row">
+        <button id="btnOpenGuide" class="hintable" data-hint="Открывает интерактивную инструкцию администратора" title="Интерактивная инструкция">Открыть интерактивную инструкцию</button>
+        <button id="btnLegalComplianceRefresh" class="hintable" data-hint="Обновляет live-статус юридического комплаенса из трекера" title="Обновить юридический статус">Обновить юридический статус</button>
+      </div>
+
+      <section class="legalStatusWidget" aria-label="Live статус юридического комплаенса">
+        <div id="legalComplianceSummary" class="inlineStatus info">Юридический статус еще не загружен.</div>
+        <div id="legalGoNoGoLink" class="muted">Связь с go/no-go не рассчитана.</div>
+        <table>
+          <thead><tr><th>Раздел</th><th>Пункт</th><th>Статус</th><th>Действие</th></tr></thead>
+          <tbody id="legalComplianceTbody"></tbody>
+        </table>
+        <div class="row">
+          <button id="btnLegalComplianceHistory" class="hintable" data-hint="Обновляет историю изменений юридических статусов" title="Обновить историю legal">Обновить историю legal</button>
+          <div id="legalComplianceHistorySummary" class="inlineStatus info">История legal-изменений не загружена.</div>
+        </div>
+        <table>
+          <thead><tr><th>Когда</th><th>Пункт</th><th>Из</th><th>В</th><th>Кто</th></tr></thead>
+          <tbody id="legalComplianceHistoryTbody"></tbody>
+        </table>
+      </section>
+
+      <details class="mobileCollapse" data-mobile-collapse="docs-admin" open>
+        <summary>Документы администратора и дежурной смены</summary>
+        <div class="screenshotGuide" aria-label="Сценарии со скриншотами">
+          <article><b>Школы</b><span>Проверить `Школы → Лицензия → Коды доступа`, затем приложить скриншот к задаче внедрения.</span></article>
+          <article><b>Контент</b><span>Проверить `Контент → QA workflow → История`, затем приложить скриншот publish gate.</span></article>
+          <article><b>Безопасность</b><span>Проверить `Безопасность → Go/No-Go`, затем приложить скриншот блокеров.</span></article>
+        </div>
+        <ul class="docsList">
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/admin-manual-ru-v3.docx?v=20260226j" target="_blank" rel="noopener">Инструкция администратора v3 (Word)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/admin-manual-ru-v3.txt?v=20260226j" target="_blank" rel="noopener">Инструкция администратора v3 (TXT)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/admin-manual-ru-v3.md?v=20260226j" target="_blank" rel="noopener">Инструкция администратора v3 (Markdown)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/admin-one-page-ru-v3.html?v=20260226j" target="_blank" rel="noopener">One-page дежурной смены (Printable)</a></li>
+        </ul>
+      </details>
+
+      <details class="mobileCollapse" data-mobile-collapse="docs-users" open>
+        <summary>Инструкции пользователей приложения и веба</summary>
+        <ul class="docsList">
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/user-guide-mobile-ru.md?v=20260226j" target="_blank" rel="noopener">Руководство пользователя мобильного приложения (MD)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/user-guide-mobile-ru.txt?v=20260226j" target="_blank" rel="noopener">Руководство пользователя мобильного приложения (TXT)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/user-guide-web-ru.md?v=20260226j" target="_blank" rel="noopener">Руководство пользователя веб-версии (MD)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/user-guide-web-ru.txt?v=20260226j" target="_blank" rel="noopener">Руководство пользователя веб-версии (TXT)</a></li>
+        </ul>
+      </details>
+
+      <details class="mobileCollapse" data-mobile-collapse="docs-legal" open>
+        <summary>Полный чеклист документов для РФ (комплаенс)</summary>
+        <div class="muted">Список собран как практический checklist для product и ops и должен быть финально валидирован юристом.</div>
+        <ul class="docsList">
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/legal-rf-documents-checklist-ru.md?v=20260226j" target="_blank" rel="noopener">Чеклист документов РФ (MD)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/legal-rf-documents-checklist-ru.txt?v=20260226j" target="_blank" rel="noopener">Чеклист документов РФ (TXT)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/legal-rf-official-sources-ru.md?v=20260226j" target="_blank" rel="noopener">Официальные источники РФ для legal-проверки (MD)</a></li>
+          <li><a class="guideLink" href="/api/v1/admin/web/assets/legal-rf-compliance-status-ru.md?v=20260226j" target="_blank" rel="noopener">Трекер статуса юридического комплаенса (MD)</a></li>
+        </ul>
+      </details>
+    </section>
+
+    <section class="panel authOnly technicalDetailsPanel">
+      <details>
+        <summary>Показать технические детали последней операции</summary>
+        <pre id="out"></pre>
+      </details>
+    </section>
+
+    
+
+
+    <section class="panel siteInfoPanel authOnly" aria-label="Информация о продукте и правовая навигация">
+      <div class="siteInfoGlow" aria-hidden="true"></div>
+      <div class="siteInfoLead">Информация о продукте и ресурсах</div>
+      <div class="rightsBadge">
+        <div class="rightsBadgeMain">© 2026 Алхимик. Все права защищены.</div>
+        <div id="rightsSlogan" class="rightsBadgeSlogan">Сделано с ❤ для управления знаниями.</div>
+      </div>
+      <div class="footerSections" aria-label="Разделы продукта">
+        <span class="footerPill">Продукт</span><span class="footerPill">Возможности</span><span class="footerPill">Скриншоты</span><span class="footerPill">Тарифы</span><span class="footerPill">Скачать</span><span class="footerPill">Ресурсы</span><span class="footerPill">FAQ</span><span class="footerPill">Changelog</span><span class="footerPill">Поддержка</span><span class="footerPill">Сообщество</span><span class="footerPill">Telegram-канал</span><span class="footerPill">Чат сообщества</span><span class="footerPill">Правовая информация</span><span class="footerPill">Конфиденциальность</span><span class="footerPill">Условия</span><span class="footerPill">Оферта</span><span class="footerPill">Контакты</span>
+      </div>
+    </section>
+
+  </div>
+
+
+  <script src="/api/v1/admin/web/assets/app.js?v=20260520qa2"></script>
+</body>
+</html>

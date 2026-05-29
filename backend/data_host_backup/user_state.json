@@ -1,0 +1,18 @@
+{
+  "users": {},
+  "phones": {},
+  "otp": {},
+  "otp_requests": {},
+  "consents": {},
+  "entitlements": {},
+  "device_sync": {},
+  "sessions": {},
+  "telemetry": [],
+  "payments": {},
+  "payment_idempotency": {},
+  "payment_webhook_events": {},
+  "payment_webhook_dead_letters": [],
+  "payment_audit": [],
+  "role_overrides": {},
+  "scope_overrides": {}
+}

@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Алхимик One-Page v3</title>
+  <style>
+    body { font-family: Arial, sans-serif; color: #1f2f35; margin: 20px; }
+    h1 { margin: 0 0 8px; }
+    .muted { color: #5e727a; margin-bottom: 12px; }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .meta3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px; }
+    .meta input { width: 100%; padding: 6px; border: 1px solid #c5d5dc; border-radius: 6px; }
+    table { width: 100%; border-collapse: collapse; margin-bottom: 12px; }
+    th, td { border: 1px solid #c5d5dc; padding: 7px; text-align: left; font-size: 13px; }
+    .check { margin: 6px 0; font-size: 14px; }
+    textarea { width: 100%; min-height: 120px; border: 1px solid #c5d5dc; border-radius: 6px; padding: 8px; font-family: inherit; }
+    @media print {
+      body { margin: 10mm; }
+      .noprint { display: none; }
+      input, textarea { border: none; padding: 0; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Алхимик: One-Page бланк дежурного администратора (v3)</h1>
+  <div class="muted">Актуально на: 2026-02-25 12:29 UTC</div>
+  <div class="meta">
+    <label>Дата смены <input id="shiftDate" type="date" /></label>
+    <label>ФИО дежурного <input id="dutyName" type="text" placeholder="Иванов И.И." /></label>
+  </div>
+  <div class="meta3">
+    <label>Время передачи <input id="handoverTime" type="time" /></label>
+    <label>Сдающий смену <input id="handoverOutgoing" type="text" placeholder="Петров П.П." /></label>
+    <label>Принимающий смену <input id="handoverIncoming" type="text" placeholder="Иванова И.И." /></label>
+  </div>
+
+  <table>
+    <thead><tr><th>Ситуация</th><th>Действие</th><th>SLA</th></tr></thead>
+    <tbody>
+      <tr><td>High алерт</td><td>Подтвердить/снять + комментарий + эскалация</td><td>до 15 минут</td></tr>
+      <tr><td>Ошибка backup test</td><td>Повторный запуск + проверка практических действий</td><td>до 30 минут</td></tr>
+      <tr><td>Ошибка mobile smoke</td><td>Сохранить результат + проверить readiness</td><td>до 30 минут</td></tr>
+      <tr><td>UI не реагирует</td><td>Ctrl+F5 + повторный вход</td><td>до 10 минут</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Решение по релизу</h3>
+  <div class="check">[ ] GO (обязательные гейты пройдены)</div>
+  <div class="check">[ ] NO-GO (есть блокеры)</div>
+
+  <h3>Чеклист передачи смены</h3>
+  <div class="check">[ ] Обработаны high-алерты</div>
+  <div class="check">[ ] Проверен тест восстановления</div>
+  <div class="check">[ ] Проверены mobile/content readiness</div>
+  <div class="check">[ ] При отклонениях выгружен отчет JSON/CSV</div>
+  <div class="check">[ ] Комментарий передан следующему администратору</div>
+  <div class="check">[ ] Выполнен выход из системы</div>
+
+  <h3>Инциденты за смену</h3>
+  <textarea id="incidents" placeholder="Опишите инциденты, время, действия и результат"></textarea>
+
+  <div style="margin-top:12px;" class="noprint">
+    <button onclick="window.print()">Печать</button>
+  </div>
+
+  <script>
+    const dateEl = document.getElementById('shiftDate');
+    const nameEl = document.getElementById('dutyName');
+    const handoverTimeEl = document.getElementById('handoverTime');
+    const outgoingEl = document.getElementById('handoverOutgoing');
+    const incomingEl = document.getElementById('handoverIncoming');
+    const incidentsEl = document.getElementById('incidents');
+    const today = new Date();
+    const iso = today.toISOString().slice(0, 10);
+    if (!dateEl.value) dateEl.value = iso;
+    const savedName = localStorage.getItem('synapse_duty_name') || '';
+    const savedIncidents = localStorage.getItem('synapse_duty_incidents') || '';
+    const savedHandoverTime = localStorage.getItem('synapse_handover_time') || '';
+    const savedOutgoing = localStorage.getItem('synapse_handover_outgoing') || '';
+    const savedIncoming = localStorage.getItem('synapse_handover_incoming') || '';
+    if (savedName) nameEl.value = savedName;
+    if (savedIncidents) incidentsEl.value = savedIncidents;
+    if (savedHandoverTime) handoverTimeEl.value = savedHandoverTime;
+    if (savedOutgoing) outgoingEl.value = savedOutgoing;
+    if (savedIncoming) incomingEl.value = savedIncoming;
+    nameEl.addEventListener('input', () => localStorage.setItem('synapse_duty_name', nameEl.value));
+    incidentsEl.addEventListener('input', () => localStorage.setItem('synapse_duty_incidents', incidentsEl.value));
+    handoverTimeEl.addEventListener('input', () => localStorage.setItem('synapse_handover_time', handoverTimeEl.value));
+    outgoingEl.addEventListener('input', () => localStorage.setItem('synapse_handover_outgoing', outgoingEl.value));
+    incomingEl.addEventListener('input', () => localStorage.setItem('synapse_handover_incoming', incomingEl.value));
+  </script>
+</body>
+</html>

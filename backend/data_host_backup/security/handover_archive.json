@@ -1,0 +1,83 @@
+[
+  {
+    "archivedAt": "2026-02-25T22:03:46.799886+00:00",
+    "changedBy": "u_05408b0f6750",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T21:59:38.182314+00:00",
+    "changedBy": "u_50f5f9dbc725",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T21:53:10.038634+00:00",
+    "changedBy": "u_83eca36a62e3",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T21:46:50.189171+00:00",
+    "changedBy": "u_7e5d544575fc",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T21:20:14.249340+00:00",
+    "changedBy": "u_0ccd34d24683",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T21:19:25.498563+00:00",
+    "changedBy": "u_44f58cd55f60",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T13:49:19.191753+00:00",
+    "changedBy": "u_2111eacd031c",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T13:37:59.205166+00:00",
+    "changedBy": "u_ca049050b1f3",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  },
+  {
+    "archivedAt": "2026-02-25T13:20:48.422974+00:00",
+    "changedBy": "u_48ee89dfbd7c",
+    "time": "2026-02-25T12:45",
+    "outgoing": "Петров П.П.",
+    "incoming": "Иванова И.И.",
+    "incidents": "High alert reviewed",
+    "comment": "Проверить mobile smoke"
+  }
+]

@@ -1,0 +1,41 @@
+Алхимик: тестовые аккаунты
+
+Единый пароль для всех аккаунтов:
+AlchTest2070
+
+Школьная лицензия 2070 / Новая звезда:
+- alch_test_student_school — Учащийся, партнёрская школьная лицензия
+- alch_test_teacher_school — Учитель, партнёрская школьная лицензия
+- alch_test_homeroom_school — Классный руководитель, партнёрская школьная лицензия
+- alch_test_parent_school — Родитель, партнёрская школьная лицензия
+- alch_test_school_admin — Администратор школы, партнёрская школьная лицензия
+
+Короткие QA-логины для Android-эмулятора:
+- s2070 — тот же аккаунт, что alch_test_student_school
+- t2070 — тот же аккаунт, что alch_test_teacher_school
+- h2070 — тот же аккаунт, что alch_test_homeroom_school
+- p2070 — тот же аккаунт, что alch_test_parent_school
+
+Семейный доступ:
+- alch_test_student_family — Учащийся, семейный доступ
+- alch_test_parent_family — Родитель, семейный доступ
+
+Личные и отдельные доступы:
+- alch_test_student_personal — Учащийся, личный доступ
+- alch_test_student_free — Учащийся, бесплатный доступ
+- alch_test_student_school_quarter — Учащийся, школьный доступ на 3 месяца
+- alch_test_student_university — Учащийся, вузовская лицензия
+- alch_test_student_promo — Учащийся, промодоступ
+- alch_test_student_trial — Учащийся, ознакомительный доступ
+- alch_test_student_lifetime — Учащийся, пожизненная покупка
+- alch_test_student_manual — Учащийся, ручная выдача доступа
+
+Системные роли:
+- alch_test_admin — Администратор системы
+- alch_test_owner — Владелец
+- alch_test_content_editor — Редактор контента
+- alch_test_support — Поддержка
+
+Проверка:
+- Production API login/profile/access проверены для всех аккаунтов.
+- Токены в файл не сохранялись.

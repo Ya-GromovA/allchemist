@@ -1,0 +1,264 @@
+{
+  "pack_id": "core",
+  "version": 2,
+  "generated_at": "2026-02-15T00:57:01Z",
+  "modules": [
+    {
+      "id": "physics",
+      "title_ru": "Физика",
+      "title_en": "Physics",
+      "description_ru": "Уроки, задачи, сценарии.",
+      "description_en": "Lessons, tasks, scenarios.",
+      "available": true
+    },
+    {
+      "id": "chemistry",
+      "title_ru": "Химия",
+      "title_en": "Chemistry",
+      "description_ru": "Молекулы, реакции, задачи.",
+      "description_en": "Molecules, reactions, tasks.",
+      "available": true
+    },
+    {
+      "id": "ai_mentor",
+      "title_ru": "AI-наставник",
+      "title_en": "AI Mentor",
+      "description_ru": "Онлайн/оффлайн помощник.",
+      "description_en": "Online/offline assistant.",
+      "available": true
+    }
+  ],
+  "ai_knowledge": [
+    {
+      "id": "core_ru_ohm_law",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Закон Ома",
+      "body": "Закон Ома для участка цепи: I = U / R. Где I — сила тока (А), U — напряжение (В), R — сопротивление (Ом). Следствия: U = I·R, R = U/I. Мощность: P = U·I = I^2·R = U^2/R. Пример: при U=12В и R=6Ом ток I=2А.",
+      "tags": [
+        "electricity",
+        "formulas",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_ohm_law",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Ohm's law",
+      "body": "Ohm’s law (DC circuit): I = U / R. I in amperes (A), U in volts (V), R in ohms (Ω). Rearrangements: U = I·R, R = U/I. Power: P = U·I = I^2·R = U^2/R.",
+      "tags": [
+        "electricity",
+        "formulas",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_units_si",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "СИ: базовые единицы и префиксы",
+      "body": "Базовые единицы СИ: м, кг, с, А, К, моль, кд. Префиксы: м(10^-3), мк(10^-6), н(10^-9), к(10^3), М(10^6), Г(10^9).",
+      "tags": [
+        "si",
+        "units",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_units_si",
+      "subject": "physics",
+      "lang": "en",
+      "title": "SI base units and prefixes",
+      "body": "SI base units: m, kg, s, A, K, mol, cd. Common prefixes: milli 10^-3, micro 10^-6, nano 10^-9, kilo 10^3, mega 10^6, giga 10^9.",
+      "tags": [
+        "si",
+        "units",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_dimensional",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Проверка формулы размерностями",
+      "body": "Размерности слева и справа должны совпадать. Пример: v=s/t ⇒ [v]=м/с, [s]=м, [t]=с.",
+      "tags": [
+        "method",
+        "dimensional",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_dimensional",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Dimensional analysis check",
+      "body": "Both sides of an equation must have the same dimension. Example: v=s/t ⇒ [v]=m/s.",
+      "tags": [
+        "method",
+        "dimensional",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_mole",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Моль и число Авогадро",
+      "body": "1 моль содержит N_A ≈ 6.022×10^23 частиц. Формулы: n=m/M; N=n·N_A.",
+      "tags": [
+        "mole",
+        "stoichiometry",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_mole",
+      "subject": "chemistry",
+      "lang": "en",
+      "title": "Mole and Avogadro's number",
+      "body": "1 mole contains N_A ≈ 6.022×10^23 particles. Relations: n=m/M; N=n·N_A.",
+      "tags": [
+        "mole",
+        "stoichiometry",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_balance",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Уравнивание реакций: алгоритм",
+      "body": "1) Запиши реагенты/продукты; 2) Подбери коэффициенты, чтобы атомы каждого элемента совпали; 3) Сократи коэффициенты до наименьших целых.",
+      "tags": [
+        "balancing",
+        "method",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_balance",
+      "subject": "chemistry",
+      "lang": "en",
+      "title": "Balancing reactions: algorithm",
+      "body": "1) Write reactants/products; 2) Choose coefficients to match atoms; 3) Reduce to the smallest integers.",
+      "tags": [
+        "balancing",
+        "method",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_safety",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Техника безопасности (учебная)",
+      "body": "Очки/перчатки при необходимости; не пробуй реагенты; не вдыхай пары напрямую; работай при вентиляции; следуй инструкции. При попадании на кожу — промыть водой и сообщить взрослым.",
+      "tags": [
+        "safety",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_safety",
+      "subject": "chemistry",
+      "lang": "en",
+      "title": "Lab safety (study)",
+      "body": "Use goggles/gloves when needed; never taste chemicals; don’t inhale vapors directly; ensure ventilation; follow lab rules. If on skin: rinse with water and tell an adult.",
+      "tags": [
+        "safety",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_checklist",
+      "subject": "meta",
+      "lang": "ru",
+      "title": "Чек-лист проверки решения",
+      "body": "1) Дано и единицы; 2) Перевод в СИ; 3) Формула по смыслу; 4) Размерности; 5) Алгебра; 6) Подстановка чисел в конце; 7) Разумность; 8) Округление.",
+      "tags": [
+        "checklist",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_en_checklist",
+      "subject": "meta",
+      "lang": "en",
+      "title": "Solution checklist",
+      "body": "1) Given data/units; 2) Convert to SI; 3) Choose correct formula; 4) Dimensional check; 5) Careful algebra; 6) Substitute numbers at the end; 7) Sanity check; 8) Rounding.",
+      "tags": [
+        "checklist",
+        "en"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_balancing_steps",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Уравнивание химических реакций: алгоритм",
+      "body": "Алгоритм: 1) выпиши элементы; 2) уравнивай сначала те, что встречаются в 1-2 веществах; 3) кислород/водород часто оставляют на конец; 4) проверка: число атомов слева=справа. Менять можно только коэффициенты перед формулами, индексы внутри формул менять нельзя.",
+      "tags": [
+        "balancing",
+        "chemistry",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_mole_basics",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "Моль и молярная масса",
+      "body": "Количество вещества: n = m/M. M берется из таблицы Менделеева (г/моль). Число частиц: N = n * N_A, где N_A = 6.022e23 1/моль.",
+      "tags": [
+        "mole",
+        "stoichiometry",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_ph_intro",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "pH: что это и как читать",
+      "body": "pH = -log10[H+]. pH<7 кислая среда, pH=7 нейтральная, pH>7 щелочная. Шкала логарифмическая: pH=3 в 10 раз кислее pH=4.",
+      "tags": [
+        "ph",
+        "acids",
+        "bases",
+        "ru"
+      ],
+      "source": "core_pack"
+    },
+    {
+      "id": "core_ru_redox_short",
+      "subject": "chemistry",
+      "lang": "ru",
+      "title": "ОВР: окисление и восстановление",
+      "body": "Окисление — отдача электронов (степень окисления растёт), восстановление — приём электронов (степень окисления падает). Окислитель принимает e-, восстановитель отдаёт e-.",
+      "tags": [
+        "redox",
+        "ru"
+      ],
+      "source": "core_pack"
+    }
+  ],
+  "updated_at": "2026-02-15T00:57:01Z"
+}
