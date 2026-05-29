@@ -4163,3 +4163,18 @@ Progress estimate:
 - Next stage is `Этап 2. Роли и вход`.
 - No backend/web/mobile/admin code was changed in this stage; only QA documentation and this log were updated.
 - Stage 2 planned scope: remove free selection of service roles from web/mobile login, make login scenario-based, and ensure role/cabinet is driven by backend response after authentication.
+
+## 2026-05-29 — Stage 18: Real VCS Provider Connection — СДЕЛАНО И ПРОВЕРЕНО
+- Получен GitHub токен от пользователя (Ya-GromovA, repo: allchemist).
+- Создан репозиторий https://github.com/Ya-GromovA/allchemist
+- На production сервере: git init, .gitignore (секреты/APK/docker-data/node_modules/etc исключены), first commit (440 файлов), push на GitHub.
+- Установлен gh CLI на сервере, выполнена аутентификация.
+- Запущен /root/synapse/tools/github_provider_setup.py --apply --branch main:
+  - Environments dev/stage/prod созданы.
+  - Branch protection на main включена (enforce_admins, 1 review).
+  - Repository secrets: SSH keys пропущены (не заданы env vars).
+- GitHub API проверка:
+  - Environments: dev, stage, prod ✅
+  - Branch protection: enforce_admins=True, required_reviews=1 ✅
+  - Workflows: Allchemist CI (active), Production Release Gate (active) ✅
+- Remote URL очищен от токена (https://github.com/Ya-GromovA/allchemist.git).

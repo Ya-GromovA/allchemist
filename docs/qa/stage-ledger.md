@@ -43,3 +43,15 @@
 ## Текущий запрет на изменения
 
 Этапы 1–17 и 19–20 закрыты в текущем code/ops scope. Этап 18 частично сделан и заблокирован отсутствием реального git provider-доступа. Внешние provider blockers не заявлять закрытыми без фактических провайдерских секретов/evidence.
+
+## Stage 18: Real VCS Provider Connection — СДЕЛАНО И ПРОВЕРЕНО (2026-05-29)
+
+**Что сделано:**
+- GitHub репозиторий https://github.com/Ya-GromovA/allchemist создан
+- First commit: весь /root/synapse (440 файлов), .gitignore с исключением секретов/APK/node_modules
+- GitHub Environments dev/stage/prod созданы
+- Branch protection main: enforce_admins + required 1 review
+- Workflows в Actions: Allchemist CI + Production Release Gate (active)
+
+**Осталось (опционально):**
+- Repository secrets PROD_SSH_HOST/PROD_SSH_USER/PROD_SSH_PRIVATE_KEY (для SSH deploy) — задать через  после настройки SSH key-based deploy
