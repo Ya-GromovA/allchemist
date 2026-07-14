@@ -1,6 +1,6 @@
 # Migration Gates
 
-Task: ALC-002. A gate status is evidence-based and does not authorize the next production action by itself.
+Task: ALC-003 update. A gate status is evidence-based and does not authorize the next production action by itself.
 
 ## Status summary
 
@@ -26,12 +26,13 @@ Task: ALC-002. A gate status is evidence-based and does not authorize the next p
 
 - Required evidence: approved tracked source, runtime/generated separation, all duplicate decisions, secret-free tree, reproducible clean clone.
 - Owner: repository governance plus all path owners.
-- Blocking tasks: ALC-003; ALC-RM-001/002/003/004/006.
+- Blocking tasks: approved publication follow-up; ALC-007/008 runtime decision; ALC-RM-001/003 and partial ALC-RM-004/005.
 - Entry: G0 PASS and explicit path inventory.
 - Exit: approved remote baseline; clean clone reproduces source/build inputs; no runtime/generated/secrets; duplicate inventory resolved or explicitly retained.
 - Rollback: preserve ALC-001 local branch/archive and never clean production in place.
 - Current status: **PARTIAL**.
-- Evidence/gap: isolated baseline is clean and banned-path scan passed, but production remains dirty, commit is local only, and duplicate consumers are not fully verified.
+- Evidence: normalization commit `13e07a5`; read-only hygiene check PASS; generated/runtime/secret tracked violations zero; all 23 duplicate groups/54 files reproduced and explicitly retained with follow-ups; install, required typechecks and web build PASS in both the working and a fresh detached checkout; fresh checkout initial/final status and tracked diff are zero.
+- Remaining gap: no approved remote publication because push was explicitly prohibited; production remains dirty and untouched; mutable-state consumers still contain source-relative and `/root/synapse` paths pending G5/G6 and ALC-007/008.
 
 ## G2 — SAFE_TOOLCHAIN
 

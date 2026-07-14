@@ -119,3 +119,9 @@ A clean checkout must contain only source and canonical versioned assets. A buil
 - rollback target.
 
 Production checkout must not be the build workspace or mutable artifact store.
+
+## ALC-003 normalization evidence
+
+The normalization branch keeps the current path layout; no mass move occurred. `apps/web`, `apps/admin`, `backend`, `mobile`, `packages`, `content`, `docs`, `tools`, and `infra` remain source roots. `artifacts`, build output, dependencies, runtime data, dumps and secrets are outside the tracked set. The fresh detached checkout at source commit `13e07a5` installed and built without any file from `/root/synapse` and ended with zero tracked or untracked non-ignored status.
+
+The target layout remains a plan rather than authorization to create `apps/api`, move `backend`/`mobile`, migrate runtime data, or remove legacy. The tracked 14,341,981-byte chemistry content JSON remains in place pending ALC-010 provenance/large-file review; it was not misclassified as generated output.

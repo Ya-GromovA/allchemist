@@ -67,3 +67,11 @@ Task: ALC-002. Owners are required workstreams; named people are not inferred.
 - Feature worktrees start only after ALC-003 publishes an approved baseline.
 - Release verification runs in a clean disposable checkout.
 - Staging uses explicit pathspecs; wholesale add/reset/clean is forbidden for production-sensitive work.
+
+## ALC-003 ownership update
+
+- Repository governance owns `.gitignore`, `.gitattributes`, `.editorconfig`, and the read-only hygiene check contract.
+- Quality/tooling owns future CI integration of `check:repository-hygiene`; ALC-006 must keep it independent from build, browser, server, deploy, database and infrastructure actions.
+- Backend/data/security/operations jointly own the unresolved mutable-state consumers. ALC-003 does not select `ALLCHEMIST_RUNTIME_ROOT` or any competing environment name.
+- Design/content/mobile/legacy owners retain their duplicate copies until the group-specific follow-up proves canonical consumer, packaging, provenance and rollback.
+- CODEOWNERS remains a proposal because named people/teams are still not approved.

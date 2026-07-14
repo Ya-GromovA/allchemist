@@ -1,7 +1,9 @@
 # Master Remediation Register
 
-Task: ALC-002
-Baseline: `c18b3d89c38e28b47f46816326981720fb30e253`
+Task: ALC-003
+Normalization source: `b7df19563be5df99dcde1b50d091d2d5335afbe6`
+Normalization hygiene commit: `13e07a54589a42c0b70649b098dc883d80ed81ee`
+Branch: `chore/alc-003-repository-normalization-20260714-140056`
 Machine-readable source of truth: `docs/quality/master-remediation-register.json`
 
 ## Scope and evidence
@@ -15,6 +17,7 @@ This register consolidates confirmed findings from:
 - `BASELINE_READINESS_REPORT.md`
 - all six ALC-001 reports
 - ALC-002 read-only inspection of Git, manifests, routes, package imports, CI, state consumers, infrastructure inventory, and running service metadata
+- ALC-003 path-only secret/runtime/generated scan, duplicate hash/consumer review, source-control metadata inspection, isolated checks, and clean-checkout reproduction
 
 `NEEDS_VERIFICATION` means the repository or runtime does not prove the condition strongly enough. It is not presented as fact. This register authorizes no production change or deletion.
 
@@ -27,9 +30,10 @@ This register consolidates confirmed findings from:
 | P1 | 27 |
 | P2 | 10 |
 | P3 | 1 |
-| OPEN | 30 |
+| OPEN | 26 |
 | NEEDS_VERIFICATION | 9 |
-| RESOLVED | 1 |
+| PARTIAL | 2 |
+| RESOLVED | 3 |
 
 Category counts:
 
@@ -56,11 +60,11 @@ Category counts:
 | ID | Severity | Category | Status | Title | Proposed task | Gate | Parallel |
 |---|---|---|---|---|---|---|---|
 | ALC-RM-001 | P1 | REPOSITORY | OPEN | Production checkout is dirty | ALC-003 | G1 | NO |
-| ALC-RM-002 | P1 | SOURCE_CONTROL | OPEN | Target architecture was previously untracked | ALC-003 | G1 | NO |
+| ALC-RM-002 | P1 | SOURCE_CONTROL | RESOLVED | Target architecture was previously untracked | ALC-003 | G1 | NO |
 | ALC-RM-003 | P1 | SOURCE_CONTROL | OPEN | Baseline commit exists only locally | ALC-003 | G1 | NO |
-| ALC-RM-004 | P1 | GENERATED_ARTIFACTS | OPEN | Generated output remains entangled with production history | ALC-003 | G1 | YES |
-| ALC-RM-005 | P1 | RUNTIME_STATE | OPEN | Mutable runtime JSON lives under source paths | ALC-007 | G5 | NO |
-| ALC-RM-006 | P2 | REPOSITORY | OPEN | 23 duplicate groups need consumer-aware decisions | ALC-003 | G1 | YES |
+| ALC-RM-004 | P1 | GENERATED_ARTIFACTS | PARTIAL | Generated output remains entangled with production history | ALC-003 | G1 | YES |
+| ALC-RM-005 | P1 | RUNTIME_STATE | PARTIAL | Mutable runtime JSON lives under source paths | ALC-007 | G5 | NO |
+| ALC-RM-006 | P2 | REPOSITORY | RESOLVED | 23 duplicate groups need consumer-aware decisions | ALC-003 | G1 | YES |
 | ALC-RM-007 | P1 | LEGACY | OPEN | Legacy and target boundaries are incomplete | ALC-009 | G7 | YES |
 | ALC-RM-008 | P0 | PREVIEW_RUNTIME | OPEN | Preview 3010 runs from deleted cwd | ALC-004 | G3 | NO |
 | ALC-RM-009 | P1 | PREVIEW_RUNTIME | OPEN | Recovered artifact is not a permanent service | ALC-004 | G3 | NO |
@@ -119,10 +123,20 @@ The JSON register contains, for every stable ID:
 
 No issue may be closed from a code diff alone. Closure requires its acceptance evidence and the corresponding gate update.
 
+## ALC-003 status evidence
+
+- `ALC-RM-002` is `RESOLVED` for the normalization branch: the recovered source is tracked, the branch builds from a zero-diff fresh checkout, and no production-only file is required. Remote durability remains a separate open issue under `ALC-RM-003` because push was prohibited.
+- `ALC-RM-004` is `PARTIAL`: generated output is absent from the target tracked set, explicitly ignored, and reproduced only as ignored workspace output. The dirty production checkout/history was intentionally not normalized.
+- `ALC-RM-005` is `PARTIAL`: runtime/user/security paths are untracked and ignored, and every confirmed consumer is documented. Source-relative and `/root/synapse` fallbacks remain, so storage migration is blocked for ALC-007/008 rather than claimed complete.
+- `ALC-RM-006` is `RESOLVED` as a G1 classification item: all 23 groups/54 files reproduce the protected hash inventory, zero files were deleted, every group is explicitly retained, and each unresolved canonicalization has a follow-up ID. This does not authorize later consolidation.
+- `ALC-RM-001` and `ALC-RM-003` remain `OPEN`: production is still dirty by design and no remote publication occurred.
+- `ALC-RM-040` remains `OPEN`; inspection additionally found the tracked 14,341,981-byte `mobile/assets/content/chemistry_molecules_layer_b_v1.json`, which requires content/provenance and large-file policy review before any relocation.
+
 ## Update protocol
 
 1. Stable IDs never change or get reused.
 2. New evidence may change status or severity only with a dated note.
 3. `NEEDS_VERIFICATION` becomes `OPEN` when a problem is confirmed, `RESOLVED` when disproven or remediated with evidence.
-4. A production-impacting item cannot become `RESOLVED` without rollback evidence.
-5. Markdown and JSON counts must be validated together.
+4. `PARTIAL` means an independently verifiable portion is corrected but the issue's complete acceptance evidence is not available.
+5. A production-impacting item cannot become `RESOLVED` without rollback evidence.
+6. Markdown and JSON counts must be validated together.

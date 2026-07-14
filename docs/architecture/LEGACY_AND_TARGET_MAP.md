@@ -81,3 +81,11 @@ Confirmed routes include dashboard, users, schools, roles/access, content, conte
 ## Recommended next task
 
 `ALC-001 — PREVIEW ARTIFACT RECOVERY AND REPOSITORY BASELINE STABILIZATION`, followed only then by an architecture-planning task. No screen implementation or routing migration is recommended now.
+
+## ALC-003 normalization update
+
+- All tracked legacy paths under `backend/app/web_public` and `backend/app/web_admin` were preserved; no byte content, route, service or consumer was changed.
+- Target source under `apps` and `packages` is tracked on the normalization branch and reproduces a Next web build from a fresh checkout.
+- This does not change readiness: legacy remains ACTIVE, target web remains PARTIAL/internal, and target admin remains PARTIAL/not running.
+- Cross-runtime duplicate assets remain separate deployment copies until parity, provenance and packaging are proven.
+- The recommended next operational task is ALC-004 for the P0 deleted-cwd preview risk under explicit operations authorization. ALC-005/006/007 may prepare in separate non-overlapping worktrees under their stated conditions.

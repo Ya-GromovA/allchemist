@@ -1,6 +1,6 @@
 # Remediation Execution Roadmap
 
-Task: ALC-002. The tasks below are queued, not executed.
+Task: ALC-003 update. The roadmap remains gated; ALC-003 is completed locally without push or production mutation.
 
 ## Dependency sequence
 
@@ -22,6 +22,8 @@ Recommended operational priority is ALC-003, then the two P0 risk lanes ALC-004 
 
 ## ALC-003 — SAFE REPOSITORY NORMALIZATION
 
+Status 2026-07-14: **COMPLETED LOCALLY; G1 PARTIAL**.
+
 - Goal: convert the local recovered baseline into an approved durable clean repository source of truth without cleaning production.
 - Dependencies: ALC-002 documents; G0 PASS.
 - Allowed paths: repository metadata/docs, explicit baseline source paths, approved remote branch; production read-only comparison.
@@ -30,7 +32,8 @@ Recommended operational priority is ALC-003, then the two P0 risk lanes ALC-004 
 - Expected artifacts: reviewed path manifest, duplicate consumer inventory, approved `.gitignore`, remote baseline ref, clean-clone proof.
 - Acceptance: all source tracked; banned runtime/generated/secret scan zero; 23 duplicate groups classified; clean clone reproduces checks; production status/hash unchanged.
 - Parallel: first task; no overlapping repository normalization.
-- Gate: closes G1.
+- Result: clean normalization branch, read-only hygiene check, explicit duplicate retention, source-control metadata normalization, required checks and fresh-checkout build PASS. Runtime migration and remote publication were intentionally deferred.
+- Gate: advances G1 but does not close it; remote durability and runtime-consumer gaps remain.
 
 ## ALC-004 — PERMANENT PREVIEW SERVICE RECOVERY
 
@@ -131,3 +134,11 @@ Recommended operational priority is ALC-003, then the two P0 risk lanes ALC-004 
 ## ID decision
 
 The requested ALC-003 through ALC-010 IDs remain stable. No renumbering is recommended. Large implementation work after ALC-009 should receive new IDs rather than expanding these planning/remediation tasks.
+
+## Next execution recommendation after ALC-003
+
+1. ALC-004 is the next operational priority because preview 3010 still runs from a deleted cwd. It requires explicit operations authorization and no public route switch.
+2. ALC-005 may repair the legacy-admin P0 in a separate worktree with focused rollback evidence.
+3. ALC-006 may integrate the read-only hygiene command into clean CI and repair mixed-side-effect tooling.
+4. ALC-007 may perform read-only runtime/security ownership decisions; ALC-008 owns any later isolated migration/restore work.
+5. No production change, screen development, duplicate deletion, or legacy removal is authorized by ALC-003.

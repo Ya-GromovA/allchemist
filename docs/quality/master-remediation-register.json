@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
-  "task_id": "ALC-002",
-  "generated_at": "2026-07-14T16:00:00+03:00",
-  "authoritative_baseline_commit": "c18b3d89c38e28b47f46816326981720fb30e253",
+  "task_id": "ALC-003",
+  "generated_at": "2026-07-14T17:20:00+03:00",
+  "authoritative_baseline_commit": "b7df19563be5df99dcde1b50d091d2d5335afbe6",
+  "normalization_hygiene_commit": "13e07a54589a42c0b70649b098dc883d80ed81ee",
   "counts": {
     "total": 40,
     "severity": {
@@ -12,9 +13,10 @@
       "P3": 1
     },
     "status": {
-      "OPEN": 30,
+      "OPEN": 26,
       "NEEDS_VERIFICATION": 9,
-      "RESOLVED": 1
+      "PARTIAL": 2,
+      "RESOLVED": 3
     },
     "category": {
       "REPOSITORY": 2,
@@ -50,6 +52,7 @@
   },
   "semantics": {
     "NEEDS_VERIFICATION": "Risk or absence is not fully proven.",
+    "PARTIAL": "An independently verifiable portion is corrected, but complete issue acceptance is not met.",
     "production_permission": "None of these issues authorizes production changes."
   },
   "issues": [
@@ -90,11 +93,12 @@
       "id": "ALC-RM-002",
       "title": "Target architecture was previously untracked",
       "source_evidence": [
-        "ALC-001 recovered 446 source/config/test/doc/asset candidates."
+        "ALC-001 recovered 446 source/config/test/doc/asset candidates.",
+        "ALC-003 commit 13e07a5 tracks the recovered source and a fresh detached checkout built with zero tracked diff."
       ],
       "category": "SOURCE_CONTROL",
       "severity": "P1",
-      "current_status": "OPEN",
+      "current_status": "RESOLVED",
       "affected_paths_services": [
         "apps",
         "packages",
@@ -122,7 +126,7 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G1",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Resolved for the normalization branch. Remote durability is not implied and remains ALC-RM-003."
     },
     {
       "id": "ALC-RM-003",
@@ -161,11 +165,12 @@
       "id": "ALC-RM-004",
       "title": "Generated output remains entangled with production checkout history",
       "source_evidence": [
-        "Production apps/web/.next is incomplete and lacks BUILD_ID."
+        "Production apps/web/.next is incomplete and lacks BUILD_ID.",
+        "ALC-003 target tracked-set scan found zero generated-output paths; clean build created only ignored workspace output."
       ],
       "category": "GENERATED_ARTIFACTS",
       "severity": "P1",
-      "current_status": "OPEN",
+      "current_status": "PARTIAL",
       "affected_paths_services": [
         "apps/web/.next",
         "artifacts",
@@ -190,17 +195,18 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G1",
       "safe_to_work_in_parallel": "YES",
-      "notes": ""
+      "notes": "Target branch is separated from generated output; production checkout/history remains untouched and dirty."
     },
     {
       "id": "ALC-RM-005",
       "title": "Mutable runtime JSON lives under source paths",
       "source_evidence": [
-        "ALC-001 attribution plus admin_panel_service/user_state_store consumer scan."
+        "ALC-001 attribution plus admin_panel_service/user_state_store consumer scan.",
+        "ALC-003 confirmed zero tracked runtime-state paths and documented source-relative plus /root/synapse consumers without reading payloads."
       ],
       "category": "RUNTIME_STATE",
       "severity": "P1",
-      "current_status": "OPEN",
+      "current_status": "PARTIAL",
       "affected_paths_services": [
         "backend/data",
         "backend/data_host_backup",
@@ -225,17 +231,18 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G5",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Runtime paths are ignored/untracked, but consumer migration and the canonical runtime environment contract require ALC-007/008 and G5/G6 evidence."
     },
     {
       "id": "ALC-RM-006",
       "title": "Twenty-three non-empty duplicate groups need consumer-aware decisions",
       "source_evidence": [
-        "Hash inventory: 23 groups and 54 files, excluding three zero-byte .gitkeep files."
+        "Hash inventory: 23 groups and 54 files, excluding three zero-byte .gitkeep files.",
+        "ALC-003 reproduced all 23 groups/54 files from protected candidate lists and assigned a preserve decision plus follow-up ID to every group."
       ],
       "category": "REPOSITORY",
       "severity": "P2",
-      "current_status": "OPEN",
+      "current_status": "RESOLVED",
       "affected_paths_services": [
         "web assets",
         "legacy/mobile assets",
@@ -261,7 +268,7 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G1",
       "safe_to_work_in_parallel": "YES",
-      "notes": ""
+      "notes": "Resolved as repository classification: 0 consolidated, 0 deleted, 23 explicitly retained. Follow-up IDs do not authorize consolidation."
     },
     {
       "id": "ALC-RM-007",
@@ -1399,7 +1406,8 @@
       "id": "ALC-RM-040",
       "title": "Media/design asset provenance is incomplete",
       "source_evidence": [
-        "Duplicate assets, temporary images, and missing approved provenance are documented."
+        "Duplicate assets, temporary images, and missing approved provenance are documented.",
+        "ALC-003 found one tracked 14,341,981-byte chemistry content JSON requiring provenance and large-file policy review."
       ],
       "category": "CONTENT",
       "severity": "P2",
@@ -1429,7 +1437,7 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G8",
       "safe_to_work_in_parallel": "YES",
-      "notes": ""
+      "notes": "ALC-003 made no asset relocation or deletion; provenance and large-file policy remain ALC-010 work."
     }
   ]
 }

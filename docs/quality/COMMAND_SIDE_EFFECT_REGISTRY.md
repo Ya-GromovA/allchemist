@@ -1,6 +1,6 @@
-# ALC-001 Command Side-Effect Registry
+# Command Side-Effect Registry
 
-Date: 2026-07-14. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
+Updated by ALC-003 on 2026-07-14. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
 
 ## Classes
 
@@ -17,6 +17,7 @@ Date: 2026-07-14. Classification is based on inspected package manifests, tsconf
 | Command | Actual call / output | Class | Network / DB | Isolated | Production checkout |
 |---|---|---|---|---|---|
 | `npm ci --ignore-scripts --no-audit --no-fund` | lock-based install to `node_modules` | `WRITES_BUILD_OUTPUT` | package registry; no DB path found | YES after lifecycle review | NO |
+| `npm run check:repository-hygiene` | reads Git tracked paths, ignore decisions and directory names; emits path/class/status only | `READ_ONLY_SAFE` | none | YES | allowed read-only; no build/deploy composition |
 | `npm run typecheck:tokens` | `tsc -p packages/design-tokens/tsconfig.json`; no emit/incremental | `READ_ONLY_SAFE` | none | YES | NO by ALC-001 policy |
 | `npm run typecheck:ui` | UI package `tsc`; no emit | `READ_ONLY_SAFE` | none | YES | NO |
 | `npm run typecheck:ai-assistant` | AI package `tsc`; no emit | `READ_ONLY_SAFE` | none | YES | NO |
@@ -79,3 +80,7 @@ No `preinstall`, `install`, `postinstall`, or `prepare` lifecycle script exists 
 | direct standalone start with `HOSTNAME`/`PORT` names | release on `127.0.0.1:3011` | 0 | temporary process and protected log; process stopped |
 
 No npm command was executed in `/root/synapse`. No global install, dependency update, migration, backend pytest, infra command, or `verify-ui-foundation.mjs` execution occurred.
+
+## ALC-003 execution note
+
+`npm ci`, the new hygiene check, four required typechecks, and `build:web` were run only in the normalization worktree and a disposable detached worktree. The disposable worktree was removed after evidence capture. No command was run in `/root/synapse`.
