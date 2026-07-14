@@ -1,0 +1,652 @@
+{
+  "screen": "student-dashboard",
+  "approvedReference": "APPROVED_WEB_STUDENT_DASHBOARD",
+  "figmaFile": "OnwtlxHKp361n66TfjBOKL",
+  "figmaNode": "3:12",
+  "layerAvailability": "flat-image",
+  "rules": [
+    "Do not use the full approved screenshot as UI.",
+    "Do not use full-zone crops for text, navigation, buttons, charts or card shells as final UI.",
+    "Temporary crops are allowed only for illustration, thumbnail or assistant character areas.",
+    "Real UI must remain React/HTML/CSS/SVG components."
+  ],
+  "assets": [
+    {
+      "id": "app-logo-mark",
+      "path": "/design-assets/student-dashboard/logo/allchemist-mark.svg",
+      "type": "logo",
+      "source": "local lightweight SVG generated from approved Allchemist visual language",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Temporary real SVG mark for parity pass; replace with exact approved brand SVG when available."
+    },
+    {
+      "id": "app-logo-wordmark",
+      "path": null,
+      "type": "logo",
+      "source": "real text in component",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Keep wordmark as real text or supply final SVG wordmark from brand source."
+    },
+    {
+      "id": "sidebar-nav-icons",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg",
+      "type": "icon-set",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Temporary premium outline SVG sprite; replace with exact exported icon set when editable source exists."
+    },
+    {
+      "id": "sidebar-license-decorative-art",
+      "path": null,
+      "type": "decorative-illustration",
+      "source": "component approximation",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Needs tight illustration-only export or generated WebP/PNG plus CSS glow."
+    },
+    {
+      "id": "topbar-search-icon",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg#icon-search",
+      "type": "icon",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Use shared approved SVG/React icon."
+    },
+    {
+      "id": "notification-icon",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg#icon-notification",
+      "type": "icon",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Use shared approved SVG/React icon with real badge."
+    },
+    {
+      "id": "calendar-icon",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg#icon-calendar",
+      "type": "icon",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Use shared approved SVG/React icon."
+    },
+    {
+      "id": "user-avatar",
+      "path": null,
+      "type": "avatar",
+      "source": "demo/component placeholder",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Use dynamic user avatar with approved fallback initials/avatar treatment."
+    },
+    {
+      "id": "continue-learning-chemistry-hero-art",
+      "path": "/design-assets/student-dashboard/illustrations/chemistry-hero-temporary.png",
+      "type": "illustration",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/continue-visual.png",
+        "coordinates": "image-area crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "ContinueLearningCard",
+      "finalizationNote": "Replace with clean illustration export or generated WebP/PNG."
+    },
+    {
+      "id": "live-lesson-physics-newton-art",
+      "path": "/design-assets/student-dashboard/illustrations/live-lesson-newton-temporary.png",
+      "type": "illustration",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/lesson-visual.png",
+        "coordinates": "image-area crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "LiveLessonCard",
+      "finalizationNote": "Replace with clean illustration export or generated WebP/PNG."
+    },
+    {
+      "id": "ai-recommendation-icons",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg",
+      "type": "icon-set",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "AiRecommendationCard",
+      "finalizationNote": "Create approved SVG/React icons for recommendation types."
+    },
+    {
+      "id": "quick-access-icons",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg",
+      "type": "icon-set",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "QuickAccessCard",
+      "finalizationNote": "Create approved SVG/React icons for theory, tasks, labs, 3D molecules, periodic table, simulators, microscope, exams and AI mentor."
+    },
+    {
+      "id": "assignment-status-icons",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg",
+      "type": "icon-set",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "AssignmentListCard",
+      "finalizationNote": "Create approved SVG/React icons for not-started, in-progress and completed states."
+    },
+    {
+      "id": "progress-rings",
+      "path": null,
+      "type": "chart",
+      "source": "React/CSS approximation",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "SubjectProgressCard",
+      "finalizationNote": "Implement as exact React SVG chart component; do not rasterize."
+    },
+    {
+      "id": "weak-topic-icons",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg",
+      "type": "icon-set",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "WeakTopicsCard",
+      "finalizationNote": "Create approved subject/topic SVG/React icons."
+    },
+    {
+      "id": "popular-thumbnail-chemistry-neutralization",
+      "path": "/design-assets/student-dashboard/thumbnails/popular-chemistry-neutralization-temporary.png",
+      "type": "thumbnail",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/popular-chemistry.png",
+        "coordinates": "thumbnail crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "PopularNowCard",
+      "finalizationNote": "Replace with clean thumbnail export or generated content thumbnail."
+    },
+    {
+      "id": "popular-thumbnail-physics-free-fall",
+      "path": "/design-assets/student-dashboard/thumbnails/popular-physics-free-fall-temporary.png",
+      "type": "thumbnail",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/popular-physics.png",
+        "coordinates": "thumbnail crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "PopularNowCard",
+      "finalizationNote": "Replace with clean thumbnail export or generated content thumbnail."
+    },
+    {
+      "id": "popular-thumbnail-biology-plant-cell",
+      "path": "/design-assets/student-dashboard/thumbnails/popular-biology-plant-cell-temporary.png",
+      "type": "thumbnail",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/popular-biology.png",
+        "coordinates": "thumbnail crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "PopularNowCard",
+      "finalizationNote": "Replace with clean thumbnail export or generated content thumbnail."
+    },
+    {
+      "id": "weekly-progress-chart",
+      "path": null,
+      "type": "chart",
+      "source": "React/CSS approximation",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "WeeklyProgressCard",
+      "finalizationNote": "Implement as exact React SVG chart component; do not rasterize."
+    },
+    {
+      "id": "locked-feature-anatomy-visual",
+      "path": "/design-assets/student-dashboard/illustrations/locked-anatomy-temporary.png",
+      "type": "illustration",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/anatomy-preview.png",
+        "coordinates": "image-area crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "LockedFeatureCard",
+      "finalizationNote": "Replace with clean anatomy illustration export or generated WebP/PNG."
+    },
+    {
+      "id": "ai-assistant-robot",
+      "path": "/design-assets/student-dashboard/assistant/robot-temporary.png",
+      "type": "assistant-character",
+      "source": "controlled crop from approved reference",
+      "sourceNode": "3:12",
+      "crop": {
+        "originalPath": "/design-preview/student-dashboard/assistant-robot.png",
+        "coordinates": "robot-only crop, exact coordinates not stored in current crop metadata"
+      },
+      "status": "temporary",
+      "intendedComponent": "AiAssistantWidget",
+      "finalizationNote": "Replace with final assistant source; Rive/Lottie preferred later, WebP/PNG fallback acceptable."
+    },
+    {
+      "id": "ai-assistant-speech-bubble",
+      "path": null,
+      "type": "ui-component",
+      "source": "React/CSS approximation",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "AiAssistantWidget",
+      "finalizationNote": "Build as real CSS/React bubble with dynamic text; do not rasterize."
+    },
+    {
+      "id": "ai-assistant-close-button",
+      "path": "/design-assets/student-dashboard/icons/sprite.svg#icon-close",
+      "type": "icon-button",
+      "source": "local lightweight SVG sprite",
+      "sourceNode": "3:12",
+      "status": "temporary",
+      "intendedComponent": "AiAssistantWidget",
+      "finalizationNote": "Use approved SVG/React close icon button."
+    },
+    {
+      "id": "background-science-decoration",
+      "path": null,
+      "type": "decor",
+      "source": "component/CSS approximation",
+      "sourceNode": "3:12",
+      "status": "missing",
+      "intendedComponent": "StudentDashboardPreview",
+      "finalizationNote": "Add only approved decorative SVG/WebP fragments or CSS motifs; do not use full-screen raster background."
+    },
+    {
+      "id": "shared-logo-allchemist-mark",
+      "path": "/design-assets/shared/logo/allchemist-mark.svg",
+      "type": "logo",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Temporary clean SVG mark inspired by approved sidebar logo; needs brand approval."
+    },
+    {
+      "id": "shared-logo-allchemist-lockup",
+      "path": "/design-assets/shared/logo/allchemist-logo-lockup.svg",
+      "type": "logo",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Temporary clean SVG lockup for shared student UI; needs brand approval."
+    },
+    {
+      "id": "nav-home",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-home.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-courses",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-courses.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-theory",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-theory.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-tasks",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-tasks.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-labs",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-labs.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-visualization",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-visualization.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-references",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-references.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-exams",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-exams.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-diagnostics",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-diagnostics.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-ai-mentor",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-ai-mentor.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-progress",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-progress.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-messages",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-messages.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "nav-settings",
+      "path": "/design-assets/student-dashboard/clean/icons/nav-settings.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "finalizationNote": "Clean sidebar outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-theory",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-theory.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-tasks",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-tasks.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-labs",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-labs.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-3d-molecules",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-3d-molecules.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-periodic-table",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-periodic-table.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-simulators",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-simulators.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-microscope",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-microscope.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-exams",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-exams.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "quick-ai-mentor",
+      "path": "/design-assets/student-dashboard/clean/icons/quick-ai-mentor.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "QuickAccessStrip",
+      "finalizationNote": "Clean quick access outline icon; needs visual approval."
+    },
+    {
+      "id": "status-search",
+      "path": "/design-assets/student-dashboard/clean/icons/search.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-bell",
+      "path": "/design-assets/student-dashboard/clean/icons/bell.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-calendar",
+      "path": "/design-assets/student-dashboard/clean/icons/calendar.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-profile-placeholder",
+      "path": "/design-assets/student-dashboard/clean/icons/profile-placeholder.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentTopbar",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-repeat",
+      "path": "/design-assets/student-dashboard/clean/icons/repeat.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "WeakTopicsCard",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-lock",
+      "path": "/design-assets/student-dashboard/clean/icons/lock.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "LockedFeatureCard",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "status-close",
+      "path": "/design-assets/student-dashboard/clean/icons/close.svg",
+      "type": "icon",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "AIAssistantWidget",
+      "finalizationNote": "Clean topbar/status outline icon; needs visual approval."
+    },
+    {
+      "id": "clean-ai-assistant-robot-dashboard",
+      "path": "/design-assets/student-dashboard/clean/assistant/assistant-robot-dashboard.svg",
+      "type": "assistant-character",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "AIAssistantWidget",
+      "replacesTemporaryAsset": "ai-assistant-robot",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-ai-assistant-bubble-dashboard",
+      "path": "/design-assets/student-dashboard/clean/assistant/assistant-bubble-dashboard.svg",
+      "type": "assistant-bubble",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "AIAssistantWidget",
+      "replacesTemporaryAsset": "ai-assistant-speech-bubble",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-sidebar-license-flask-glow",
+      "path": "/design-assets/shared/decor/license-flask-glow.svg",
+      "type": "decorative-illustration",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "StudentSidebar",
+      "replacesTemporaryAsset": "sidebar-license-decorative-art",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-chemistry-hero-flask",
+      "path": "/design-assets/student-dashboard/clean/illustrations/chemistry-hero-flask.svg",
+      "type": "illustration",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "ContinueLearningCard",
+      "replacesTemporaryAsset": "continue-learning-chemistry-hero-art",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-live-lesson-newton-cradle",
+      "path": "/design-assets/student-dashboard/clean/illustrations/live-lesson-newton-cradle.svg",
+      "type": "illustration",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "LiveLessonCard",
+      "replacesTemporaryAsset": "live-lesson-physics-newton-art",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-popular-neutralization",
+      "path": "/design-assets/student-dashboard/clean/thumbnails/popular-neutralization.svg",
+      "type": "thumbnail",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "PopularNowCard",
+      "replacesTemporaryAsset": "popular-thumbnail-chemistry-neutralization",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-popular-free-fall",
+      "path": "/design-assets/student-dashboard/clean/thumbnails/popular-free-fall.svg",
+      "type": "thumbnail",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "PopularNowCard",
+      "replacesTemporaryAsset": "popular-thumbnail-physics-free-fall",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-popular-plant-cell",
+      "path": "/design-assets/student-dashboard/clean/thumbnails/popular-plant-cell.svg",
+      "type": "thumbnail",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "PopularNowCard",
+      "replacesTemporaryAsset": "popular-thumbnail-biology-plant-cell",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    },
+    {
+      "id": "clean-locked-anatomy-human",
+      "path": "/design-assets/student-dashboard/clean/illustrations/locked-anatomy-human.svg",
+      "type": "illustration",
+      "source": "generated-clean-svg",
+      "status": "needs-approval",
+      "intendedComponent": "LockedFeatureCard",
+      "replacesTemporaryAsset": "locked-feature-anatomy-visual",
+      "finalizationNote": "Sprint #2 clean SVG replacement for the temporary visual slot; still requires visual approval against APPROVED_WEB_STUDENT_DASHBOARD."
+    }
+  ]
+}

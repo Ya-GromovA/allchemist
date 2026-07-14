@@ -1,0 +1,83 @@
+export const studentDashboardDemoData = {
+  user: {
+    name: "Алина",
+    grade: "9 класс",
+    greeting: "Здравствуйте, Алина!",
+    subtitle: "Продолжим обучение с того места, где ты остановилась.",
+  },
+  notifications: {
+    count: 6,
+  },
+  continueLearning: {
+    eyebrow: "Продолжить обучение",
+    subject: "Химия",
+    title: "Химические реакции. Типы и признаки",
+    progressPercent: 68,
+    progressLabel: "Прогресс темы",
+    cta: "Продолжить",
+  },
+  liveLesson: {
+    eyebrow: "Ближайший live-урок",
+    subject: "Физика",
+    title: "Законы Ньютона. Применение в задачах",
+    time: "Сегодня, 16:00 - 17:00",
+    teacher: "Преподаватель: Игорь Петрович",
+    joinCta: "Присоединиться",
+    joinedCta: "Готово к уроку",
+  },
+  quickAccess: [
+    { label: "Теория", icon: "theory", badge: "" },
+    { label: "Задания", icon: "assignments", badge: "12" },
+    { label: "Лаборатории", icon: "lab", badge: "" },
+    { label: "3D-молекулы", icon: "molecule", badge: "" },
+    { label: "Таблица элементов", icon: "periodic", badge: "" },
+    { label: "Симуляторы", icon: "simulator", badge: "" },
+    { label: "Микроскоп", icon: "microscope", badge: "" },
+    { label: "Экзамены", icon: "exams", badge: "" },
+  ],
+  assignments: [
+    { subject: "Химия", title: "Уравнения реакций", meta: "Срок: завтра, 23:59", status: "Не выполнено", tone: "danger" },
+    { subject: "Физика", title: "Кинематика. Задачи 1-3", meta: "Срок: 25 июл., 20:00", status: "В процессе", tone: "warning" },
+    { subject: "Биология", title: "Клеточное деление", meta: "Срок: 27 июл., 18:00", status: "Выполнено", tone: "success" },
+  ],
+  subjectProgress: [
+    { subject: "chemistry", title: "Химия", value: 72, meta: "84/116 тем" },
+    { subject: "physics", title: "Физика", value: 61, meta: "67/110 тем" },
+    { subject: "biology", title: "Биология", value: 58, meta: "53/92 тем" },
+  ],
+  weakTopics: [
+    { title: "Валентность", subject: "Химия" },
+    { title: "Кинематика", subject: "Физика" },
+    { title: "Клеточное деление", subject: "Биология" },
+    { title: "Строение атома", subject: "Химия" },
+  ],
+  aiRecommendations: [
+    { title: "Повтори тему «Валентность»", meta: "Химия" },
+    { title: "Реши 3 задачи по кинематике", meta: "Физика" },
+    { title: "Посмотри опыт «Реакция Zn + HCl»", meta: "Химия" },
+  ],
+  popularContent: [
+    { title: "Реакция нейтрализации", meta: "Химия • Опыт" },
+    { title: "Свободное падение", meta: "Физика • Симуляция" },
+    { title: "Строение растительной клетки", meta: "Биология • 3D-модель" },
+  ],
+  weeklyProgress: {
+    title: "Твой прогресс за неделю",
+    deltaLabel: "+12%",
+    subtitle: "к прошлой неделе",
+    bars: [32, 44, 58, 48, 70, 76],
+  },
+  lockedFeature: {
+    eyebrow: "Заблокировано в базовой лицензии",
+    title: "3D-анатомия человека",
+    subtitle: "Доступно в расширенной лицензии",
+    cta: "Узнать больше",
+    requestedCta: "Запрос отправлен",
+  },
+  assistantState: {
+    bubbleText: "Я рядом, если нужна подсказка",
+    title: "AI-наставник",
+    message: "Могу подсказать, с чего начать повторение, но не буду делать задание за тебя.",
+    cta: "Дай подсказку",
+  },
+} as const;

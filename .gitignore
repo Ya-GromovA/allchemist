@@ -7,6 +7,9 @@ __pycache__/
 *.egg-info/
 dist/
 build/
+.pytest_cache/
+coverage/
+.coverage
 
 # Env files (secrets!)
 .env
@@ -20,6 +23,8 @@ venv/
 
 # Node
 node_modules/
+**/.next/
+*.tsbuildinfo
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -83,6 +88,7 @@ Thumbs.db
 
 # Logs
 *.log
+assistant_log.md*
 
 # SSH keys
 id_ed25519*
@@ -100,8 +106,17 @@ synapse-project.tar.gz
 synapse-migration-*.dump
 synapse_schema.sql
 
-# APK metadata backups
+# APK metadata backups and mutable release pointer
 content_packs/*.bak*
+content_packs/allchemist-apk-latest.json
+
+# Runtime/user/security state
+backend/data/
+backend/data_host_backup/
+
+# Generated frontend and visual-test output
+backend/app/web_public_react/
+artifacts/
 
 # Tools generated
 *.pyc

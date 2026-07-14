@@ -5,55 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Алхимик</title>
   <link rel="icon" type="image/png" href="/api/v1/web/assets/favicon.png" />
-  <link rel="preload" as="image" href="/api/v1/web/assets/fon.webp" type="image/webp" fetchpriority="high" />
-  <link rel="preload" as="image" href="/api/v1/web/assets/allchemist.webp" type="image/webp" fetchpriority="high" />
-  <link rel="stylesheet" href="/api/v1/web/assets/styles.css?v=20260520a" />
+  <link rel="preload" as="image" href="/api/v1/web/assets/fon-2.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="/api/v1/web/assets/alchemist-hero.webp" type="image/webp" fetchpriority="high" />
+  <link rel="stylesheet" href="/api/v1/web/assets/styles.css?v=20260601a" />
 </head>
 <body>
   <main class="page">
     <section class="hero card">
       <div class="heroTop">
-        <div>
-          <div class="brandRow">
-            <div class="alchemyScene" aria-hidden="true">
-              <picture>
-                <source srcset="/api/v1/web/assets/allchemist.webp" type="image/webp" />
-                <img class="sceneImage" src="/api/v1/web/assets/allchemist.png" alt="Алхимик-ученый" width="1254" height="1254" fetchpriority="high" decoding="sync" />
-              </picture>
-            </div>
-            <div class="brandTitleWrap">
-              <div class="brandTitle">Алхимик</div>
-              <div class="brandSubtitle">Научная платформа по химии, физике и биологии</div>
-              <div class="heroMetaLine">Уроки · Задания · Лабораторные · AI-помощник · Прогресс</div>
-            </div>
+        <div class="heroCopy">
+          <div class="heroKicker">Premium EdTech · химия · физика · биология</div>
+          <button id="brandHomeBtn" class="brandTitle brandHomeBtn" type="button">Алхимик</button>
+          <p class="heroLead">Добро пожаловать в научную платформу нового поколения</p>
+          <p class="heroText">Химия, физика, биология, AI-наставник, 3D-лаборатории и подготовка к ОГЭ, ЕГЭ, МЦКО, ВПР, итоговым контрольным, зачётам, вступительным и самостоятельным работам.</p>
+          <div class="heroActions heroActionsPrimary">
+            <button id="heroDemoBtn" class="btn btn-primary" type="button">Попробовать</button>
+            <button id="heroLoginBtn" class="btn btn-secondary" type="button">Войти</button>
+            <a class="btn btn-ghost" href="#features">Возможности</a>
+          </div>
+          <div class="heroActions heroActionsSecondary" aria-label="Дополнительные действия">
+            <button id="heroBuyBtn" class="btn btn-linklike" type="button">Тарифы</button>
+            <button id="heroAccessBtn" class="btn btn-linklike" type="button">Школьный код</button>
+            <button id="schoolStaffLoginBtn" class="btn btn-linklike" type="button">Вход для сотрудника школы</button>
           </div>
         </div>
-        <div class="heroActions">
-          <a class="btn btn-primary" href="/api/v1/content/downloads/apk/latest">Скачать Android APK</a>
-          <p class="muted small">Если у вас была ранняя тестовая версия, перед установкой новой может понадобиться удалить старое приложение.</p>
+        <div class="alchemyScene" aria-hidden="true">
+          <picture>
+            <source srcset="/api/v1/web/assets/alchemist-hero.webp" type="image/webp" />
+            <img class="sceneImage" src="/api/v1/web/assets/alchemist-hero.png" alt="Алхимик-учёный" width="1254" height="1254" fetchpriority="high" decoding="sync" />
+          </picture>
         </div>
       </div>
       <div id="apkReleaseNotice" class="releaseNotice hidden" aria-live="polite"></div>
     </section>
 
-    <section class="card appCard">
+    <section id="features" class="card appCard">
       <div class="sectionHeader">
         <div>
           <h2 id="authSectionTitle">Войти в кабинет</h2>
-          <p id="authSectionSubtitle" class="muted">Полноценный вход в веб-кабинет: выберите способ входа в Алхимик</p>
+          <p id="authSectionSubtitle" class="muted">Войдите по аккаунту или активируйте персональный код. Роль и доступы определит сервер.</p>
         </div>
         <div class="sessionMeta" id="sessionMeta">Гость</div>
       </div>
 
       <div id="authPanel" class="authGrid landingGrid">
         <div class="authColumn loginPanel">
-          <h3>Как войти?</h3>
+          <h3>Вход и доступ</h3>
           <div class="roleCards" id="roleRow">
-            <button class="roleCard" data-auth-action="login" data-audience="learner" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4"/></svg></span><strong>Я учусь</strong><small>Войти в учебный кабинет. Роль и доступы определятся по аккаунту после проверки сервером.</small></button>
-            <button class="roleCard" data-auth-action="login" data-audience="teacher" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h18v12H3z"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></span><strong>Я учитель</strong><small>Войти в рабочий кабинет школы. Назначение учителя или классного руководителя берётся из аккаунта.</small></button>
-            <button class="roleCard" data-auth-action="login" data-audience="parent" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg></span><strong>Я родитель</strong><small>Войти, чтобы смотреть прогресс ребёнка, риски, задания и рекомендации.</small></button>
-            <button class="roleCard" data-auth-action="access-code" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M8 11h8"/><path d="M8 14h5"/></svg></span><strong>У меня есть код доступа</strong><small>Активируйте персональный школьный код и создайте логин с паролем.</small></button>
-            <button class="roleCard" data-auth-action="login" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg></span><strong>Войти по логину и паролю</strong><small>Для уже созданного аккаунта. Кабинет откроется по роли, назначенной школой или системой.</small></button>
+            <button class="roleCard" data-auth-action="login" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3v18"/><path d="m7 8 5-5 5 5"/><path d="M5 21h14"/></svg></span><strong>Войти по логину и паролю</strong><small>Кабинет откроется только по роли, назначенной школой или системой.</small></button>
+            <button class="roleCard" data-auth-action="access-code" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M8 11h8"/><path d="M8 14h5"/></svg></span><strong>Активировать код</strong><small>Персональный школьный код создаёт аккаунт и назначает доступы после проверки сервером.</small></button>
+            <button class="roleCard" data-auth-action="demo" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 9h8"/><path d="M8 13h5"/></svg></span><strong>Попробовать демо</strong><small>Открыть публичный пример урока без входа в настоящий кабинет.</small></button>
+            <button class="roleCard" data-auth-action="buy" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 6h15l-2 8H8z"/><path d="M6 6 5 3H2"/><path d="M9 21h.01"/><path d="M18 21h.01"/></svg></span><strong>Купить доступ</strong><small>Посмотреть тарифы для личного, семейного или школьного доступа.</small></button>
+            <button class="roleCard" data-auth-action="staff" type="button"><span class="roleIcon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/></svg></span><strong>Вход для сотрудника школы</strong><small>Используйте выданный школой логин. Должность и права загрузятся из аккаунта.</small></button>
           </div>
 
           <div class="authActions primaryActionRow">
@@ -127,17 +130,19 @@
             <div id="accessCodeStatus" class="statusBox">Код доступа ещё не вводился.</div>
           </div>
 
+          <div id="publicDemoPanel" class="statusBox softStatus hidden"></div>
+          <div id="publicModulePanel" class="statusBox softStatus hidden"></div>
           <div id="authStatus" class="statusBox softStatus">Войдите по логину и паролю или активируйте персональный код доступа.</div>
           <button id="logoutBtn" class="btn btn-secondary hidden" type="button">Выйти</button>
         </div>
 
         <div class="authColumn authExplain">
-          <h3>Что откроется после входа</h3>
+          <h3>Модули и кабинеты</h3>
           <div class="benefitGrid">
-            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4"/></svg></span><strong>Учащийся</strong><p>Задания, предметы, прогресс, AI-помощник и офлайн-материалы.</p></article>
-            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 4h18v12H3z"/><path d="M8 20h8"/><path d="M12 16v4"/></svg></span><strong>Учитель</strong><p>Классы, уроки, демонстрации, онлайн-работа, проверка и отчёты.</p></article>
-            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.4-7-10a4 4 0 0 1 7-2.7A4 4 0 0 1 19 11c0 5.6-7 10-7 10Z"/></svg></span><strong>Родитель</strong><p>Прогресс ребёнка, сроки, слабые темы, рекомендации и уведомления.</p></article>
-            <article class="benefitCard schoolBenefit"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span><strong>Школа</strong><p>Управление доступами, классами, лицензией и аналитикой.</p></article>
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12v4c0 1.7 2.7 3 6 3s6-1.3 6-3v-4"/></svg></span><strong>Химия</strong><p>Теория по классам и учебным линиям, реакции, задачи, лабораторные, 3D-молекулы, таблица элементов и AI-разбор ошибок.</p><button class="btn btn-secondary" type="button" data-public-module="chemistry">Подробнее</button></article>
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19 20 5"/><path d="M7 7h.01"/><path d="M17 17h.01"/></svg></span><strong>Физика</strong><p>Механика, электричество, оптика, термодинамика, интерактивные симуляторы, графики, формулы и AI-разбор ошибок.</p><button class="btn btn-secondary" type="button" data-public-module="physics">Подробнее</button></article>
+            <article class="benefitCard"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3c4 4 4 14 0 18"/><path d="M12 3c-4 4-4 14 0 18"/><path d="M4 12h16"/></svg></span><strong>Биология</strong><p>Ботаника, зоология, анатомия, генетика, экология, виртуальный микроскоп, 3D-клетка и AI-разбор ошибок.</p><button class="btn btn-secondary" type="button" data-public-module="biology">Подробнее</button></article>
+            <article class="benefitCard schoolBenefit"><span aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V7l8-4 8 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span><strong>Школа</strong><p>Классы, лицензии, задания, отчёты и кабинеты сотрудников по назначенным правам.</p><button class="btn btn-secondary" type="button" data-auth-action="staff">Войти</button></article>
           </div>
           <div class="snapshotCard compactSnapshot hidden">
             <div class="snapshotLine"><span>Выбрано</span><strong id="snapshotRole">Не выбрано</strong></div>

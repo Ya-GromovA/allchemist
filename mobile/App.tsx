@@ -8,8 +8,8 @@ import AppBackground from "@app/components/AppBackground";
 import LaunchSplash from "@app/components/LaunchSplash";
 
 const MIN_SPLASH_MS = 1800;
-const CONTENT_INIT_WARN_MS = 20000;
-const CONTENT_INIT_TIMEOUT_MS = 28000;
+const CONTENT_INIT_WARN_MS = 45000;
+const CONTENT_INIT_TIMEOUT_MS = 120000;
 
 function wait(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -100,7 +100,7 @@ export default function App() {
         console.warn("[App] bootstrap failed", error);
         if (!active) return;
         setProgress(0.92);
-        setErrorText("Запуск занял слишком много времени. Проверьте соединение, свободное место на устройстве и повторите попытку.");
+        setErrorText("Первый запуск готовит офлайн-материалы и может занять до двух минут. Если запуск не завершился, проверьте свободное место и повторите попытку.");
       }
     })();
 

@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "catalog": {
+    "id": "student-mvp-section-catalog",
+    "title": "Студенческий каталог MVP",
+    "description": "Только каталог разделов без учебных материалов. Наполнение разделов должно быть отдельной задачей с источниками, авторами и методической проверкой."
+  },
+  "sections": [
+    {
+      "id": "student-chem-general",
+      "subject": "chemistry",
+      "educationLevel": "university_intro",
+      "title": "Общая химия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-chem-inorganic",
+      "subject": "chemistry",
+      "educationLevel": "university_intro",
+      "title": "Неорганическая химия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-chem-organic",
+      "subject": "chemistry",
+      "educationLevel": "university_intro",
+      "title": "Органическая химия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-chem-analytical",
+      "subject": "chemistry",
+      "educationLevel": "advanced_student",
+      "title": "Аналитическая химия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-chem-physical",
+      "subject": "chemistry",
+      "educationLevel": "advanced_student",
+      "title": "Физическая химия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-biochemistry",
+      "subject": "biology",
+      "educationLevel": "advanced_student",
+      "title": "Биохимия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-phys-mechanics",
+      "subject": "physics",
+      "educationLevel": "university_intro",
+      "title": "Механика",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-phys-electrodynamics",
+      "subject": "physics",
+      "educationLevel": "university_intro",
+      "title": "Электродинамика",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-phys-optics",
+      "subject": "physics",
+      "educationLevel": "university_intro",
+      "title": "Оптика",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-phys-quantum",
+      "subject": "physics",
+      "educationLevel": "advanced_student",
+      "title": "Квантовая физика",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-cytology",
+      "subject": "biology",
+      "educationLevel": "university_intro",
+      "title": "Цитология",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-genetics",
+      "subject": "biology",
+      "educationLevel": "university_intro",
+      "title": "Генетика",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-anatomy",
+      "subject": "biology",
+      "educationLevel": "university_intro",
+      "title": "Анатомия",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-physiology",
+      "subject": "biology",
+      "educationLevel": "university_intro",
+      "title": "Физиология",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    },
+    {
+      "id": "student-bio-microbiology",
+      "subject": "biology",
+      "educationLevel": "advanced_student",
+      "title": "Микробиология",
+      "status": "catalog_only",
+      "note": "Content not created in Content-PROD-1."
+    }
+  ]
+}

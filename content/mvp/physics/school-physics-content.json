@@ -1,0 +1,614 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "items": [
+    {
+      "id": "phys-school-uniform-acceleration",
+      "subject": "physics",
+      "educationLevel": "school",
+      "grade": "9",
+      "topic": "Равноускоренное движение",
+      "title": "Равноускоренное движение",
+      "summary": "Материал объясняет, что равноускоренное движение означает постоянное ускорение, а скорость при этом меняется равными порциями за равные промежутки времени.",
+      "learningObjectives": [
+        "Описывать равноускоренное движение как движение с постоянным ускорением.",
+        "Понимать связь между изменением скорости, временем и ускорением.",
+        "Отличать равномерное движение от равноускоренного на словесном примере."
+      ],
+      "blocks": [
+        {
+          "id": "phys-school-uniform-acceleration-b1",
+          "kind": "concept",
+          "title": "Что значит 'равноускоренное'",
+          "body": "Если ускорение постоянно, скорость тела меняется равномерно: за каждую секунду она увеличивается или уменьшается на одну и ту же величину. Такое описание подходит для модели, где сопротивлением воздуха и другими усложнениями временно пренебрегают."
+        },
+        {
+          "id": "phys-school-uniform-acceleration-b2",
+          "kind": "example",
+          "title": "Как это выглядит в задаче",
+          "body": "Если тело стартует со скоростью 2 м/с и каждую секунду прибавляет 3 м/с, то ускорение равно 3 м/с^2. Через одну секунду скорость будет 5 м/с, через две - 8 м/с."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "phys-school-uniform-acceleration-t1",
+          "kind": "check_understanding",
+          "prompt": "Что остается постоянным в модели равноускоренного движения?",
+          "expectedAnswer": "Ускорение остается постоянным.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-physics-7-9-basic",
+              "src-openstax-physics-3-2-constant-acceleration",
+              "src-openstax-college-physics-2e-2-5-kinematics",
+              "src-textbook-placeholder-physics-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+                "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+                "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school physics textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedSimulation": {
+        "id": "sim-phys-uniform-acceleration",
+        "kind": "simulation",
+        "title": "График скорости при постоянном ускорении",
+        "status": "planned",
+        "note": "Future physics-sim-engine scenario; values must be bounded for school tasks."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-physics-7-9-basic",
+          "src-openstax-physics-3-2-constant-acceleration",
+          "src-openstax-college-physics-2e-2-5-kinematics",
+          "src-textbook-placeholder-physics-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+            "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+            "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school physics textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "phys-school-speed-acceleration-distance",
+      "subject": "physics",
+      "educationLevel": "school",
+      "grade": "9",
+      "topic": "Скорость, ускорение, путь",
+      "title": "Скорость, ускорение, путь",
+      "summary": "Карточка связывает три величины кинематики: скорость показывает, как быстро меняется положение, ускорение - как меняется скорость, путь - сколько пройдено.",
+      "learningObjectives": [
+        "Различать скорость, ускорение и путь по физическому смыслу.",
+        "Называть типичные единицы измерения: м/с, м/с^2, м.",
+        "Выбирать нужную величину из текста простой задачи."
+      ],
+      "blocks": [
+        {
+          "id": "phys-school-speed-acceleration-distance-b1",
+          "kind": "concept",
+          "title": "Три вопроса",
+          "body": "Путь отвечает на вопрос 'сколько пройдено'. Скорость отвечает на вопрос 'как быстро меняется положение'. Ускорение отвечает на вопрос 'как быстро меняется скорость'."
+        },
+        {
+          "id": "phys-school-speed-acceleration-distance-b2",
+          "kind": "example",
+          "title": "Единицы помогают не путаться",
+          "body": "Если в задаче дана величина в метрах, это может быть путь или координата. Если дана м/с, обычно речь о скорости. Если дана м/с^2, это ускорение."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "phys-school-speed-acceleration-distance-t1",
+          "kind": "classification",
+          "prompt": "В задаче сказано: 'скорость увеличивается на 2 м/с каждую секунду'. Какая величина равна 2 м/с^2?",
+          "expectedAnswer": "Ускорение.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-physics-7-9-basic",
+              "src-openstax-physics-3-2-constant-acceleration",
+              "src-textbook-placeholder-physics-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+                "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school physics textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-physics-7-9-basic",
+          "src-openstax-physics-3-2-constant-acceleration",
+          "src-textbook-placeholder-physics-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+            "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school physics textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "phys-school-formula-v-equals-v0-plus-at",
+      "subject": "physics",
+      "educationLevel": "school",
+      "grade": "9",
+      "topic": "Формулы равноускоренного движения",
+      "title": "Формула v = v0 + at",
+      "summary": "Формула показывает, как найти скорость тела через начальную скорость, ускорение и время в модели постоянного ускорения.",
+      "learningObjectives": [
+        "Расшифровывать величины в формуле v = v0 + at.",
+        "Подставлять числа с согласованными единицами.",
+        "Объяснять знак ускорения в простых ситуациях разгона и торможения."
+      ],
+      "blocks": [
+        {
+          "id": "phys-school-formula-v-equals-v0-plus-at-b1",
+          "kind": "formula",
+          "title": "Смысл формулы",
+          "body": "В записи v = v0 + at величина v - скорость через время t, v0 - начальная скорость, a - ускорение. Часть at показывает, насколько изменилась скорость за это время."
+        },
+        {
+          "id": "phys-school-formula-v-equals-v0-plus-at-b2",
+          "kind": "example",
+          "title": "Мини-пример",
+          "body": "Если v0 = 1 м/с, a = 2 м/с^2, t = 3 с, то v = 1 + 2 * 3 = 7 м/с. Важно, чтобы время было в секундах, а ускорение - в м/с^2."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "phys-school-formula-v-equals-v0-plus-at-t1",
+          "kind": "calculation",
+          "prompt": "Найди скорость через 4 с, если v0 = 3 м/с, a = 2 м/с^2.",
+          "expectedAnswer": "v = 3 + 2 * 4 = 11 м/с.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-physics-7-9-basic",
+              "src-openstax-physics-3-2-constant-acceleration",
+              "src-openstax-college-physics-2e-2-5-kinematics",
+              "src-textbook-placeholder-physics-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+                "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+                "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school physics textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedSimulation": {
+        "id": "sim-phys-velocity-time-line",
+        "kind": "simulation",
+        "title": "Линия v(t) для v = v0 + at",
+        "status": "planned",
+        "note": "Future UI card can expose sliders for v0, a and t after validation."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-physics-7-9-basic",
+          "src-openstax-physics-3-2-constant-acceleration",
+          "src-openstax-college-physics-2e-2-5-kinematics",
+          "src-textbook-placeholder-physics-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+            "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+            "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school physics textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "phys-school-formula-s-equals-v0t-plus-at2-half",
+      "subject": "physics",
+      "educationLevel": "school",
+      "grade": "9",
+      "topic": "Формулы равноускоренного движения",
+      "title": "Формула s = v0t + at^2 / 2",
+      "summary": "Карточка объясняет формулу пути при постоянном ускорении как сумму пути от начальной скорости и добавки из-за ускорения.",
+      "learningObjectives": [
+        "Расшифровывать величины в формуле s = v0t + at^2 / 2.",
+        "Видеть, что путь зависит от времени не только линейно, если есть ускорение.",
+        "Решать короткую расчетную задачу с нулевой начальной скоростью."
+      ],
+      "blocks": [
+        {
+          "id": "phys-school-formula-s-equals-v0t-plus-at2-half-b1",
+          "kind": "formula",
+          "title": "Две части пути",
+          "body": "В формуле s = v0t + at^2 / 2 первая часть v0t показывает вклад начальной скорости. Вторая часть at^2 / 2 показывает вклад постоянного ускорения."
+        },
+        {
+          "id": "phys-school-formula-s-equals-v0t-plus-at2-half-b2",
+          "kind": "example",
+          "title": "Если старт из покоя",
+          "body": "Если v0 = 0, формула становится проще: s = at^2 / 2. Например, при a = 2 м/с^2 и t = 3 с путь равен 2 * 9 / 2 = 9 м."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "phys-school-formula-s-equals-v0t-plus-at2-half-t1",
+          "kind": "calculation",
+          "prompt": "Тело стартует из покоя с ускорением 4 м/с^2. Какой путь оно пройдет за 2 с?",
+          "expectedAnswer": "s = 0 * 2 + 4 * 2^2 / 2 = 8 м.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-physics-7-9-basic",
+              "src-openstax-physics-3-2-constant-acceleration",
+              "src-openstax-college-physics-2e-2-5-kinematics",
+              "src-textbook-placeholder-physics-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+                "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+                "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school physics textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedSimulation": {
+        "id": "sim-phys-distance-under-velocity-graph",
+        "kind": "simulation",
+        "title": "Путь при равноускоренном движении",
+        "status": "planned",
+        "note": "Future simulation should show distance as area under v(t) after review."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-physics-7-9-basic",
+          "src-openstax-physics-3-2-constant-acceleration",
+          "src-openstax-college-physics-2e-2-5-kinematics",
+          "src-textbook-placeholder-physics-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+            "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+            "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school physics textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "phys-school-newton-laws-next-topic",
+      "subject": "physics",
+      "educationLevel": "school",
+      "grade": "9",
+      "topic": "Законы Ньютона",
+      "title": "Законы Ньютона как следующий шаг",
+      "summary": "Переходная карточка: после описания движения в кинематике ученик готовится к вопросу, почему движение меняется, то есть к законам Ньютона.",
+      "learningObjectives": [
+        "Понимать разницу между описанием движения и объяснением причин изменения движения.",
+        "Связывать ускорение с будущей темой силы.",
+        "Подготовиться к изучению трех законов Ньютона без углубленного вывода."
+      ],
+      "blocks": [
+        {
+          "id": "phys-school-newton-laws-next-topic-b1",
+          "kind": "next_topic",
+          "title": "От 'как движется' к 'почему'",
+          "body": "Кинематика описывает движение через путь, скорость, ускорение и время. Следующий шаг - динамика: она объясняет, почему скорость меняется и какую роль играют силы."
+        },
+        {
+          "id": "phys-school-newton-laws-next-topic-b2",
+          "kind": "concept",
+          "title": "Что появится дальше",
+          "body": "В теме законов Ньютона ускорение будет связано с действием сил и массой тела. Эта карточка только обозначает переход и не заменяет полноценный урок по динамике."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "phys-school-newton-laws-next-topic-t1",
+          "kind": "check_understanding",
+          "prompt": "Какой вопрос добавляет динамика по сравнению с кинематикой?",
+          "expectedAnswer": "Динамика спрашивает, почему движение меняется, и связывает изменение движения с силами.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-physics-7-9-basic",
+              "src-openstax-physics-4-1-force-newton",
+              "src-textbook-placeholder-physics-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Physics, 4.1 Force",
+                "url": "https://openstax.org/books/physics/pages/4-1-force",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school physics textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-physics-7-9-basic",
+          "src-openstax-physics-4-1-force-newton",
+          "src-textbook-placeholder-physics-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Physics, 4.1 Force",
+            "url": "https://openstax.org/books/physics/pages/4-1-force",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school physics textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "contractFixture": true,
+  "userId": "parent_contract",
+  "role": "parent",
+  "children": [],
+  "alerts": [],
+  "recommendations": []
+}

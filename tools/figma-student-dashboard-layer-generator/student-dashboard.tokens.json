@@ -1,0 +1,88 @@
+{
+  "source": "APPROVED_WEB_STUDENT_DASHBOARD / node 3:12",
+  "viewport": {
+    "width": 1672,
+    "height": 941
+  },
+  "colors": {
+    "pageBackgroundTop": "#F8FBFF",
+    "pageBackgroundBottom": "#EEF5FF",
+    "sidebarTop": "#073576",
+    "sidebarMiddle": "#06285F",
+    "sidebarBottom": "#041943",
+    "sidebarText": "#F0F7FF",
+    "sidebarMuted": "#B8D7F5",
+    "activeBlue": "#1479FF",
+    "activeBlueDark": "#0A55D7",
+    "cyan": "#20D7FF",
+    "violet": "#7C5CFF",
+    "green": "#23C483",
+    "warning": "#F5A524",
+    "danger": "#EF4E5C",
+    "ink": "#081A46",
+    "inkSoft": "#173763",
+    "muted": "#687895",
+    "card": "#FFFFFF",
+    "cardTint": "#F7FBFF",
+    "border": "#DBE8FB",
+    "search": "#FFFFFF",
+    "button": "#116DFF",
+    "button2": "#585CFF"
+  },
+  "typography": {
+    "fontFamily": "Inter",
+    "h1": { "size": 25, "style": "Bold", "lineHeight": 30 },
+    "h2": { "size": 20, "style": "Bold", "lineHeight": 24 },
+    "cardTitle": { "size": 17, "style": "Bold", "lineHeight": 22 },
+    "body": { "size": 12, "style": "Regular", "lineHeight": 17 },
+    "bodyStrong": { "size": 13, "style": "Semi Bold", "lineHeight": 17 },
+    "small": { "size": 11, "style": "Regular", "lineHeight": 14 },
+    "nav": { "size": 14, "style": "Semi Bold", "lineHeight": 18 },
+    "button": { "size": 13, "style": "Semi Bold", "lineHeight": 16 }
+  },
+  "spacing": {
+    "pagePaddingX": 32,
+    "mainGap": 16,
+    "cardPadding": 18,
+    "sidebarPaddingX": 16,
+    "navRowHeight": 38,
+    "quickTileHeight": 64
+  },
+  "radius": {
+    "card": 13,
+    "button": 8,
+    "tile": 10,
+    "sidebarRow": 9,
+    "pill": 999,
+    "profile": 13,
+    "search": 12
+  },
+  "shadows": {
+    "card": {
+      "color": "#123267",
+      "opacity": 0.08,
+      "x": 0,
+      "y": 11,
+      "blur": 28
+    },
+    "button": {
+      "color": "#116DFF",
+      "opacity": 0.28,
+      "x": 0,
+      "y": 12,
+      "blur": 24
+    },
+    "sidebar": {
+      "color": "#081F4E",
+      "opacity": 0.2,
+      "x": 12,
+      "y": 0,
+      "blur": 32
+    }
+  },
+  "notes": [
+    "Tokens are approximate and intended for deterministic editable Figma layer generation.",
+    "Reference image remains locked in APPROVED_WEB_STUDENT_DASHBOARD_TRACING_BASE.",
+    "Image slots are placeholders until clean illustration assets exist."
+  ]
+}

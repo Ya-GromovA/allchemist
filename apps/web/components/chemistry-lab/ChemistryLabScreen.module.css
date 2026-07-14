@@ -1,0 +1,614 @@
+.labWorkspace {
+  min-width: 0;
+  display: grid;
+  gap: 0.95rem;
+  padding: 0 1.6rem 2rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #627693;
+  font-size: 0.84rem;
+  font-weight: 720;
+}
+
+.breadcrumb a {
+  color: #116dff;
+  text-decoration: none;
+}
+
+.hero {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.hero h1,
+.hero p,
+.sidePanel h2,
+.sidePanel h3,
+.sceneHeader h2,
+.observationCard h2,
+.explanationCard h2,
+.reviewCard h2 {
+  margin: 0;
+}
+
+.hero h1 {
+  margin-top: 0.5rem;
+  color: #081a46;
+  font-size: 2rem;
+  line-height: 1.05;
+}
+
+.hero p {
+  margin-top: 0.45rem;
+  max-width: 48rem;
+  color: #5f718f;
+  font-weight: 650;
+}
+
+.heroStatus {
+  display: grid;
+  justify-items: end;
+  gap: 0.42rem;
+  color: #8a5a00;
+  font-size: 0.78rem;
+  font-weight: 820;
+}
+
+.labGrid {
+  display: grid;
+  grid-template-columns: minmax(17rem, 0.72fr) minmax(36rem, 1.55fr) minmax(19rem, 0.86fr);
+  gap: 0.95rem;
+  align-items: stretch;
+}
+
+.sidePanel,
+.labSceneCard,
+.observationCard,
+.explanationCard,
+.reviewCard {
+  border: 1px solid #dce7fb;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 16px 42px rgba(16, 48, 99, 0.08);
+}
+
+.sidePanel {
+  display: grid;
+  align-content: start;
+  gap: 0.85rem;
+  padding: 1rem;
+}
+
+.sidePanel header,
+.sceneHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: start;
+}
+
+.sidePanel header span,
+.sceneHeader span {
+  color: #116dff;
+  font-size: 0.78rem;
+  font-weight: 840;
+}
+
+.reagentList,
+.stepList,
+.observationList {
+  display: grid;
+  gap: 0.62rem;
+}
+
+.reagentList article {
+  display: grid;
+  gap: 0.12rem;
+  padding: 0.72rem;
+  border: 1px solid #dbe8f8;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fff, #f7fbff);
+}
+
+.reagentList article[data-added="true"] {
+  border-color: rgba(32, 199, 216, 0.62);
+  background: linear-gradient(135deg, #e9fbff, #f9fdff);
+}
+
+.reagentList strong {
+  color: #082a72;
+  font-size: 1.15rem;
+}
+
+.reagentList span,
+.reagentList small,
+.stepList span,
+.observationList span,
+.observationList small,
+.reviewCard dd,
+.reviewCard dt {
+  color: #61728e;
+  font-size: 0.78rem;
+}
+
+.safetyBox {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.82rem;
+  border-radius: 12px;
+  border: 1px solid #f2d9a4;
+  background: linear-gradient(135deg, #fff8e8, #f9fbff);
+}
+
+.safetyBox ul {
+  display: grid;
+  gap: 0.34rem;
+  margin: 0;
+  padding-left: 1.05rem;
+  color: #70521b;
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.labSceneCard {
+  display: grid;
+  grid-template-rows: auto minmax(25rem, 1fr) auto;
+  gap: 0.85rem;
+  padding: 1rem;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(237, 247, 255, 0.9));
+}
+
+.sceneHeader h2 {
+  color: #081a46;
+  font-size: 1.12rem;
+}
+
+.sceneHeader strong {
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.42rem 0.72rem;
+  background: linear-gradient(135deg, #116dff, #20c7d8);
+  font-size: 0.78rem;
+}
+
+.labScene {
+  position: relative;
+  min-height: 25rem;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(103, 169, 255, 0.22);
+  background:
+    radial-gradient(circle at 50% 70%, rgba(22, 217, 246, 0.24), transparent 24%),
+    radial-gradient(circle at 70% 18%, rgba(124, 92, 255, 0.16), transparent 24%),
+    linear-gradient(180deg, #10285d 0%, #061837 100%);
+}
+
+.backLight {
+  position: absolute;
+  inset: 8% 10%;
+  opacity: 0.46;
+  background:
+    linear-gradient(60deg, transparent 0 49%, rgba(138, 207, 255, 0.18) 50% 51%, transparent 52%),
+    linear-gradient(120deg, transparent 0 48%, rgba(138, 207, 255, 0.12) 49% 50%, transparent 51%);
+  background-size: 5rem 5rem;
+}
+
+.testTubeRack {
+  position: absolute;
+  left: 1.2rem;
+  top: 1.2rem;
+  display: flex;
+  gap: 0.65rem;
+}
+
+.testTubeRack span {
+  width: 3.2rem;
+  height: 7.5rem;
+  display: grid;
+  place-items: end center;
+  padding-bottom: 0.55rem;
+  border-radius: 1rem 1rem 0.45rem 0.45rem;
+  color: #c9e9ff;
+  border: 1px solid rgba(201, 233, 255, 0.42);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0 46%, rgba(32, 199, 216, 0.18) 47%);
+  font-size: 0.78rem;
+  font-weight: 850;
+}
+
+.testTubeRack span[data-filled="true"] {
+  color: #fff;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0 38%, rgba(32, 199, 216, 0.56) 39%);
+  box-shadow: 0 0 24px rgba(32, 199, 216, 0.22);
+}
+
+.flask {
+  position: absolute;
+  left: 50%;
+  bottom: 3.2rem;
+  width: 15rem;
+  height: 17rem;
+  transform: translateX(-50%);
+  border-radius: 7rem 7rem 2.4rem 2.4rem;
+  border: 0.7rem solid rgba(190, 226, 255, 0.5);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0 34%, rgba(255, 255, 255, 0.03) 35%);
+  box-shadow: inset 0 0 36px rgba(255, 255, 255, 0.12), 0 28px 60px rgba(0, 0, 0, 0.22);
+}
+
+.flask::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -5.8rem;
+  width: 4rem;
+  height: 7rem;
+  transform: translateX(-50%);
+  border-radius: 1rem 1rem 0.35rem 0.35rem;
+  border: 0.58rem solid rgba(190, 226, 255, 0.5);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.liquid {
+  position: absolute;
+  left: 1.1rem;
+  right: 1.1rem;
+  bottom: 1.1rem;
+  height: 35%;
+  border-radius: 0 0 1.5rem 1.5rem;
+  background: linear-gradient(180deg, rgba(45, 220, 245, 0.54), rgba(68, 105, 255, 0.42));
+  opacity: 0.45;
+  transition: opacity 180ms ease, box-shadow 180ms ease;
+}
+
+.labScene[data-phase="reacting"] .liquid,
+.labScene[data-phase="observation"] .liquid,
+.labScene[data-phase="completed"] .liquid {
+  opacity: 1;
+  box-shadow: 0 0 46px rgba(32, 199, 216, 0.28);
+}
+
+.zincChip {
+  position: absolute;
+  left: 44%;
+  bottom: 2.4rem;
+  width: 2rem;
+  height: 1rem;
+  border-radius: 45%;
+  background: linear-gradient(135deg, #cfd6df, #7b8da6);
+  opacity: 0;
+}
+
+.flask[data-zinc="true"] .zincChip {
+  opacity: 1;
+}
+
+.bubbles {
+  position: absolute;
+  inset: 3rem 4rem 4rem;
+  opacity: 0;
+}
+
+.labScene[data-phase="reacting"] .bubbles,
+.labScene[data-phase="observation"] .bubbles,
+.labScene[data-phase="completed"] .bubbles {
+  opacity: 1;
+}
+
+.bubbles i {
+  position: absolute;
+  bottom: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: rgba(220, 252, 255, 0.92);
+  box-shadow: 0 0 14px rgba(78, 220, 255, 0.78);
+  animation: bubbleRise 1600ms ease-in infinite;
+}
+
+.bubbles i:nth-child(1) { left: 18%; animation-delay: 0ms; }
+.bubbles i:nth-child(2) { left: 34%; animation-delay: 240ms; }
+.bubbles i:nth-child(3) { left: 48%; animation-delay: 420ms; }
+.bubbles i:nth-child(4) { left: 63%; animation-delay: 120ms; }
+.bubbles i:nth-child(5) { left: 78%; animation-delay: 540ms; }
+
+.phStrip {
+  position: absolute;
+  right: 1.4rem;
+  bottom: 1.4rem;
+  width: 4.5rem;
+  height: 1.2rem;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #082a72;
+  background: #d9e8ff;
+  font-size: 0.72rem;
+  font-weight: 900;
+}
+
+.phStrip[data-active="true"] {
+  background: linear-gradient(90deg, #ffcf5a, #ff8fb4);
+}
+
+.sceneReadout {
+  position: absolute;
+  left: 1.2rem;
+  right: 1.2rem;
+  bottom: 1.1rem;
+  display: flex;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.sceneReadout span {
+  border-radius: 999px;
+  padding: 0.42rem 0.64rem;
+  color: #dff9ff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(206, 239, 255, 0.18);
+  font-size: 0.74rem;
+  font-weight: 820;
+}
+
+.controlPanel {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.controlPanel button {
+  min-height: 2.55rem;
+  white-space: normal;
+}
+
+.stepList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stepList li {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.65rem 0.7rem;
+  border-radius: 10px;
+  border: 1px solid #e4eefb;
+  background: #fbfdff;
+}
+
+.stepList li[data-active="true"] {
+  border-color: rgba(17, 109, 255, 0.38);
+  box-shadow: inset 3px 0 0 #116dff;
+}
+
+.stepList li[data-complete="true"] {
+  background: #eefbf6;
+}
+
+.stepList strong,
+.observationList strong {
+  color: #0a2a73;
+  font-size: 0.88rem;
+}
+
+.aiPanel {
+  display: grid;
+  gap: 0.3rem;
+  padding: 0.9rem;
+  border-radius: 14px;
+  color: #fff;
+  background: linear-gradient(135deg, #116dff, #20a7ff);
+  box-shadow: 0 14px 30px rgba(17, 109, 255, 0.22);
+  animation: assistantPulse 2200ms ease-in-out infinite;
+}
+
+.ai-warning {
+  background: linear-gradient(135deg, #ff9f1c, #e4572e);
+}
+
+.ai-success {
+  background: linear-gradient(135deg, #16b77a, #20c7d8);
+}
+
+.aiPanel p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 0.8rem;
+  line-height: 1.42;
+}
+
+.ai-hint {
+  background: linear-gradient(135deg, #116dff, #20a7ff);
+}
+
+.bottomGrid {
+  display: grid;
+  grid-template-columns: minmax(22rem, 1fr) minmax(25rem, 1.12fr) minmax(18rem, 0.8fr);
+  gap: 0.95rem;
+}
+
+.observationCard,
+.explanationCard,
+.reviewCard {
+  display: grid;
+  gap: 0.78rem;
+  padding: 1rem;
+}
+
+.observationCard p,
+.explanationCard p {
+  margin: 0;
+  color: #61728e;
+  line-height: 1.5;
+}
+
+.observationList article {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.7rem;
+  border-radius: 10px;
+  background: #f5fbff;
+  border: 1px solid #dceafb;
+}
+
+.equation {
+  display: inline-grid;
+  justify-self: start;
+  border-radius: 12px;
+  padding: 0.7rem 0.92rem;
+  color: #0a2a73;
+  background: linear-gradient(135deg, #e9fbff, #f2f5ff);
+  font-size: 1.15rem;
+  font-weight: 900;
+}
+
+.reviewCard dl {
+  display: grid;
+  gap: 0.65rem;
+  margin: 0;
+}
+
+.reviewCard dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid #e8f0fb;
+}
+
+.reviewCard dd {
+  margin: 0;
+  color: #0a2a73;
+  font-weight: 800;
+  text-align: right;
+}
+
+@keyframes bubbleRise {
+  0% {
+    transform: translateY(0) scale(0.62);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-9rem) scale(1.18);
+    opacity: 0;
+  }
+}
+
+@keyframes assistantPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.2rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubbles i,
+  .aiPanel {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 1280px) {
+  .labGrid,
+  .bottomGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .labSceneCard,
+  .explanationCard {
+    grid-column: span 2;
+  }
+
+  .controlPanel {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  :global(.student-topbar) {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.75rem !important;
+  }
+
+  :global(.student-topbar__actions) {
+    width: 100% !important;
+    max-width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 2.6rem 2.6rem minmax(0, 1fr) !important;
+    justify-content: stretch !important;
+    gap: 0.45rem !important;
+  }
+
+  :global(.student-profile) {
+    min-width: 0 !important;
+    width: 100% !important;
+    grid-template-columns: 1.75rem minmax(0, 1fr) !important;
+    overflow: hidden !important;
+  }
+
+  :global(.student-profile span) {
+    width: 1.75rem !important;
+    height: 1.75rem !important;
+  }
+
+  :global(.student-profile strong) {
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+
+  :global(.student-profile small) {
+    display: none !important;
+  }
+
+  .labWorkspace {
+    padding: 0 0.9rem 7rem;
+  }
+
+  .hero {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .heroStatus {
+    justify-items: start;
+  }
+
+  .labGrid,
+  .bottomGrid,
+  .labSceneCard,
+  .explanationCard {
+    grid-template-columns: 1fr;
+    grid-column: auto;
+  }
+
+  .labSceneCard {
+    grid-template-rows: auto minmax(21rem, 1fr) auto;
+  }
+
+  .labScene {
+    min-height: 21rem;
+  }
+
+  .flask {
+    width: 11rem;
+    height: 13rem;
+  }
+
+  .controlPanel {
+    grid-template-columns: 1fr 1fr;
+  }
+}

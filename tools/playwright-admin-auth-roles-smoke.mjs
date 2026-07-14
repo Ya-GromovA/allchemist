@@ -6,10 +6,10 @@ const outDir = process.env.OUT_DIR || "/tmp/allchemist-admin-auth-roles-smoke";
 const password = process.env.TEST_PASSWORD || "AlchTest2070";
 
 const users = [
-  { name: "owner", login: "alch_test_owner", role: "owner", expected: ["панель управления", "Журнал", "Безопасность", "Роли и права"] },
-  { name: "content-editor", login: "alch_test_content_editor", role: "content_editor", expected: ["панель управления", "Контент", "Помощь"] },
-  { name: "support", login: "alch_test_support", role: "support", expected: ["панель управления", "Безопасность", "Журнал"] },
-  { name: "school-admin", login: "alch_test_school_admin", role: "school_admin", expected: ["панель управления", "Школы", "Пользователи", "Доступы"] },
+  { name: "owner", login: "alch_test_owner", role: "owner", expected: ["Admin Console", "Админка «Алхимик»", "Логи", "Роли и доступы"] },
+  { name: "content-editor", login: "alch_test_content_editor", role: "content_editor", expected: ["Admin Console", "Учебный контент", "Content QA"] },
+  { name: "support", login: "alch_test_support", role: "support", expected: ["Admin Console", "Логи", "Настройки"] },
+  { name: "school-admin", login: "alch_test_school_admin", role: "school_admin", expected: ["Admin Console", "Школы", "Пользователи", "Лицензии и платежи"] },
 ];
 
 const forbiddenUi = ["Invalid access token", "QA gate", "publish gate", "QA workflow", "Pro Monthly", "School Quarter", "Family Year"];

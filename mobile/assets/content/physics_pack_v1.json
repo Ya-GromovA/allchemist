@@ -1,6 +1,6 @@
 {
   "pack_id": "physics_pack",
-  "version": 1,
+  "version": 2,
   "generated_at": "2025-12-18T18:19:12Z",
   "modules": [
     {
@@ -94,6 +94,876 @@
         "lang": "en",
         "task_ids": [
           "phys_t_003_en"
+        ]
+      }
+    },
+    {
+      "id": 120000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Графики равномерного движения",
+      "description": "Как читать графики s(t) и v(t): наклон показывает скорость, площадь под v(t) показывает путь.",
+      "content": "Как читать графики s(t) и v(t): наклон показывает скорость, площадь под v(t) показывает путь. Формулы: v = s/t; s = v·t",
+      "type": "lesson",
+      "order_index": 20,
+      "payload": {
+        "lang": "ru",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "Как читать графики s(t) и v(t): наклон показывает скорость, площадь под v(t) показывает путь.",
+        "formulae": [
+          "v = s/t",
+          "s = v·t"
+        ],
+        "common_mistakes": [
+          "Путают путь и перемещение",
+          "Считывают скорость по оси времени"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_120_graph_speed_ru",
+          "phys_120_graph_distance_ru",
+          "phys_120_graph_explain_ru"
+        ]
+      }
+    },
+    {
+      "id": 120001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Uniform motion graphs",
+      "description": "How to read s(t) and v(t) graphs: slope shows speed, area under v(t) shows distance.",
+      "content": "How to read s(t) and v(t) graphs: slope shows speed, area under v(t) shows distance. Formulas: v = s/t; s = v·t",
+      "type": "lesson",
+      "order_index": 21,
+      "payload": {
+        "lang": "en",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "How to read s(t) and v(t) graphs: slope shows speed, area under v(t) shows distance.",
+        "formulae": [
+          "v = s/t",
+          "s = v·t"
+        ],
+        "common_mistakes": [
+          "Confusing distance and displacement",
+          "Reading speed from the time axis"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_120_graph_speed_en",
+          "phys_120_graph_distance_en",
+          "phys_120_graph_explain_en"
+        ]
+      }
+    },
+    {
+      "id": 121000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Ускорение и равноускоренное движение",
+      "description": "Ускорение показывает, как быстро меняется скорость. Для прямолинейного движения используем a=(v-v0)/t.",
+      "content": "Ускорение показывает, как быстро меняется скорость. Для прямолинейного движения используем a=(v-v0)/t. Формулы: a = (v - v0)/t; v = v0 + a·t; s = v0·t + a·t²/2",
+      "type": "lesson",
+      "order_index": 22,
+      "payload": {
+        "lang": "ru",
+        "grade": "9",
+        "branch": "mechanics",
+        "description": "Ускорение показывает, как быстро меняется скорость. Для прямолинейного движения используем a=(v-v0)/t.",
+        "formulae": [
+          "a = (v - v0)/t",
+          "v = v0 + a·t",
+          "s = v0·t + a·t²/2"
+        ],
+        "common_mistakes": [
+          "Забывают начальную скорость",
+          "Смешивают м/с и км/ч"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_121_accel_basic_ru",
+          "phys_121_accel_final_v_ru",
+          "phys_121_accel_units_ru"
+        ]
+      }
+    },
+    {
+      "id": 121001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Acceleration and uniformly accelerated motion",
+      "description": "Acceleration shows how quickly velocity changes. For linear motion use a=(v-v0)/t.",
+      "content": "Acceleration shows how quickly velocity changes. For linear motion use a=(v-v0)/t. Formulas: a = (v - v0)/t; v = v0 + a·t; s = v0·t + a·t²/2",
+      "type": "lesson",
+      "order_index": 23,
+      "payload": {
+        "lang": "en",
+        "grade": "9",
+        "branch": "mechanics",
+        "description": "Acceleration shows how quickly velocity changes. For linear motion use a=(v-v0)/t.",
+        "formulae": [
+          "a = (v - v0)/t",
+          "v = v0 + a·t",
+          "s = v0·t + a·t²/2"
+        ],
+        "common_mistakes": [
+          "Forgetting initial velocity",
+          "Mixing m/s and km/h"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_121_accel_basic_en",
+          "phys_121_accel_final_v_en",
+          "phys_121_accel_units_en"
+        ]
+      }
+    },
+    {
+      "id": 122000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Свободное падение",
+      "description": "При отсутствии сопротивления воздуха все тела падают с ускорением g≈9,8 м/с².",
+      "content": "При отсутствии сопротивления воздуха все тела падают с ускорением g≈9,8 м/с². Формулы: g ≈ 9.8 м/с²; h = g·t²/2; v = g·t",
+      "type": "lesson",
+      "order_index": 24,
+      "payload": {
+        "lang": "ru",
+        "grade": "9",
+        "branch": "mechanics",
+        "description": "При отсутствии сопротивления воздуха все тела падают с ускорением g≈9,8 м/с².",
+        "formulae": [
+          "g ≈ 9.8 м/с²",
+          "h = g·t²/2",
+          "v = g·t"
+        ],
+        "common_mistakes": [
+          "Думают, что тяжёлое тело всегда падает быстрее",
+          "Забывают про сопротивление воздуха"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_122_freefall_v_ru",
+          "phys_122_freefall_h_ru",
+          "phys_122_freefall_concept_ru"
+        ]
+      }
+    },
+    {
+      "id": 122001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Free fall",
+      "description": "Without air resistance all bodies fall with acceleration g≈9.8 m/s².",
+      "content": "Without air resistance all bodies fall with acceleration g≈9.8 m/s². Formulas: g ≈ 9.8 м/с²; h = g·t²/2; v = g·t",
+      "type": "lesson",
+      "order_index": 25,
+      "payload": {
+        "lang": "en",
+        "grade": "9",
+        "branch": "mechanics",
+        "description": "Without air resistance all bodies fall with acceleration g≈9.8 m/s².",
+        "formulae": [
+          "g ≈ 9.8 м/с²",
+          "h = g·t²/2",
+          "v = g·t"
+        ],
+        "common_mistakes": [
+          "Assuming heavier bodies always fall faster",
+          "Forgetting air resistance"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_122_freefall_v_en",
+          "phys_122_freefall_h_en",
+          "phys_122_freefall_concept_en"
+        ]
+      }
+    },
+    {
+      "id": 123000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Плотность вещества",
+      "description": "Плотность связывает массу и объём: ρ=m/V. Она помогает определить вещество и решать практические задачи.",
+      "content": "Плотность связывает массу и объём: ρ=m/V. Она помогает определить вещество и решать практические задачи. Формулы: ρ = m/V; m = ρ·V; V = m/ρ",
+      "type": "lesson",
+      "order_index": 26,
+      "payload": {
+        "lang": "ru",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "Плотность связывает массу и объём: ρ=m/V. Она помогает определить вещество и решать практические задачи.",
+        "formulae": [
+          "ρ = m/V",
+          "m = ρ·V",
+          "V = m/ρ"
+        ],
+        "common_mistakes": [
+          "Не переводят см³ в м³",
+          "Путают массу и вес"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_123_density_basic_ru",
+          "phys_123_density_mass_ru",
+          "phys_123_density_choice_ru"
+        ]
+      }
+    },
+    {
+      "id": 123001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Density of matter",
+      "description": "Density links mass and volume: ρ=m/V. It helps identify substances and solve practical problems.",
+      "content": "Density links mass and volume: ρ=m/V. It helps identify substances and solve practical problems. Formulas: ρ = m/V; m = ρ·V; V = m/ρ",
+      "type": "lesson",
+      "order_index": 27,
+      "payload": {
+        "lang": "en",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "Density links mass and volume: ρ=m/V. It helps identify substances and solve practical problems.",
+        "formulae": [
+          "ρ = m/V",
+          "m = ρ·V",
+          "V = m/ρ"
+        ],
+        "common_mistakes": [
+          "Not converting cm³ to m³",
+          "Confusing mass and weight"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_123_density_basic_en",
+          "phys_123_density_mass_en",
+          "phys_123_density_choice_en"
+        ]
+      }
+    },
+    {
+      "id": 124000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Давление твёрдых тел и жидкостей",
+      "description": "Давление показывает силу на единицу площади: p=F/S. В жидкости давление растёт с глубиной.",
+      "content": "Давление показывает силу на единицу площади: p=F/S. В жидкости давление растёт с глубиной. Формулы: p = F/S; p = ρ·g·h",
+      "type": "lesson",
+      "order_index": 28,
+      "payload": {
+        "lang": "ru",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "Давление показывает силу на единицу площади: p=F/S. В жидкости давление растёт с глубиной.",
+        "formulae": [
+          "p = F/S",
+          "p = ρ·g·h"
+        ],
+        "common_mistakes": [
+          "Забывают перевести площадь в м²",
+          "Не учитывают глубину в жидкости"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_124_pressure_solid_ru",
+          "phys_124_pressure_liquid_ru",
+          "phys_124_pressure_explain_ru"
+        ]
+      }
+    },
+    {
+      "id": 124001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Pressure in solids and liquids",
+      "description": "Pressure is force per area: p=F/S. In liquids pressure grows with depth.",
+      "content": "Pressure is force per area: p=F/S. In liquids pressure grows with depth. Formulas: p = F/S; p = ρ·g·h",
+      "type": "lesson",
+      "order_index": 29,
+      "payload": {
+        "lang": "en",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "Pressure is force per area: p=F/S. In liquids pressure grows with depth.",
+        "formulae": [
+          "p = F/S",
+          "p = ρ·g·h"
+        ],
+        "common_mistakes": [
+          "Forgetting area conversion to m²",
+          "Ignoring liquid depth"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_124_pressure_solid_en",
+          "phys_124_pressure_liquid_en",
+          "phys_124_pressure_explain_en"
+        ]
+      }
+    },
+    {
+      "id": 125000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Архимедова сила и плавание тел",
+      "description": "На тело в жидкости действует выталкивающая сила F_A=ρ·g·V. Плавание зависит от сравнения плотностей.",
+      "content": "На тело в жидкости действует выталкивающая сила F_A=ρ·g·V. Плавание зависит от сравнения плотностей. Формулы: F_A = ρ·g·V",
+      "type": "lesson",
+      "order_index": 30,
+      "payload": {
+        "lang": "ru",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "На тело в жидкости действует выталкивающая сила F_A=ρ·g·V. Плавание зависит от сравнения плотностей.",
+        "formulae": [
+          "F_A = ρ·g·V"
+        ],
+        "common_mistakes": [
+          "Путают объём тела и вытесненной жидкости",
+          "Смотрят только на массу, а не плотность"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_125_arch_force_ru",
+          "phys_125_float_choice_ru",
+          "phys_125_arch_open_ru"
+        ]
+      }
+    },
+    {
+      "id": 125001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Buoyant force and floating bodies",
+      "description": "A body in liquid experiences buoyant force F_A=ρ·g·V. Floating depends on density comparison.",
+      "content": "A body in liquid experiences buoyant force F_A=ρ·g·V. Floating depends on density comparison. Formulas: F_A = ρ·g·V",
+      "type": "lesson",
+      "order_index": 31,
+      "payload": {
+        "lang": "en",
+        "grade": "7",
+        "branch": "mechanics",
+        "description": "A body in liquid experiences buoyant force F_A=ρ·g·V. Floating depends on density comparison.",
+        "formulae": [
+          "F_A = ρ·g·V"
+        ],
+        "common_mistakes": [
+          "Confusing body volume and displaced liquid volume",
+          "Considering only mass, not density"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_125_arch_force_en",
+          "phys_125_float_choice_en",
+          "phys_125_arch_open_en"
+        ]
+      }
+    },
+    {
+      "id": 126000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "title": "Работа, мощность и энергия",
+      "description": "Механическая работа A=F·s, мощность P=A/t. Энергия показывает способность тела совершать работу.",
+      "content": "Механическая работа A=F·s, мощность P=A/t. Энергия показывает способность тела совершать работу. Формулы: A = F·s; P = A/t; E_k = m·v²/2; E_p = m·g·h",
+      "type": "lesson",
+      "order_index": 32,
+      "payload": {
+        "lang": "ru",
+        "grade": "8",
+        "branch": "mechanics",
+        "description": "Механическая работа A=F·s, мощность P=A/t. Энергия показывает способность тела совершать работу.",
+        "formulae": [
+          "A = F·s",
+          "P = A/t",
+          "E_k = m·v²/2",
+          "E_p = m·g·h"
+        ],
+        "common_mistakes": [
+          "Путают работу и мощность",
+          "Забывают направление силы"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_126_work_basic_ru",
+          "phys_126_power_basic_ru",
+          "phys_126_energy_choice_ru"
+        ]
+      }
+    },
+    {
+      "id": 126001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "title": "Work, power and energy",
+      "description": "Mechanical work A=F·s, power P=A/t. Energy shows ability to do work.",
+      "content": "Mechanical work A=F·s, power P=A/t. Energy shows ability to do work. Formulas: A = F·s; P = A/t; E_k = m·v²/2; E_p = m·g·h",
+      "type": "lesson",
+      "order_index": 33,
+      "payload": {
+        "lang": "en",
+        "grade": "8",
+        "branch": "mechanics",
+        "description": "Mechanical work A=F·s, power P=A/t. Energy shows ability to do work.",
+        "formulae": [
+          "A = F·s",
+          "P = A/t",
+          "E_k = m·v²/2",
+          "E_p = m·g·h"
+        ],
+        "common_mistakes": [
+          "Confusing work and power",
+          "Forgetting force direction"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_126_work_basic_en",
+          "phys_126_power_basic_en",
+          "phys_126_energy_choice_en"
+        ]
+      }
+    },
+    {
+      "id": 127000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "thermal",
+      "title": "Количество теплоты и теплоёмкость",
+      "description": "Количество теплоты при нагревании: Q=c·m·ΔT. Важно следить за единицами массы и температуры.",
+      "content": "Количество теплоты при нагревании: Q=c·m·ΔT. Важно следить за единицами массы и температуры. Формулы: Q = c·m·ΔT",
+      "type": "lesson",
+      "order_index": 34,
+      "payload": {
+        "lang": "ru",
+        "grade": "8",
+        "branch": "thermal",
+        "description": "Количество теплоты при нагревании: Q=c·m·ΔT. Важно следить за единицами массы и температуры.",
+        "formulae": [
+          "Q = c·m·ΔT"
+        ],
+        "common_mistakes": [
+          "Используют граммы вместо килограммов",
+          "Не считают ΔT"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_127_heat_water_ru",
+          "phys_127_heat_delta_ru",
+          "phys_127_heat_open_ru"
+        ]
+      }
+    },
+    {
+      "id": 127001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "thermal",
+      "title": "Heat quantity and heat capacity",
+      "description": "Heat during warming: Q=c·m·ΔT. Track units for mass and temperature.",
+      "content": "Heat during warming: Q=c·m·ΔT. Track units for mass and temperature. Formulas: Q = c·m·ΔT",
+      "type": "lesson",
+      "order_index": 35,
+      "payload": {
+        "lang": "en",
+        "grade": "8",
+        "branch": "thermal",
+        "description": "Heat during warming: Q=c·m·ΔT. Track units for mass and temperature.",
+        "formulae": [
+          "Q = c·m·ΔT"
+        ],
+        "common_mistakes": [
+          "Using grams instead of kilograms",
+          "Not calculating ΔT"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_127_heat_water_en",
+          "phys_127_heat_delta_en",
+          "phys_127_heat_open_en"
+        ]
+      }
+    },
+    {
+      "id": 128000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "title": "Электрическая цепь: ток, напряжение, сопротивление",
+      "description": "Ток — направленное движение зарядов, напряжение создаёт электрическое поле, сопротивление ограничивает ток.",
+      "content": "Ток — направленное движение зарядов, напряжение создаёт электрическое поле, сопротивление ограничивает ток. Формулы: I = q/t; U = A/q; I = U/R",
+      "type": "lesson",
+      "order_index": 36,
+      "payload": {
+        "lang": "ru",
+        "grade": "8",
+        "branch": "electricity",
+        "description": "Ток — направленное движение зарядов, напряжение создаёт электрическое поле, сопротивление ограничивает ток.",
+        "formulae": [
+          "I = q/t",
+          "U = A/q",
+          "I = U/R"
+        ],
+        "common_mistakes": [
+          "Считают ток расходуемым",
+          "Путают напряжение и силу тока"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_128_current_charge_ru",
+          "phys_128_ohm_current_ru",
+          "phys_128_circuit_open_ru"
+        ]
+      }
+    },
+    {
+      "id": 128001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "title": "Electric circuit: current, voltage, resistance",
+      "description": "Current is directed charge motion, voltage creates electric field, resistance limits current.",
+      "content": "Current is directed charge motion, voltage creates electric field, resistance limits current. Formulas: I = q/t; U = A/q; I = U/R",
+      "type": "lesson",
+      "order_index": 37,
+      "payload": {
+        "lang": "en",
+        "grade": "8",
+        "branch": "electricity",
+        "description": "Current is directed charge motion, voltage creates electric field, resistance limits current.",
+        "formulae": [
+          "I = q/t",
+          "U = A/q",
+          "I = U/R"
+        ],
+        "common_mistakes": [
+          "Thinking current is consumed",
+          "Confusing voltage and current"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_128_current_charge_en",
+          "phys_128_ohm_current_en",
+          "phys_128_circuit_open_en"
+        ]
+      }
+    },
+    {
+      "id": 129000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "title": "Последовательное и параллельное соединение",
+      "description": "При последовательном соединении ток одинаков, при параллельном напряжение одинаково на ветвях.",
+      "content": "При последовательном соединении ток одинаков, при параллельном напряжение одинаково на ветвях. Формулы: R_series = R1 + R2; 1/R_parallel = 1/R1 + 1/R2",
+      "type": "lesson",
+      "order_index": 38,
+      "payload": {
+        "lang": "ru",
+        "grade": "8",
+        "branch": "electricity",
+        "description": "При последовательном соединении ток одинаков, при параллельном напряжение одинаково на ветвях.",
+        "formulae": [
+          "R_series = R1 + R2",
+          "1/R_parallel = 1/R1 + 1/R2"
+        ],
+        "common_mistakes": [
+          "Путают правила для тока и напряжения",
+          "Складывают сопротивления параллельно как последовательно"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_129_series_r_ru",
+          "phys_129_parallel_equal_ru",
+          "phys_129_series_parallel_choice_ru"
+        ]
+      }
+    },
+    {
+      "id": 129001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "title": "Series and parallel circuits",
+      "description": "In series current is the same; in parallel voltage is the same across branches.",
+      "content": "In series current is the same; in parallel voltage is the same across branches. Formulas: R_series = R1 + R2; 1/R_parallel = 1/R1 + 1/R2",
+      "type": "lesson",
+      "order_index": 39,
+      "payload": {
+        "lang": "en",
+        "grade": "8",
+        "branch": "electricity",
+        "description": "In series current is the same; in parallel voltage is the same across branches.",
+        "formulae": [
+          "R_series = R1 + R2",
+          "1/R_parallel = 1/R1 + 1/R2"
+        ],
+        "common_mistakes": [
+          "Confusing current/voltage rules",
+          "Adding parallel resistances like series"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_129_series_r_en",
+          "phys_129_parallel_equal_en",
+          "phys_129_series_parallel_choice_en"
+        ]
+      }
+    },
+    {
+      "id": 130000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "optics",
+      "title": "Линзы и построение изображений",
+      "description": "Собирающая линза может давать действительное или мнимое изображение. Главные лучи помогают строить изображение.",
+      "content": "Собирающая линза может давать действительное или мнимое изображение. Главные лучи помогают строить изображение. Формулы: 1/F = 1/d + 1/f",
+      "type": "lesson",
+      "order_index": 40,
+      "payload": {
+        "lang": "ru",
+        "grade": "8",
+        "branch": "optics",
+        "description": "Собирающая линза может давать действительное или мнимое изображение. Главные лучи помогают строить изображение.",
+        "formulae": [
+          "1/F = 1/d + 1/f"
+        ],
+        "common_mistakes": [
+          "Путают фокус и оптический центр",
+          "Забывают знак увеличения"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_130_lens_focus_ru",
+          "phys_130_lens_formula_ru",
+          "phys_130_lens_open_ru"
+        ]
+      }
+    },
+    {
+      "id": 130001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "optics",
+      "title": "Lenses and image construction",
+      "description": "A converging lens can form real or virtual images. Principal rays help construct images.",
+      "content": "A converging lens can form real or virtual images. Principal rays help construct images. Formulas: 1/F = 1/d + 1/f",
+      "type": "lesson",
+      "order_index": 41,
+      "payload": {
+        "lang": "en",
+        "grade": "8",
+        "branch": "optics",
+        "description": "A converging lens can form real or virtual images. Principal rays help construct images.",
+        "formulae": [
+          "1/F = 1/d + 1/f"
+        ],
+        "common_mistakes": [
+          "Confusing focus and optical center",
+          "Forgetting magnification sign"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_130_lens_focus_en",
+          "phys_130_lens_formula_en",
+          "phys_130_lens_open_en"
+        ]
+      }
+    },
+    {
+      "id": 131000,
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "atomic",
+      "title": "Радиоактивность и ядерные превращения",
+      "description": "Радиоактивность — самопроизвольное превращение ядер с испусканием α, β или γ-излучения.",
+      "content": "Радиоактивность — самопроизвольное превращение ядер с испусканием α, β или γ-излучения. Формулы: A = λN; T₁/₂ — период полураспада",
+      "type": "lesson",
+      "order_index": 42,
+      "payload": {
+        "lang": "ru",
+        "grade": "9",
+        "branch": "atomic",
+        "description": "Радиоактивность — самопроизвольное превращение ядер с испусканием α, β или γ-излучения.",
+        "formulae": [
+          "A = λN",
+          "T₁/₂ — период полураспада"
+        ],
+        "common_mistakes": [
+          "Путают химическую реакцию и ядерное превращение",
+          "Считают γ-излучение частицами вещества"
+        ],
+        "mini_check": [
+          "Запиши формулу и единицы величин.",
+          "Объясни физический смысл каждой величины."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_131_radio_half_ru",
+          "phys_131_radio_choice_ru",
+          "phys_131_radio_safety_ru"
+        ]
+      }
+    },
+    {
+      "id": 131001,
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "atomic",
+      "title": "Radioactivity and nuclear transformations",
+      "description": "Radioactivity is spontaneous nuclear transformation with alpha, beta or gamma emission.",
+      "content": "Radioactivity is spontaneous nuclear transformation with alpha, beta or gamma emission. Formulas: A = λN; T₁/₂ — период полураспада",
+      "type": "lesson",
+      "order_index": 43,
+      "payload": {
+        "lang": "en",
+        "grade": "9",
+        "branch": "atomic",
+        "description": "Radioactivity is spontaneous nuclear transformation with alpha, beta or gamma emission.",
+        "formulae": [
+          "A = λN",
+          "T₁/₂ — период полураспада"
+        ],
+        "common_mistakes": [
+          "Confusing chemical reactions and nuclear transformations",
+          "Treating gamma radiation as matter particles"
+        ],
+        "mini_check": [
+          "Write the formula and units.",
+          "Explain the physical meaning of each quantity."
+        ],
+        "source_type": "editorial_verified",
+        "verified": true,
+        "task_ids": [
+          "phys_131_radio_half_en",
+          "phys_131_radio_choice_en",
+          "phys_131_radio_safety_en"
         ]
       }
     }
@@ -248,7 +1118,7 @@
       "id": "phys_t_003_en",
       "module_id": "physics",
       "lesson_id": 112001,
-      "title": "Open answer: apply Ohm's law",
+      "title": "Развёрнутый ответ: примените закон Ома",
       "description": "Explain how to find current from U and R.",
       "type": "open",
       "estimated_minutes": 6,
@@ -288,6 +1158,2296 @@
         "open",
         "en"
       ]
+    },
+    {
+      "id": "phys_120_graph_speed_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 120000,
+      "title": "Задача 1: Графики равномерного движения",
+      "description": "По графику s(t): за 20 с координата выросла с 0 до 100 м. Найдите скорость.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 5,
+          "unit": "m/s"
+        },
+        "solution": "v=100/20=5 м/с",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_120_graph_distance_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 120000,
+      "title": "Задача 2: Графики равномерного движения",
+      "description": "Скорость постоянна 3 м/с. Какой путь за 40 с?",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 120,
+          "unit": "m"
+        },
+        "solution": "s=v·t=3·40=120 м",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_120_graph_explain_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 120000,
+      "title": "Задача 3: Графики равномерного движения",
+      "description": "Объясните, почему больший наклон графика s(t) означает большую скорость.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "наклон",
+                "скорость",
+                "путь",
+                "время"
+              ],
+              "keywords_en": [
+                "slope",
+                "speed",
+                "distance",
+                "time"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_120_graph_speed_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 120001,
+      "title": "Task 1: Uniform motion graphs",
+      "description": "From an s(t) graph: in 20 s position grows from 0 to 100 m. Find speed.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 5,
+          "unit": "m/s"
+        },
+        "solution": "v=100/20=5 m/s",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_120_graph_distance_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 120001,
+      "title": "Task 2: Uniform motion graphs",
+      "description": "Speed is constant 3 m/s. What distance in 40 s?",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 120,
+          "unit": "m"
+        },
+        "solution": "s=v·t=3·40=120 m",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_120_graph_explain_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 120001,
+      "title": "Task 3: Uniform motion graphs",
+      "description": "Explain why a steeper s(t) graph means higher speed.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "наклон",
+                "скорость",
+                "путь",
+                "время"
+              ],
+              "keywords_en": [
+                "slope",
+                "speed",
+                "distance",
+                "time"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_basic_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 121000,
+      "title": "Задача 1: Ускорение и равноускоренное движение",
+      "description": "Скорость выросла с 2 до 14 м/с за 6 с. Найдите ускорение.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "m/s^2"
+        },
+        "solution": "a=(14-2)/6=2 м/с²",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s^2",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_final_v_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 121000,
+      "title": "Задача 2: Ускорение и равноускоренное движение",
+      "description": "Тело стартует со скоростью 4 м/с и ускоряется 3 м/с² в течение 5 с. Найдите конечную скорость.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 19,
+          "unit": "m/s"
+        },
+        "solution": "v=v0+a·t=4+3·5=19 м/с",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_units_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 121000,
+      "title": "Задача 3: Ускорение и равноускоренное движение",
+      "description": "Какая единица измерения ускорения в СИ?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "м/с",
+          "м/с²",
+          "Н",
+          "Дж"
+        ],
+        "correct_index": 1,
+        "explain": "Ускорение — изменение скорости за время: (м/с)/с = м/с².",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_basic_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 121001,
+      "title": "Task 1: Acceleration and uniformly accelerated motion",
+      "description": "Velocity increased from 2 to 14 m/s in 6 s. Find acceleration.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "m/s^2"
+        },
+        "solution": "a=(14-2)/6=2 m/s²",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s^2",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_final_v_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 121001,
+      "title": "Task 2: Acceleration and uniformly accelerated motion",
+      "description": "A body starts at 4 m/s and accelerates at 3 m/s² for 5 s. Find final velocity.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 19,
+          "unit": "m/s"
+        },
+        "solution": "v=v0+a·t=4+3·5=19 m/s",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_121_accel_units_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 121001,
+      "title": "Task 3: Acceleration and uniformly accelerated motion",
+      "description": "What is the SI unit of acceleration?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "m/s",
+          "m/s²",
+          "N",
+          "J"
+        ],
+        "correct_index": 1,
+        "explain": "Acceleration is velocity change over time: (m/s)/s = m/s².",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_v_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 122000,
+      "title": "Задача 1: Свободное падение",
+      "description": "Тело падает 3 с без сопротивления воздуха. Найдите скорость перед ударом (g=10 м/с²).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "m/s"
+        },
+        "solution": "v=g·t=10·3=30 м/с",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_h_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 122000,
+      "title": "Задача 2: Свободное падение",
+      "description": "Тело падало 2 с. Оцените высоту (g=10 м/с²).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20,
+          "unit": "m"
+        },
+        "solution": "h=g·t²/2=10·4/2=20 м",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_concept_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 122000,
+      "title": "Задача 3: Свободное падение",
+      "description": "Почему в вакууме перо и металлический шар падают одинаково?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "вакуум",
+                "сопротивление",
+                "воздух",
+                "одинаковое ускорение",
+                "g"
+              ],
+              "keywords_en": [
+                "vacuum",
+                "resistance",
+                "air",
+                "same acceleration",
+                "g"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_v_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 122001,
+      "title": "Task 1: Free fall",
+      "description": "A body falls for 3 s without air resistance. Find impact speed (g=10 m/s²).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "m/s"
+        },
+        "solution": "v=g·t=10·3=30 m/s",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m/s",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_h_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 122001,
+      "title": "Task 2: Free fall",
+      "description": "A body fell for 2 s. Estimate height (g=10 m/s²).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20,
+          "unit": "m"
+        },
+        "solution": "h=g·t²/2=10·4/2=20 m",
+        "rubric": {
+          "type": "numeric",
+          "unit": "m",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_122_freefall_concept_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 122001,
+      "title": "Task 3: Free fall",
+      "description": "Why do a feather and a metal ball fall equally in vacuum?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "вакуум",
+                "сопротивление",
+                "воздух",
+                "одинаковое ускорение",
+                "g"
+              ],
+              "keywords_en": [
+                "vacuum",
+                "resistance",
+                "air",
+                "same acceleration",
+                "g"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_basic_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 123000,
+      "title": "Задача 1: Плотность вещества",
+      "description": "Масса тела 540 г, объём 200 см³. Найдите плотность.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2.7,
+          "unit": "g/cm^3"
+        },
+        "solution": "ρ=540/200=2,7 г/см³",
+        "rubric": {
+          "type": "numeric",
+          "unit": "g/cm^3",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_mass_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 123000,
+      "title": "Задача 2: Плотность вещества",
+      "description": "Плотность жидкости 0,8 г/см³, объём 50 см³. Найдите массу.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 40,
+          "unit": "g"
+        },
+        "solution": "m=ρ·V=0,8·50=40 г",
+        "rubric": {
+          "type": "numeric",
+          "unit": "g",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_choice_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 123000,
+      "title": "Задача 3: Плотность вещества",
+      "description": "Если при той же массе объём больше, плотность...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "увеличится",
+          "уменьшится",
+          "не изменится"
+        ],
+        "correct_index": 1,
+        "explain": "ρ=m/V: чем больше V при том же m, тем меньше ρ.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_basic_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 123001,
+      "title": "Task 1: Density of matter",
+      "description": "Mass is 540 g, volume is 200 cm³. Find density.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2.7,
+          "unit": "g/cm^3"
+        },
+        "solution": "ρ=540/200=2.7 g/cm³",
+        "rubric": {
+          "type": "numeric",
+          "unit": "g/cm^3",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_mass_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 123001,
+      "title": "Task 2: Density of matter",
+      "description": "Liquid density is 0.8 g/cm³, volume is 50 cm³. Find mass.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 40,
+          "unit": "g"
+        },
+        "solution": "m=ρ·V=0.8·50=40 g",
+        "rubric": {
+          "type": "numeric",
+          "unit": "g",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_123_density_choice_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 123001,
+      "title": "Task 3: Density of matter",
+      "description": "If volume is larger at the same mass, density...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "increases",
+          "decreases",
+          "does not change"
+        ],
+        "correct_index": 1,
+        "explain": "ρ=m/V: larger V at same m gives smaller ρ.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_solid_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 124000,
+      "title": "Задача 1: Давление твёрдых тел и жидкостей",
+      "description": "Сила 200 Н действует на площадь 0,5 м². Найдите давление.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 400,
+          "unit": "Pa"
+        },
+        "solution": "p=F/S=200/0,5=400 Па",
+        "rubric": {
+          "type": "numeric",
+          "unit": "Pa",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_liquid_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 124000,
+      "title": "Задача 2: Давление твёрдых тел и жидкостей",
+      "description": "Оцените давление воды на глубине 2 м (ρ=1000 кг/м³, g=10).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20000,
+          "unit": "Pa"
+        },
+        "solution": "p=ρgh=1000·10·2=20000 Па",
+        "rubric": {
+          "type": "numeric",
+          "unit": "Pa",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_explain_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 124000,
+      "title": "Задача 3: Давление твёрдых тел и жидкостей",
+      "description": "Почему лыжи уменьшают давление человека на снег?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "площадь",
+                "больше",
+                "давление",
+                "меньше",
+                "p=F/S"
+              ],
+              "keywords_en": [
+                "area",
+                "larger",
+                "pressure",
+                "smaller",
+                "p=F/S"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_solid_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 124001,
+      "title": "Task 1: Pressure in solids and liquids",
+      "description": "Force 200 N acts on area 0.5 m². Find pressure.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 400,
+          "unit": "Pa"
+        },
+        "solution": "p=F/S=200/0.5=400 Pa",
+        "rubric": {
+          "type": "numeric",
+          "unit": "Pa",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_liquid_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 124001,
+      "title": "Task 2: Pressure in solids and liquids",
+      "description": "Estimate water pressure at depth 2 m (ρ=1000 kg/m³, g=10).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20000,
+          "unit": "Pa"
+        },
+        "solution": "p=ρgh=1000·10·2=20000 Pa",
+        "rubric": {
+          "type": "numeric",
+          "unit": "Pa",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_124_pressure_explain_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 124001,
+      "title": "Task 3: Pressure in solids and liquids",
+      "description": "Why do skis reduce human pressure on snow?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "площадь",
+                "больше",
+                "давление",
+                "меньше",
+                "p=F/S"
+              ],
+              "keywords_en": [
+                "area",
+                "larger",
+                "pressure",
+                "smaller",
+                "p=F/S"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_arch_force_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 125000,
+      "title": "Задача 1: Архимедова сила и плавание тел",
+      "description": "Тело вытесняет 0,003 м³ воды. Найдите F_A (ρ=1000, g=10).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "N"
+        },
+        "solution": "F_A=ρgV=1000·10·0,003=30 Н",
+        "rubric": {
+          "type": "numeric",
+          "unit": "N",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_float_choice_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 125000,
+      "title": "Задача 2: Архимедова сила и плавание тел",
+      "description": "Тело плавает, если его средняя плотность...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "больше плотности жидкости",
+          "меньше плотности жидкости",
+          "всегда равна нулю"
+        ],
+        "correct_index": 1,
+        "explain": "Если средняя плотность тела меньше плотности жидкости, тело всплывает.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_arch_open_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 125000,
+      "title": "Задача 3: Архимедова сила и плавание тел",
+      "description": "Почему стальной корабль плавает, хотя сталь плотнее воды?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 45,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "средняя плотность",
+                "воздух",
+                "объём",
+                "архимедова сила"
+              ],
+              "keywords_en": [
+                "average density",
+                "air",
+                "volume",
+                "buoyant force"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_arch_force_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 125001,
+      "title": "Task 1: Buoyant force and floating bodies",
+      "description": "A body displaces 0.003 m³ of water. Find F_A (ρ=1000, g=10).",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "N"
+        },
+        "solution": "F_A=ρgV=1000·10·0.003=30 N",
+        "rubric": {
+          "type": "numeric",
+          "unit": "N",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_float_choice_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 125001,
+      "title": "Task 2: Buoyant force and floating bodies",
+      "description": "A body floats if its average density is...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "greater than liquid density",
+          "less than liquid density",
+          "always zero"
+        ],
+        "correct_index": 1,
+        "explain": "If average body density is lower than liquid density, it floats.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_125_arch_open_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 125001,
+      "title": "Task 3: Buoyant force and floating bodies",
+      "description": "Why does a steel ship float although steel is denser than water?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 45,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "средняя плотность",
+                "воздух",
+                "объём",
+                "архимедова сила"
+              ],
+              "keywords_en": [
+                "average density",
+                "air",
+                "volume",
+                "buoyant force"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_7",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_work_basic_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 126000,
+      "title": "Задача 1: Работа, мощность и энергия",
+      "description": "Сила 50 Н переместила тело на 4 м. Найдите работу.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 200,
+          "unit": "J"
+        },
+        "solution": "A=F·s=50·4=200 Дж",
+        "rubric": {
+          "type": "numeric",
+          "unit": "J",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_power_basic_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 126000,
+      "title": "Задача 2: Работа, мощность и энергия",
+      "description": "Работа 600 Дж выполнена за 20 с. Найдите мощность.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "W"
+        },
+        "solution": "P=A/t=600/20=30 Вт",
+        "rubric": {
+          "type": "numeric",
+          "unit": "W",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_energy_choice_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "mechanics",
+      "lesson_id": 126000,
+      "title": "Задача 3: Работа, мощность и энергия",
+      "description": "Какая энергия зависит от высоты?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "кинетическая",
+          "потенциальная",
+          "электрическая"
+        ],
+        "correct_index": 1,
+        "explain": "Потенциальная энергия в поле тяжести: E=mgh.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_work_basic_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 126001,
+      "title": "Task 1: Work, power and energy",
+      "description": "Force 50 N moved a body 4 m. Find work.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 200,
+          "unit": "J"
+        },
+        "solution": "A=F·s=50·4=200 J",
+        "rubric": {
+          "type": "numeric",
+          "unit": "J",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_power_basic_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 126001,
+      "title": "Task 2: Work, power and energy",
+      "description": "Work 600 J is done in 20 s. Find power.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 30,
+          "unit": "W"
+        },
+        "solution": "P=A/t=600/20=30 W",
+        "rubric": {
+          "type": "numeric",
+          "unit": "W",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_126_energy_choice_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "mechanics",
+      "lesson_id": 126001,
+      "title": "Task 3: Work, power and energy",
+      "description": "Which energy depends on height?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "kinetic",
+          "potential",
+          "electric"
+        ],
+        "correct_index": 1,
+        "explain": "Gravitational potential energy: E=mgh.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "mechanics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_water_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "thermal",
+      "lesson_id": 127000,
+      "title": "Задача 1: Количество теплоты и теплоёмкость",
+      "description": "Нагреть 2 кг воды на 10 °C. c=4200 Дж/(кг·°C). Найдите Q.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 84000,
+          "unit": "J"
+        },
+        "solution": "Q=c·m·ΔT=4200·2·10=84000 Дж",
+        "rubric": {
+          "type": "numeric",
+          "unit": "J",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_delta_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "thermal",
+      "lesson_id": 127000,
+      "title": "Задача 2: Количество теплоты и теплоёмкость",
+      "description": "Температура выросла с 18 до 45 °C. Найдите ΔT.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 27,
+          "unit": "C"
+        },
+        "solution": "ΔT=45-18=27 °C",
+        "rubric": {
+          "type": "numeric",
+          "unit": "C",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_open_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "thermal",
+      "lesson_id": 127000,
+      "title": "Задача 3: Количество теплоты и теплоёмкость",
+      "description": "Почему вода медленно нагревается и медленно остывает?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "теплоёмкость",
+                "большая",
+                "энергия",
+                "температура"
+              ],
+              "keywords_en": [
+                "heat capacity",
+                "large",
+                "energy",
+                "temperature"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_water_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "thermal",
+      "lesson_id": 127001,
+      "title": "Task 1: Heat quantity and heat capacity",
+      "description": "Heat 2 kg of water by 10 °C. c=4200 J/(kg·°C). Find Q.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 84000,
+          "unit": "J"
+        },
+        "solution": "Q=c·m·ΔT=4200·2·10=84000 J",
+        "rubric": {
+          "type": "numeric",
+          "unit": "J",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_delta_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "thermal",
+      "lesson_id": 127001,
+      "title": "Task 2: Heat quantity and heat capacity",
+      "description": "Temperature rose from 18 to 45 °C. Find ΔT.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 27,
+          "unit": "C"
+        },
+        "solution": "ΔT=45-18=27 °C",
+        "rubric": {
+          "type": "numeric",
+          "unit": "C",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_127_heat_open_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "thermal",
+      "lesson_id": 127001,
+      "title": "Task 3: Heat quantity and heat capacity",
+      "description": "Why does water heat up and cool down slowly?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 40,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "теплоёмкость",
+                "большая",
+                "энергия",
+                "температура"
+              ],
+              "keywords_en": [
+                "heat capacity",
+                "large",
+                "energy",
+                "temperature"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "thermal",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_current_charge_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 128000,
+      "title": "Задача 1: Электрическая цепь: ток, напряжение, сопротивление",
+      "description": "Через проводник прошёл заряд 12 Кл за 4 с. Найдите ток.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 3,
+          "unit": "A"
+        },
+        "solution": "I=q/t=12/4=3 А",
+        "rubric": {
+          "type": "numeric",
+          "unit": "A",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_ohm_current_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 128000,
+      "title": "Задача 2: Электрическая цепь: ток, напряжение, сопротивление",
+      "description": "U=12 В, R=6 Ом. Найдите ток.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "A"
+        },
+        "solution": "I=U/R=12/6=2 А",
+        "rubric": {
+          "type": "numeric",
+          "unit": "A",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_circuit_open_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 128000,
+      "title": "Задача 3: Электрическая цепь: ток, напряжение, сопротивление",
+      "description": "Объясните, зачем в цепи нужен ключ.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 30,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "замыкать",
+                "размыкать",
+                "цепь",
+                "ток"
+              ],
+              "keywords_en": [
+                "close",
+                "open",
+                "circuit",
+                "current"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_current_charge_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 128001,
+      "title": "Task 1: Electric circuit: current, voltage, resistance",
+      "description": "Charge 12 C passes through conductor in 4 s. Find current.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 3,
+          "unit": "A"
+        },
+        "solution": "I=q/t=12/4=3 A",
+        "rubric": {
+          "type": "numeric",
+          "unit": "A",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_ohm_current_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 128001,
+      "title": "Task 2: Electric circuit: current, voltage, resistance",
+      "description": "U=12 V, R=6 Ω. Find current.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 2,
+          "unit": "A"
+        },
+        "solution": "I=U/R=12/6=2 A",
+        "rubric": {
+          "type": "numeric",
+          "unit": "A",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_128_circuit_open_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 128001,
+      "title": "Task 3: Electric circuit: current, voltage, resistance",
+      "description": "Explain why a switch is needed in a circuit.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 30,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "замыкать",
+                "размыкать",
+                "цепь",
+                "ток"
+              ],
+              "keywords_en": [
+                "close",
+                "open",
+                "circuit",
+                "current"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_series_r_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 129000,
+      "title": "Задача 1: Последовательное и параллельное соединение",
+      "description": "Два резистора 3 Ом и 5 Ом соединены последовательно. Найдите R.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 8,
+          "unit": "ohm"
+        },
+        "solution": "R=3+5=8 Ом",
+        "rubric": {
+          "type": "numeric",
+          "unit": "ohm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_parallel_equal_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 129000,
+      "title": "Задача 2: Последовательное и параллельное соединение",
+      "description": "Два одинаковых резистора по 10 Ом соединены параллельно. Найдите R.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 5,
+          "unit": "ohm"
+        },
+        "solution": "Для двух одинаковых параллельно R=10/2=5 Ом",
+        "rubric": {
+          "type": "numeric",
+          "unit": "ohm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_series_parallel_choice_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "electricity",
+      "lesson_id": 129000,
+      "title": "Задача 3: Последовательное и параллельное соединение",
+      "description": "Где ток одинаков во всех элементах?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "последовательное соединение",
+          "параллельное соединение",
+          "любая цепь"
+        ],
+        "correct_index": 0,
+        "explain": "В последовательной цепи нет разветвлений, поэтому ток один и тот же.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_series_r_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 129001,
+      "title": "Task 1: Series and parallel circuits",
+      "description": "Two resistors 3 Ω and 5 Ω are in series. Find R.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 8,
+          "unit": "ohm"
+        },
+        "solution": "R=3+5=8 Ω",
+        "rubric": {
+          "type": "numeric",
+          "unit": "ohm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_parallel_equal_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 129001,
+      "title": "Task 2: Series and parallel circuits",
+      "description": "Two equal 10 Ω resistors are in parallel. Find R.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 5,
+          "unit": "ohm"
+        },
+        "solution": "For two equal resistors in parallel R=10/2=5 Ω",
+        "rubric": {
+          "type": "numeric",
+          "unit": "ohm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_129_series_parallel_choice_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "electricity",
+      "lesson_id": 129001,
+      "title": "Task 3: Series and parallel circuits",
+      "description": "Where is current the same through all elements?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "series circuit",
+          "parallel circuit",
+          "any circuit"
+        ],
+        "correct_index": 0,
+        "explain": "A series circuit has no branches, so current is the same.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "electricity",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_focus_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "optics",
+      "lesson_id": 130000,
+      "title": "Задача 1: Линзы и построение изображений",
+      "description": "Луч, проходящий через оптический центр тонкой линзы, после линзы...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "не отклоняется",
+          "идёт через фокус",
+          "останавливается"
+        ],
+        "correct_index": 0,
+        "explain": "Для тонкой линзы такой луч считается неотклонённым.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_formula_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "optics",
+      "lesson_id": 130000,
+      "title": "Задача 2: Линзы и построение изображений",
+      "description": "F=10 см, предмет на 20 см. Найдите расстояние до изображения по формуле линзы.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20,
+          "unit": "cm"
+        },
+        "solution": "1/f=1/F-1/d=1/10-1/20=1/20, f=20 см",
+        "rubric": {
+          "type": "numeric",
+          "unit": "cm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_open_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "optics",
+      "lesson_id": 130000,
+      "title": "Задача 3: Линзы и построение изображений",
+      "description": "Как построить изображение точки с помощью двух главных лучей?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 45,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "луч",
+                "фокус",
+                "оптический центр",
+                "пересечение"
+              ],
+              "keywords_en": [
+                "ray",
+                "focus",
+                "optical center",
+                "intersection"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_focus_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "optics",
+      "lesson_id": 130001,
+      "title": "Task 1: Lenses and image construction",
+      "description": "A ray passing through the optical center of a thin lens after lens...",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "does not deviate",
+          "goes through focus",
+          "stops"
+        ],
+        "correct_index": 0,
+        "explain": "For a thin lens this ray is treated as undeviated.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_formula_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "optics",
+      "lesson_id": 130001,
+      "title": "Task 2: Lenses and image construction",
+      "description": "F=10 cm, object at 20 cm. Find image distance using lens formula.",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 20,
+          "unit": "cm"
+        },
+        "solution": "1/f=1/F-1/d=1/10-1/20=1/20, f=20 cm",
+        "rubric": {
+          "type": "numeric",
+          "unit": "cm",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_130_lens_open_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "optics",
+      "lesson_id": 130001,
+      "title": "Task 3: Lenses and image construction",
+      "description": "How to construct an image point using two principal rays?",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 45,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "луч",
+                "фокус",
+                "оптический центр",
+                "пересечение"
+              ],
+              "keywords_en": [
+                "ray",
+                "focus",
+                "optical center",
+                "intersection"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "optics",
+        "grade_8",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_half_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "atomic",
+      "lesson_id": 131000,
+      "title": "Задача 1: Радиоактивность и ядерные превращения",
+      "description": "Период полураспада 10 дней. Какая доля вещества останется через 20 дней?",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 0.25,
+          "unit": "fraction"
+        },
+        "solution": "20 дней = 2 периода, останется (1/2)^2 = 1/4",
+        "rubric": {
+          "type": "numeric",
+          "unit": "fraction",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_choice_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "atomic",
+      "lesson_id": 131000,
+      "title": "Задача 2: Радиоактивность и ядерные превращения",
+      "description": "Какое излучение имеет наибольшую проникающую способность?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "α",
+          "β",
+          "γ"
+        ],
+        "correct_index": 2,
+        "explain": "γ-излучение наиболее проникающее из трёх.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_safety_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "branch": "atomic",
+      "lesson_id": 131000,
+      "title": "Задача 3: Радиоактивность и ядерные превращения",
+      "description": "Назовите два правила радиационной безопасности.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "время",
+                "расстояние",
+                "экран",
+                "защита"
+              ],
+              "keywords_en": [
+                "time",
+                "distance",
+                "shield",
+                "protection"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_half_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "atomic",
+      "lesson_id": 131001,
+      "title": "Task 1: Radioactivity and nuclear transformations",
+      "description": "Half-life is 10 days. What fraction remains after 20 days?",
+      "type": "numeric",
+      "estimated_minutes": 5,
+      "payload": {
+        "answer": {
+          "value": 0.25,
+          "unit": "fraction"
+        },
+        "solution": "20 days = 2 half-lives, remains (1/2)^2 = 1/4",
+        "rubric": {
+          "type": "numeric",
+          "unit": "fraction",
+          "tolerance": 0.01
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_choice_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "atomic",
+      "lesson_id": 131001,
+      "title": "Task 2: Radioactivity and nuclear transformations",
+      "description": "Which radiation has the highest penetration?",
+      "type": "quiz",
+      "estimated_minutes": 5,
+      "payload": {
+        "options": [
+          "alpha",
+          "beta",
+          "gamma"
+        ],
+        "correct_index": 2,
+        "explain": "Gamma radiation has the highest penetration among the three.",
+        "rubric": {
+          "type": "quiz"
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "id": "phys_131_radio_safety_en",
+      "module_id": "physics",
+      "lang": "en",
+      "branch": "atomic",
+      "lesson_id": 131001,
+      "title": "Task 3: Radioactivity and nuclear transformations",
+      "description": "Name two radiation safety rules.",
+      "type": "open",
+      "estimated_minutes": 7,
+      "payload": {
+        "rubric": {
+          "type": "open",
+          "min_length": 35,
+          "criteria": [
+            {
+              "id": "concept",
+              "weight": 1.0,
+              "keywords_ru": [
+                "время",
+                "расстояние",
+                "экран",
+                "защита"
+              ],
+              "keywords_en": [
+                "time",
+                "distance",
+                "shield",
+                "protection"
+              ]
+            }
+          ]
+        }
+      },
+      "tags": [
+        "atomic",
+        "grade_9",
+        "en",
+        "verified"
+      ]
     }
   ],
   "physics_scenarios": [
@@ -315,6 +3475,94 @@
           "v=s/t",
           "unit conversion"
         ]
+      }
+    },
+    {
+      "id": "phys_scenario_energy_skate_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "title": "Мини-симулятор: энергия скейтера",
+      "payload": {
+        "branch": "mechanics",
+        "grade": "8",
+        "goal": "Показать переход потенциальной энергии в кинетическую",
+        "variables": [
+          "height",
+          "mass",
+          "speed"
+        ],
+        "steps": [
+          "Увеличь высоту старта",
+          "Сравни скорость внизу",
+          "Объясни сохранение энергии"
+        ],
+        "verified": true
+      }
+    },
+    {
+      "id": "phys_scenario_energy_skate_en",
+      "module_id": "physics",
+      "lang": "en",
+      "title": "Mini simulator: skater energy",
+      "payload": {
+        "branch": "mechanics",
+        "grade": "8",
+        "goal": "Show transformation of potential energy into kinetic energy",
+        "variables": [
+          "height",
+          "mass",
+          "speed"
+        ],
+        "steps": [
+          "Increase start height",
+          "Compare speed at bottom",
+          "Explain energy conservation"
+        ],
+        "verified": true
+      }
+    },
+    {
+      "id": "phys_scenario_circuit_lab_ru",
+      "module_id": "physics",
+      "lang": "ru",
+      "title": "Мини-лаборатория: цепь с резисторами",
+      "payload": {
+        "branch": "electricity",
+        "grade": "8",
+        "goal": "Сравнить последовательное и параллельное соединение",
+        "variables": [
+          "voltage",
+          "resistance",
+          "connection_type"
+        ],
+        "steps": [
+          "Собери последовательную цепь",
+          "Собери параллельную цепь",
+          "Сравни ток и напряжение"
+        ],
+        "verified": true
+      }
+    },
+    {
+      "id": "phys_scenario_circuit_lab_en",
+      "module_id": "physics",
+      "lang": "en",
+      "title": "Mini lab: resistor circuit",
+      "payload": {
+        "branch": "electricity",
+        "grade": "8",
+        "goal": "Compare series and parallel circuits",
+        "variables": [
+          "voltage",
+          "resistance",
+          "connection_type"
+        ],
+        "steps": [
+          "Build a series circuit",
+          "Build a parallel circuit",
+          "Compare current and voltage"
+        ],
+        "verified": true
       }
     }
   ],
@@ -366,6 +3614,64 @@
         "en"
       ],
       "source": "physics_pack"
+    },
+    {
+      "external_id": "physics_mechanics_graphs_ru",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Физика: графики движения",
+      "body": "При равномерном движении график s(t) — прямая. Чем больше наклон, тем больше скорость. График v(t) при постоянной скорости горизонтален; площадь под графиком скорости равна пути.",
+      "tags": [
+        "physics",
+        "mechanics",
+        "graphs",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "external_id": "physics_mechanics_graphs_en",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Physics: motion graphs",
+      "body": "For uniform motion, the s(t) graph is a line. A steeper slope means higher speed. The v(t) graph is horizontal for constant speed; area under velocity graph equals distance.",
+      "tags": [
+        "physics",
+        "mechanics",
+        "graphs",
+        "en",
+        "verified"
+      ]
+    },
+    {
+      "external_id": "physics_electricity_circuits_ru",
+      "subject": "physics",
+      "lang": "ru",
+      "title": "Физика: цепи и закон Ома",
+      "body": "В цепи ток зависит от напряжения и сопротивления: I=U/R. В последовательной цепи ток одинаков, в параллельной одинаково напряжение на ветвях.",
+      "tags": [
+        "physics",
+        "electricity",
+        "circuits",
+        "ru",
+        "verified"
+      ]
+    },
+    {
+      "external_id": "physics_electricity_circuits_en",
+      "subject": "physics",
+      "lang": "en",
+      "title": "Physics: circuits and Ohm law",
+      "body": "In a circuit current depends on voltage and resistance: I=U/R. In series circuits current is the same; in parallel circuits branch voltage is the same.",
+      "tags": [
+        "physics",
+        "electricity",
+        "circuits",
+        "en",
+        "verified"
+      ]
     }
-  ]
+  ],
+  "updated_at": "2026-05-29T00:00:00Z",
+  "content_hash": "physics-expanded-v2-editorial-verified"
 }

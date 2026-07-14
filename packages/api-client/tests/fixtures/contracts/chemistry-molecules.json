@@ -1,0 +1,13 @@
+{
+  "contractFixture": true,
+  "molecules": [
+    {
+      "id": "molecule_contract",
+      "name": "Contract molecule placeholder",
+      "formula": "H2O",
+      "atoms": []
+    }
+  ],
+  "count": 1,
+  "note": "Minimal shape fixture only; not a source-backed scientific model."
+}

@@ -2,6 +2,7 @@ import tempfile
 import subprocess
 import unittest
 import json
+import re
 from pathlib import Path
 
 from fastapi.testclient import TestClient
@@ -25,70 +26,78 @@ class PublicWebAppTest(unittest.TestCase):
         self._tmp_dir.cleanup()
 
     def test_public_web_user_shell_assets(self) -> None:
+        head = self.client.head("/api/v1/web")
+        self.assertEqual(head.status_code, 200, head.text)
+        self.assertIn("text/html", head.headers.get("content-type", ""))
+
         index = self.client.get("/api/v1/web")
         self.assertEqual(index.status_code, 200, index.text)
-        self.assertIn("Полноценный вход в веб-кабинет", index.text)
-        self.assertIn('id="authPanel"', index.text)
-        self.assertIn('id="appShell"', index.text)
-        self.assertIn('id="authSectionTitle"', index.text)
-        self.assertIn('class="workspaceTopbar"', index.text)
-        self.assertIn('id="workspaceTitle"', index.text)
-        self.assertIn('id="workspaceApkLink"', index.text)
-        self.assertIn('id="requestCodeBtn"', index.text)
-        self.assertIn('id="verifyCodeBtn"', index.text)
-        self.assertIn('id="paymentPlans"', index.text)
-        self.assertIn("/api/v1/web/assets/app.js", index.text)
+        self.assertIn('id="root"', index.text)
+        self.assertIn("/api/v1/web/figma-assets/assets/", index.text)
+        self.assertNotIn('id="authPanel"', index.text)
+        self.assertNotIn('id="appShell"', index.text)
+        self.assertNotIn("Скачать Android APK", index.text)
+        asset_paths = re.findall(r'/api/v1/web/figma-assets/assets/[^"<>]+', index.text)
+        self.assertGreaterEqual(len(asset_paths), 2, index.text)
+        for asset_path in asset_paths:
+            asset = self.client.get(asset_path)
+            self.assertEqual(asset.status_code, 200, asset_path)
 
-        js = self.client.get("/api/v1/web/assets/app.js")
-        self.assertEqual(js.status_code, 200, js.text)
-        self.assertIn("auth/phone/request-code", js.text)
-        self.assertIn("auth/phone/verify", js.text)
-        self.assertIn("users/profile", js.text)
-        self.assertIn("cabinet/teacher/overview", js.text)
-        self.assertIn("cabinet/parent/overview", js.text)
-        self.assertIn("cabinet/live/join", js.text)
-        self.assertIn("canShowStudentLive", js.text)
-        self.assertIn("canShowTeacherLiveLaunch", js.text)
-        self.assertIn("Подключите школу или класс", js.text)
-        self.assertNotIn("Live-демо", js.text)
-        self.assertNotIn("Web live-урок", js.text)
-        self.assertIn("payments/create", js.text)
+        js_path = next(path for path in asset_paths if path.endswith(".js"))
+        js = self.client.get(js_path)
+        self.assertEqual(js.status_code, 200, js.text[:200])
+        self.assertIn("/auth/login", js.text)
+        self.assertIn("/auth/me", js.text)
+        self.assertIn("/auth/logout", js.text)
         self.assertIn("allchemist_web_session_v1", js.text)
-        self.assertIn("workspaceHeaderCopy", js.text)
-        self.assertIn("Режим работы", js.text)
-        self.assertIn("Учебная сводка", js.text)
-        self.assertIn("Кабинет родителя", js.text)
-        self.assertIn("Кабинет учителя", js.text)
-        self.assertIn("MODULE_LEARNING_FLOW", js.text)
-        self.assertIn("Маршрут урока", js.text)
-        self.assertIn("1. Теория", js.text)
-        self.assertIn("2. Практика", js.text)
-        self.assertIn("3. ${escapeHtml(labCopy[0])}", js.text)
-        self.assertIn("4. Тест и экзамены", js.text)
-        self.assertIn("5. AI-разбор", js.text)
-        self.assertIn("Виртуальный микроскоп", js.text)
-        self.assertIn("PERIODIC_ELEMENTS", js.text)
-        self.assertIn("Интерактивная таблица элементов", js.text)
-        self.assertIn("data-element-count=\"${PERIODIC_ELEMENTS.length}\"", js.text)
-        self.assertIn("verified_by: Allchemist content QA baseline", js.text)
-        self.assertIn("safePersonName", js.text)
-        self.assertNotIn("Технический ID", js.text)
-        self.assertNotIn("Показать технические детали", js.text)
-        self.assertNotIn("renderTechnicalDetails", js.text)
+        self.assertIn("demo/periodic-table", js.text)
+        self.assertIn("school_admin", js.text)
+        self.assertIn("content_editor", js.text)
+        self.assertIn("support", js.text)
 
-        css = self.client.get("/api/v1/web/assets/styles.css")
-        self.assertEqual(css.status_code, 200, css.text)
-        self.assertIn(".authGrid", css.text)
-        self.assertIn(".roleWorkspaceGrid", css.text)
-        self.assertIn(".planCard", css.text)
-        self.assertIn(".workspaceTopbar", css.text)
-        self.assertIn(".dashboardStats", css.text)
-        self.assertIn(".actionCard", css.text)
-        self.assertIn(".learningFlow", css.text)
-        self.assertIn(".learningFlowStep", css.text)
-        self.assertIn(".periodicTablePanel", css.text)
-        self.assertIn(".periodicGrid", css.text)
-        self.assertIn(".periodicDetail", css.text)
+    def test_public_web_known_routes_return_shell(self) -> None:
+        for route in (
+            "/api/v1/web/login",
+            "/api/v1/web/plans",
+            "/api/v1/web/pricing",
+            "/api/v1/web/activate-code",
+            "/api/v1/web/school-login",
+            "/api/v1/web/staff-login",
+            "/api/v1/web/demo",
+            "/api/v1/web/demo/chemistry",
+            "/api/v1/web/demo/physics",
+            "/api/v1/web/demo/biology",
+            "/api/v1/web/demo/ai",
+            "/api/v1/web/demo/periodic-table",
+            "/api/v1/web/demo/labs",
+            "/api/v1/web/demo/molecules",
+            "/api/v1/web/demo/physics-simulator",
+            "/api/v1/web/demo/microscope",
+            "/api/v1/web/demo/cell",
+            "/api/v1/web/demo/exams",
+            "/api/v1/web/demo/revision-plan",
+            "/api/v1/web/student",
+            "/api/v1/web/student/chemistry",
+            "/api/v1/web/student/physics",
+            "/api/v1/web/student/biology",
+            "/api/v1/web/student/chemistry/periodic-table",
+            "/api/v1/web/student/ai-tutor",
+            "/api/v1/web/teacher",
+            "/api/v1/web/parent",
+            "/api/v1/web/homeroom",
+            "/api/v1/web/school-admin",
+            "/api/v1/web/admin",
+            "/api/v1/web/support",
+            "/api/v1/web/content",
+        ):
+            with self.subTest(route=route):
+                response = self.client.get(route)
+                self.assertEqual(response.status_code, 200, response.text)
+                self.assertIn('id="root"', response.text)
+                self.assertIn("/api/v1/web/figma-assets/assets/", response.text)
+
+        missing = self.client.get("/api/v1/web/demo/not-real")
+        self.assertEqual(missing.status_code, 404)
 
     def test_public_web_periodic_table_has_118_elements(self) -> None:
         app_js = Path(__file__).resolve().parents[1] / "app" / "web_public" / "app.js"

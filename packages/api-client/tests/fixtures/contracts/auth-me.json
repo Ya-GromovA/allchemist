@@ -1,0 +1,23 @@
+{
+  "contractFixture": true,
+  "userId": "user_contract",
+  "displayName": "Contract User",
+  "role": "student",
+  "activeRole": "student",
+  "availableRoles": [
+    {
+      "role": "student",
+      "labelRu": "????????????????"
+    }
+  ],
+  "schoolMemberships": [],
+  "classMemberships": [],
+  "subscriptions": [],
+  "grants": [],
+  "capabilities": {
+    "canStudy": true,
+    "canUseAi": true
+  },
+  "featureFlags": {},
+  "accessTokenExpiresAt": "2026-07-02T12:00:00Z"
+}

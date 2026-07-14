@@ -16,10 +16,10 @@ export default function AppBackground() {
   return (
     <View pointerEvents="none" style={StyleSheet.absoluteFill}>
       <View style={[styles.base, { backgroundColor: palette.base }]} />
-      <Image source={require("../../assets/fon.png")} style={styles.backdrop} resizeMode="cover" />
+      <Image source={require("../../assets/backgrounds/main-bg-science.png")} style={styles.backdrop} resizeMode="cover" />
       <View style={[styles.blob, styles.blob1, { backgroundColor: palette.blob1, opacity: palette.blobOpacity - 0.08 }]} />
       <View style={[styles.blob, styles.blob2, { backgroundColor: palette.blob2, opacity: palette.blobOpacity - 0.12 }]} />
-      <Image source={require("../../assets/allchemist.png")} style={styles.alchemistWatermark} resizeMode="contain" />
+      <Image source={require("../../assets/brand/alchemist-hero.png")} style={styles.alchemistWatermark} resizeMode="contain" />
       <View style={[styles.haze, { backgroundColor: palette.haze }]} />
     </View>
   );

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "importBatchId": "content-prod-2-source-pack-2026-07-09",
+  "createdAt": "2026-07-09",
+  "publicationGate": {
+    "defaultPublicationStatus": "draft",
+    "requiredBeforePublished": [
+      "all source ids attached and accepted by content QA",
+      "scientific review completed",
+      "methodist review completed",
+      "safety review completed for labs/microscope/safety-sensitive items",
+      "copyright review completed",
+      "publication owner approval recorded"
+    ],
+    "blockedStatuses": [
+      "source_required",
+      "needs_methodist_review",
+      "verified_by_ai"
+    ],
+    "publicationAllowedDefault": false
+  },
+  "files": [
+    {
+      "path": "content/mvp/chemistry/school-chemistry-content.json",
+      "kind": "content_items",
+      "subject": "chemistry",
+      "educationLevel": "school"
+    },
+    {
+      "path": "content/mvp/physics/school-physics-content.json",
+      "kind": "content_items",
+      "subject": "physics",
+      "educationLevel": "school"
+    },
+    {
+      "path": "content/mvp/biology/school-biology-content.json",
+      "kind": "content_items",
+      "subject": "biology",
+      "educationLevel": "school"
+    },
+    {
+      "path": "content/mvp/catalog/student-sections.json",
+      "kind": "catalog_sections",
+      "educationLevel": "university_intro"
+    },
+    {
+      "path": "content/mvp/catalog/ui-cards.json",
+      "kind": "ui_cards"
+    }
+  ],
+  "importNotes": [
+    "Content-PROD-2 may import as draft data only.",
+    "Do not publish any item with verificationStatus=source_required or needs_methodist_review.",
+    "Student sections are catalog-only placeholders, not lessons.",
+    "Lab, simulation and microscope references are planning links until reviewed scenarios/assets exist.",
+    "OpenStax, ACS and official curriculum sources are reference candidates; do not copy source prose or figures into Allchemist without legal review."
+  ],
+  "updatedAt": "2026-07-09",
+  "sourcePackPath": "content/mvp/catalog/source-pack-mvp.json",
+  "curriculumMapPath": "content/mvp/catalog/curriculum-map-school-mvp.json",
+  "importOrder": [
+    {
+      "step": 1,
+      "kind": "source_pack",
+      "path": "content/mvp/catalog/source-pack-mvp.json"
+    },
+    {
+      "step": 2,
+      "kind": "curriculum_map",
+      "path": "content/mvp/catalog/curriculum-map-school-mvp.json"
+    },
+    {
+      "step": 3,
+      "kind": "content_items",
+      "path": "content/mvp/chemistry/school-chemistry-content.json"
+    },
+    {
+      "step": 4,
+      "kind": "content_items",
+      "path": "content/mvp/physics/school-physics-content.json"
+    },
+    {
+      "step": 5,
+      "kind": "content_items",
+      "path": "content/mvp/biology/school-biology-content.json"
+    },
+    {
+      "step": 6,
+      "kind": "catalog_sections",
+      "path": "content/mvp/catalog/student-sections.json"
+    },
+    {
+      "step": 7,
+      "kind": "ui_cards",
+      "path": "content/mvp/catalog/ui-cards.json"
+    }
+  ],
+  "dependencies": {
+    "contentItemsRequire": [
+      "source-pack-mvp.json loaded first",
+      "curriculum-map-school-mvp.json loaded before school item publication checks",
+      "sourceIds in each item/task exist in source pack"
+    ],
+    "uiCardsRequire": [
+      "referenced contentItemId exists or catalogSectionId exists",
+      "verificationStatus matches referenced content item for school cards"
+    ]
+  },
+  "validationRules": [
+    "Every JSON file must parse successfully.",
+    "Every school content item must have id, subject, educationLevel, grade, topic, title, summary, learningObjectives, blocks, tasks, sourceMetadata, verificationStatus, copyrightPolicy and lastReviewedAt.",
+    "Every sourceMetadata.sourceIds entry must exist in source-pack-mvp.json.",
+    "Every task must carry sourceMetadata and verificationStatus.",
+    "No item may have publicationAllowed=true or copyrightPolicy.allowedForPublication=true until approved in a later task.",
+    "No item may use verificationStatus=approved in Content-PROD-2.",
+    "Textbook placeholders do not count as publication approval.",
+    "Lab, safety, simulation and microscope references must remain draft-only until reviewed scenarios/assets exist."
+  ],
+  "failImportIf": [
+    "JSON parse fails",
+    "duplicate id appears within one imported collection",
+    "sourceIds reference an unknown source id",
+    "school item has publicationAllowed=true",
+    "school item has copyrightPolicy.allowedForPublication=true",
+    "school item has verificationStatus=approved",
+    "task verificationStatus is missing",
+    "ui card references a missing content item or missing catalog section"
+  ],
+  "draftOnlyIf": [
+    "verificationStatus is source_required",
+    "verificationStatus is needs_methodist_review",
+    "source pack contains only reviewed_candidate sources and textbook placeholders",
+    "methodist review is pending",
+    "safety review is pending",
+    "copyright/legal review is pending"
+  ]
+}

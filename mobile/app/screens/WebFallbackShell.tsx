@@ -2,7 +2,6 @@ import React, { useMemo, useState } from "react";
 import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { UserRole, useAppSession } from "@app/state/AppSession";
-import { trackEvent } from "@app/services/telemetryService";
 
 const ADMIN_UI_URL = "http://91.197.99.201:8000/api/v1/admin/web";
 const USER_WEB_URL = "http://91.197.99.201:8000/api/v1/web";
@@ -125,15 +124,22 @@ const ROLE_CARDS: Record<UserRole, RoleCard> = {
   },
 };
 
+const GUEST_CARD: RoleCard = {
+  title: "Демо без входа",
+  subtitle: "Публичный просмотр возможностей без создания личного кабинета",
+  firstDayPlan: [
+    "Посмотреть пример урока и структуру модулей",
+    "Оценить AI-разбор и формат практики",
+    "Войти или активировать код, чтобы сохранить прогресс",
+  ],
+};
+
 export default function WebFallbackShell() {
-  const { userId, role, onboardingDone, completeOnboarding } = useAppSession();
-  const [selectedRole, setSelectedRole] = useState<UserRole>(role ?? "student");
-  const [saving, setSaving] = useState(false);
+  const { role, onboardingDone } = useAppSession();
   const [selectedGrade, setSelectedGrade] = useState<WebMvpTopic["grade"]>("9 класс");
   const [selectedTopicId, setSelectedTopicId] = useState<string>(WEB_MVP_TOPICS[1]?.id || WEB_MVP_TOPICS[0]?.id || "");
 
-  const activeRole = onboardingDone && role ? role : selectedRole;
-  const activeCard = useMemo(() => ROLE_CARDS[activeRole], [activeRole]);
+  const activeCard = useMemo(() => (onboardingDone && role ? ROLE_CARDS[role] : GUEST_CARD), [onboardingDone, role]);
   const gradeTopics = useMemo(
     () => WEB_MVP_TOPICS.filter((topic) => topic.grade === selectedGrade),
     [selectedGrade],
@@ -156,21 +162,6 @@ export default function WebFallbackShell() {
     await Linking.openURL(url);
   };
 
-  const completeRoleOnboarding = async () => {
-    setSaving(true);
-    try {
-      await completeOnboarding(selectedRole);
-      await trackEvent({
-        name: "web_onboarding_role_selected",
-        userId,
-        role: selectedRole,
-        payload: { surface: "web_preview_shell" },
-      });
-    } finally {
-      setSaving(false);
-    }
-  };
-
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.content}>
       <Text style={styles.title}>Алхимик: веб-кабинет</Text>
@@ -179,28 +170,10 @@ export default function WebFallbackShell() {
       </Text>
 
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>1) Выберите рабочий профиль</Text>
-        <Text style={styles.cardNote}>Это персонализирует сценарий первого запуска в вебе.</Text>
-        <View style={styles.roleRow}>
-          {(["student", "teacher", "homeroom_teacher", "parent"] as UserRole[]).map((nextRole) => {
-            const active = selectedRole === nextRole;
-            return (
-              <Pressable
-                key={nextRole}
-                onPress={() => setSelectedRole(nextRole)}
-                style={[styles.roleChip, active && styles.roleChipActive]}
-              >
-                <Text style={[styles.roleChipText, active && styles.roleChipTextActive]}>{ROLE_CARDS[nextRole].title}</Text>
-              </Pressable>
-            );
-          })}
-        </View>
-
-        <Pressable style={[styles.primaryBtn, saving && styles.disabledBtn]} onPress={completeRoleOnboarding} disabled={saving}>
-          <Text style={styles.primaryBtnText}>{saving ? "Сохраняю..." : "Подтвердить профиль"}</Text>
-        </Pressable>
+        <Text style={styles.cardTitle}>1) Войдите в аккаунт</Text>
+        <Text style={styles.cardNote}>Рабочий профиль, классы и права открываются только после проверки аккаунта сервером.</Text>
         <Text style={styles.statusText}>
-          Статус: {onboardingDone ? "профиль применен" : "профиль еще не подтвержден"}
+          Статус: {onboardingDone ? "кабинет открыт" : "публичный просмотр"}
           {onboardingDone && role ? " (" + ROLE_CARDS[role].title + ")" : ""}
         </Text>
       </View>

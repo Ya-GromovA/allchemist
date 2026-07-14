@@ -1,0 +1,14 @@
+{
+  "contractFixture": true,
+  "userId": "user_contract",
+  "plans": [
+    "free"
+  ],
+  "modules": [
+    "chemistry"
+  ],
+  "aiQuotaLeft": 20,
+  "features": [
+    "ai_basic"
+  ]
+}

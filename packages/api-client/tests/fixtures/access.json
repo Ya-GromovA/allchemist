@@ -1,0 +1,7 @@
+{
+  "userId": "u_demo",
+  "plans": ["free"],
+  "modules": ["chemistry"],
+  "aiQuotaLeft": 20,
+  "features": ["ai_basic"]
+}

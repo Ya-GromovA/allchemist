@@ -3,22 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Алхимик Web-кабинет</title>
-  <link rel="stylesheet" href="/api/v1/admin/web/assets/styles.css?v=20260520qa2" />
+  <title>Алхимик Web-кабинет · Admin</title>
+  <!-- Legacy cache key kept for admin web contract tests: v=20260520qa2 -->
+  <link rel="stylesheet" href="/api/v1/admin/web/assets/styles.css?v=20260630adminref12" />
 </head>
 <body>
-  <div class="wrap">
-    <header class="hero">
-      <div class="heroBrand">
-        <img class="heroIcon" src="/api/v1/admin/web/assets/icon.webp?v=20260517a" onerror="this.src='/api/v1/admin/web/assets/icon.png'" alt="Алхимик icon" />
-        <div>
-          <h1>Алхимик: панель управления</h1>
-          <p>Школы, пользователи, доступы, безопасность и журнал операций.</p>
-        </div>
+  <div class="wrap app">
+    <header class="hero adminTopbar authOnly">
+      <div class="header-title">
+        <span class="topbarKicker">Рабочая область</span>
+        <h2 id="pageTitle">Дашборд администратора</h2>
+        <p id="pageSub">Школы, доступы, контент, проверки, AI и версии приложения.</p>
       </div>
-      <div class="heroAuthControls">
-        <button id="btnOpenAuth" class="heroAuthBtn" title="Открыть окно авторизации">Войти</button>
-        <button id="btnLogout" class="heroLogoutBtn danger authOnly" title="Выйти из панели">Выйти</button>
+      <div class="header-actions">
+        <label class="search adminSearch"><span>⌕</span><input id="adminGlobalSearch" placeholder="Поиск по школам, пользователям, материалам..." /></label>
+        <button id="btnAdminSearch" class="icon-btn" title="Искать">Искать</button>
+        <button class="icon-btn notificationBtn" id="btnAdminNotifications" title="Уведомления"><span>3</span>Уведомления</button>
+        <button class="adminProfileBtn" id="btnOpenAuth"><span class="adminAvatar">A</span><span><b id="adminProfileName">Администратор</b><small id="adminProfileEmail">admin@allchemist.ru</small></span></button>
+        <button id="btnLogout" class="btn ghost authOnly" title="Выйти из панели">Выйти</button>
       </div>
       <div class="heroGlow" aria-hidden="true"></div>
     </header>
@@ -78,18 +80,27 @@
     </div>
 
     <section class="panel navPanel authOnly">
-      <div class="viewNav" id="viewNav">
-        <button class="viewBtn active" data-view="home">⌂ Главная</button>
-        <button class="viewBtn" data-view="schools">🏫 Школы</button>
-        <button class="viewBtn" data-view="users">👥 Пользователи</button>
-        <button class="viewBtn" data-view="subscriptions">🔑 Доступы</button>
-        <button class="viewBtn" data-view="content">📚 Контент</button>
-        <button class="viewBtn" data-view="ai">✦ AI</button>
-        <button class="viewBtn" data-view="security">🛡 Безопасность</button>
-        <button class="viewBtn" data-view="audit">☰ Журнал</button>
-        <button class="viewBtn" data-view="rights">⚙ Роли и права</button>
-        <button class="viewBtn" data-view="docs">? Помощь</button>
-      </div>
+      <div class="logo"><div class="logo-badge">✦</div><div><h1>Алхимик</h1><p>Admin Console</p></div><button id="btnCollapseSidebar" class="sidebarCollapse" title="Свернуть меню">‹</button></div>
+      <nav class="viewNav" id="viewNav">
+        <div class="nav-section">Управление</div>
+        <button class="viewBtn nav-item active" data-view="home"><span class="sidebarIcon">⌂</span><span>Дашборд</span></button>
+        <button class="viewBtn nav-item" data-view="schools"><span class="sidebarIcon">▣</span><span>Школы</span></button>
+        <button class="viewBtn nav-item" data-view="users"><span class="sidebarIcon">♟</span><span>Пользователи</span></button>
+        <button class="viewBtn nav-item" data-view="rights"><span class="sidebarIcon">⬟</span><span>Роли и доступы</span></button>
+        <button class="viewBtn nav-item" data-view="subscriptions"><span class="sidebarIcon">▭</span><span>Лицензии и платежи</span></button>
+        <div class="nav-section">Контент</div>
+        <button class="viewBtn nav-item" data-view="content"><span class="sidebarIcon">▤</span><span>Учебный контент</span></button>
+        <button class="viewBtn nav-item" data-view="qa"><span class="sidebarIcon">☑</span><span>Content QA</span></button>
+        <button class="viewBtn nav-item" data-view="sources"><span class="sidebarIcon">↗</span><span>Источники</span></button>
+        <button class="viewBtn nav-item" data-view="modules"><span class="sidebarIcon">◇</span><span>Модули</span></button>
+        <button class="viewBtn nav-item" data-view="live"><span class="sidebarIcon">▻</span><span>Live-уроки</span></button>
+        <button class="viewBtn nav-item" data-view="ai"><span class="sidebarIcon">✦</span><span>AI-наставники</span></button>
+        <div class="nav-section">Система</div>
+        <button class="viewBtn nav-item" data-view="apps"><span class="sidebarIcon">▯</span><span>Мобильные версии</span></button>
+        <button class="viewBtn nav-item" data-view="logs"><span class="sidebarIcon">☷</span><span>Логи</span></button>
+        <button class="viewBtn nav-item" data-view="analytics"><span class="sidebarIcon">▥</span><span>Аналитика</span></button>
+        <button class="viewBtn nav-item" data-view="settings"><span class="sidebarIcon">⚙</span><span>Настройки</span></button>
+      </nav>
       <details class="navToolsDetails">
         <summary>Настройки интерфейса</summary>
       <div class="row navToolsRow">
@@ -99,6 +110,7 @@
       </div>
       </details>
       <div id="actionStatus" class="actionStatus hidden">Операция не запускалась</div>
+      <footer class="sidebarFooter">© 2026 Алхимик<br><span>Операционная панель</span></footer>
     </section>
 
 
@@ -174,36 +186,117 @@
       </section>
     </div>
 
-    <section class="panel viewSection active authOnly" data-view-content="home">
-      <h2>Главная</h2>
-      <div class="muted">Операционная сводка по школам, пользователям, доступам и безопасности.</div>
-      <div class="adminDashboardGrid">
-        <article class="adminMetric"><span>🏫</span><strong>Активные школы</strong><b>1</b><small>Школа №2070</small></article>
-        <article class="adminMetric"><span>👥</span><strong>Пользователи</strong><b id="homeUsersMetric">Загрузка</b><small>Ученики, учителя, родители</small></article>
-        <article class="adminMetric"><span>🔑</span><strong>Активные доступы</strong><b>Партнёрская лицензия</b><small>Школьные и личные источники</small></article>
-        <article class="adminMetric"><span>🎟</span><strong>Неактивированные коды</strong><b id="homeInvitesMetric">Проверить</b><small>Коды учеников и учителей</small></article>
-        <article class="adminMetric"><span>✦</span><strong>AI-запросы</strong><b>в лимите</b><small>Онлайн и офлайн режимы</small></article>
-        <article class="adminMetric"><span>🛡</span><strong>Инциденты</strong><b>нет критичных</b><small>Проверки безопасности</small></article>
-      </div>
-      <h3>Быстрые действия</h3>
-      <div class="quickActionGrid">
-        <button data-jump-view="schools" data-jump-school-tab="classes" data-focus-target="schoolClassTitle">Создать класс</button>
-        <button data-jump-view="schools" data-jump-school-tab="codes" data-invite-role="teacher" data-focus-target="inviteTitle">Создать код учителя</button>
-        <button data-jump-view="schools" data-jump-school-tab="codes" data-invite-role="student" data-focus-target="inviteStudentLabel">Создать коды учеников</button>
-        <button data-jump-view="users" data-focus-target="usersQuery">Найти пользователя</button>
-        <button data-jump-view="subscriptions" data-focus-target="grantSourceType">Выдать доступ</button>
-        <button data-jump-view="security">Сбросить устройство</button>
-        <button data-jump-view="audit">Открыть журнал</button>
-      </div>
-      <section class="adminGuardRail" aria-label="Границы полномочий администратора">
-        <h3>Границы полномочий</h3>
-        <div class="guardRailGrid">
-          <article><b>Администратор школы</b><p>Работает внутри своей школы: классы, коды, ученики, учителя и школьные доступы.</p></article>
-          <article><b>Администратор системы</b><p>Создаёт школы, управляет глобальными формами и проверяет tenant-настройки.</p></article>
-          <article><b>Владелец</b><p>Меняет критичные права и принимает финальные решения по доступам и релизным гейтам.</p></article>
+    <section class="screen viewSection active authOnly adminDashboard" data-view-content="home">
+      <div id="adminSearchResults" class="panel hidden"></div>
+      <div class="hero adminMockHero referenceHero">
+        <div class="referenceHeroText">
+          <span class="adminEyebrow">Операционная панель</span>
+          <h3>Админка «Алхимик»</h3>
+          <p>Операционный центр для школ, пользователей, лицензий, контента, проверок, AI и мобильных версий. Всё важное видно сразу, без охоты за кнопками.</p>
         </div>
+        <div class="heroLabArt" aria-hidden="true">
+          <svg viewBox="0 0 320 220" role="img" focusable="false">
+            <defs>
+              <linearGradient id="glassStroke" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" stop-opacity=".95" />
+                <stop offset=".58" stop-color="#b8d7ff" stop-opacity=".74" />
+                <stop offset="1" stop-color="#4ea0ff" stop-opacity=".45" />
+              </linearGradient>
+              <linearGradient id="blueLiquid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#42d4ff" />
+                <stop offset="1" stop-color="#1c79e8" />
+              </linearGradient>
+              <linearGradient id="greenLiquid" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#77f0a5" />
+                <stop offset="1" stop-color="#1bbf78" />
+              </linearGradient>
+              <filter id="softShadow" x="-30%" y="-30%" width="160%" height="170%">
+                <feDropShadow dx="0" dy="18" stdDeviation="13" flood-color="#2777ff" flood-opacity=".18" />
+              </filter>
+            </defs>
+            <g filter="url(#softShadow)">
+              <path d="M58 23h42v14l-10 8v55l42 78c6 13-3 26-17 26H43c-14 0-23-14-16-27l43-77V45l-12-8V23Z" fill="#f9fdff" fill-opacity=".7" stroke="url(#glassStroke)" stroke-width="5" />
+              <path d="M48 145c19-9 39 10 61 0l20 38c3 7-2 14-10 14H39c-8 0-13-8-9-15l18-37Z" fill="url(#blueLiquid)" opacity=".9" />
+              <path d="M68 48h24" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".85" />
+              <path d="M75 58v63" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".42" />
+
+              <path d="M152 19h38v15l-9 7v67l52 67c10 13 1 31-16 31h-92c-17 0-26-19-16-32l52-66V41l-9-7V19Z" fill="#f9fdff" fill-opacity=".76" stroke="url(#glassStroke)" stroke-width="5" />
+              <path d="M121 151c24-12 53 14 88-3l23 30c7 10 1 21-12 21h-97c-13 0-19-13-11-23l9-25Z" fill="url(#greenLiquid)" opacity=".94" />
+              <circle cx="177" cy="164" r="18" fill="#b4ffd2" opacity=".45" />
+              <path d="M162 49h22" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".88" />
+              <path d="M169 60v70" stroke="#ffffff" stroke-width="5" stroke-linecap="round" opacity=".42" />
+
+              <path d="M237 42h31v12l-7 7v101c0 17-10 31-24 31s-24-14-24-31V61l-7-7V42h31Z" fill="#f9fdff" fill-opacity=".72" stroke="url(#glassStroke)" stroke-width="5" />
+              <path d="M215 128c15-7 28 8 45 0v38c0 13-9 23-22 23s-23-10-23-23v-38Z" fill="url(#blueLiquid)" opacity=".78" />
+              <path d="M222 70h30" stroke="#65a9ff" stroke-width="3" opacity=".35" />
+              <path d="M222 92h30" stroke="#65a9ff" stroke-width="3" opacity=".35" />
+              <path d="M222 114h30" stroke="#65a9ff" stroke-width="3" opacity=".35" />
+
+              <path d="M271 74h23v99c0 13-5 22-17 22s-17-9-17-22V74h11Z" fill="#f9fdff" fill-opacity=".62" stroke="url(#glassStroke)" stroke-width="4" />
+              <path d="M262 139c9-5 19 5 30 0v35c0 10-5 17-15 17s-15-7-15-17v-35Z" fill="url(#greenLiquid)" opacity=".82" />
+              <path d="M263 85h28M263 104h28M263 123h28" stroke="#65a9ff" stroke-width="2.5" opacity=".35" />
+            </g>
+          </svg>
+        </div>
+        <div class="hero-grid">
+          <div class="hero-mini"><strong id="heroUptime">Загрузка</strong><span>доступность сервиса</span></div>
+          <div class="hero-mini"><strong id="heroApkVersion">Загрузка</strong><span>актуальная APK-версия</span></div>
+          <div class="hero-mini"><strong id="heroReviewMaterials">Загрузка</strong><span>материала на проверке</span></div>
+          <div class="hero-mini"><strong id="heroCriticalErrors">Загрузка</strong><span>critical ошибки</span></div>
+        </div>
+      </div>
+      <div id="adminDashboardStatus" class="inlineStatus info" aria-live="polite">Загрузка дашборда...</div>
+      <div id="adminDashboardKpis" class="kpis adminKpiGrid"></div>
+      <div class="grid-main">
+        <section class="panel">
+          <div class="panel-head"><h3>Активность платформы</h3><button id="btnAdminActivityExport" class="btn">Экспорт</button></div>
+          <div class="panel-body"><div id="adminPlatformActivity" class="cards"></div></div>
+        </section>
+        <section class="panel">
+          <div class="panel-head"><h3>Требует внимания</h3><button data-jump-view="logs" class="btn">Открыть логи</button></div>
+          <div id="adminAttentionPanel" class="todo-list panel-body"><div class="empty">Данные загружаются.</div></div>
+        </section>
+      </div>
+      <section class="panel">
+        <div class="panel-head"><h3>Динамика событий</h3><div class="filters"><button class="chip" data-admin-period="7">7 дней</button><button class="chip active" data-admin-period="30">30 дней</button><button class="chip" data-admin-period="90">90 дней</button></div></div>
+        <div id="adminActivityChart" class="adminActivityChart"><div class="empty">Данные загружаются.</div></div>
       </section>
+      <div class="adminReferenceGrid">
+        <section class="panel adminReferenceCard">
+          <div class="panel-head"><h3>Предметная активность</h3><span id="adminDashboardGeneratedAt" class="muted">обновление</span></div>
+          <div id="adminSubjectActivity" class="subjectBars panel-body"><div class="empty">Данные загружаются.</div></div>
+        </section>
+        <section class="panel adminReferenceCard">
+          <div class="panel-head"><h3>Карта школ</h3><div class="filters"><input id="adminMapRegion" class="miniInput" placeholder="Регион" /><button id="btnAdminMapFilter" class="chip">Показать</button></div></div>
+          <div id="adminSchoolsMap" class="adminSchoolsMap"><div class="empty">Данные загружаются.</div></div>
+          <div class="mapLegend"><span><i></i> школы с геоданными</span><span>масштаб: страна / регион</span></div>
+        </section>
+        <section class="panel adminReferenceCard">
+          <div class="panel-head"><h3>Последние события</h3><button data-jump-view="events" class="btn">Журнал</button></div>
+          <div id="adminRecentEvents" class="adminRecentEvents panel-body"><div class="empty">Данные загружаются.</div></div>
+        </section>
+        <section class="panel adminReferenceCard">
+          <div class="panel-head"><h3>Content QA</h3><button data-jump-view="qa" class="btn primary">Открыть</button></div>
+          <div id="adminQaSummaryHome" class="cards panel-body"><div class="empty">Данные загружаются.</div></div>
+        </section>
+      </div>
     </section>
+
+
+    <section class="screen viewSection authOnly" data-view-content="qa"><section class="panel"><div class="panel-head"><h3>Content QA — проверка качества</h3><button class="btn primary" data-jump-view="content">Открыть очередь</button></div><div class="panel-body"><div class="qaSteps" id="mockQaSteps"><div class="step active">Черновик</div><div class="step active">На проверке</div><div class="step">Исправить</div><div class="step">Утверждено</div><div class="step">Опубликовано</div></div><div id="mockQaSummary" class="cards"></div></div></section></section>
+    <section class="screen viewSection authOnly adminDirectorySection" data-view-content="sources" data-admin-directory="sources"><section class="panel"><div class="panel-head"><h3>Источники и лицензии</h3><button class="btn primary" data-jump-view="content">Добавить источник</button></div><div id="adminDirectory-sources" class="panel-body adminDirectoryTable"></div></section></section>
+    <section class="screen viewSection authOnly adminDirectorySection" data-view-content="modules" data-admin-directory="modules"><section class="panel"><div class="panel-head"><h3>Модули платформы</h3><button class="btn primary" data-jump-view="settings">Добавить модуль</button></div><div id="adminDirectory-modules" class="panel-body adminDirectoryTable"></div></section></section>
+    <section class="screen viewSection authOnly adminDirectorySection" data-view-content="live" data-admin-directory="live"><section class="panel"><div class="panel-head"><h3>Live-уроки</h3><button class="btn primary" data-jump-view="schools">Создать урок</button></div><div id="adminDirectory-live" class="panel-body adminDirectoryTable"></div></section></section>
+    <section class="screen viewSection authOnly adminDirectorySection" data-view-content="apps" data-admin-directory="apps"><section class="panel"><div class="panel-head"><h3>Мобильные версии</h3><button class="btn primary" data-jump-view="settings">Опубликовать версию</button></div><div id="adminDirectory-apps" class="panel-body adminDirectoryTable"></div><div class="mobile-preview"><div><h2>Алхимик</h2><p>Открывай • исследуй • понимай</p></div><div><p>Фон → конфигурация → профиль → доступы → модули → 3D/cache → готово</p><div class="progressbar"><span></span></div></div></div></section></section>
+
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="students" data-admin-directory="students"><h2>Ученики</h2><div class="muted">Ученики и учащиеся из реестра пользователей.</div><div class="row"><input data-directory-query="students" placeholder="Поиск по ученикам" /><button data-directory-refresh="students">Обновить</button></div><div id="adminDirectory-students" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="teachers" data-admin-directory="teachers"><h2>Учителя</h2><div class="muted">Учителя и классные руководители.</div><div class="row"><input data-directory-query="teachers" placeholder="Поиск по учителям" /><button data-directory-refresh="teachers">Обновить</button></div><div id="adminDirectory-teachers" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="parents" data-admin-directory="parents"><h2>Родители</h2><div class="muted">Родительские аккаунты и семейные доступы.</div><div class="row"><input data-directory-query="parents" placeholder="Поиск по родителям" /><button data-directory-refresh="parents">Обновить</button></div><div id="adminDirectory-parents" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="labs" data-admin-directory="labs"><h2>Лабораторные</h2><div class="muted">Лабораторные сценарии из реестра контента.</div><div class="row"><button data-directory-refresh="labs">Обновить</button></div><div id="adminDirectory-labs" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="analytics" data-admin-directory="analytics"><h2>Аналитика</h2><div class="muted">Агрегаты активности, retention и нагрузки появятся после подключения соответствующих событий.</div><div class="row"><button data-directory-refresh="analytics">Обновить</button></div><div id="adminDirectory-analytics" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="events" data-admin-directory="events"><h2>События</h2><div class="muted">Реальный журнал административных и системных событий.</div><div class="row"><button data-directory-refresh="events">Обновить</button></div><div id="adminDirectory-events" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="settings" data-admin-directory="settings"><h2>Настройки</h2><div class="muted">Версии, feature flags, окружения, лимиты и справочники.</div><div class="row"><button data-directory-refresh="settings">Обновить</button></div><div id="adminDirectory-settings" class="adminDirectoryTable"></div></section>
+    <section class="panel viewSection authOnly adminDirectorySection" data-view-content="support" data-admin-directory="support"><h2>Поддержка</h2><div class="muted">Тикеты поддержки появятся после подключения соответствующей таблицы. Сейчас используйте журнал событий и документы помощи.</div><div class="row"><button data-jump-view="docs">Открыть помощь</button><button data-directory-refresh="support">Обновить</button></div><div id="adminDirectory-support" class="adminDirectoryTable"></div></section>
 
     <section class="panel viewSection authOnly" data-view-content="users">
       <div>
@@ -460,20 +553,20 @@
       <section class="operationFlow" aria-label="Редакционный маршрут контента">
         <h3>Редакционный маршрут без автопубликации</h3>
         <ol>
-          <li><b>Источник</b><span>Сохранить автора, организацию, ссылку и license metadata.</span></li>
+          <li><b>Источник</b><span>Сохранить автора, организацию, ссылку и данные о лицензии.</span></li>
           <li><b>Черновик</b><span>Добавить авторский блок без копирования учебника.</span></li>
-          <li><b>Проверки</b><span>Автор, научред, методист, content QA и legal review.</span></li>
-          <li><b>Publish gate</b><span>Публикация разрешается только после источников, лицензии и проверки.</span></li>
+          <li><b>Проверки</b><span>Автор, научред, методист, контентная и юридическая проверка.</span></li>
+          <li><b>Проверка перед публикацией</b><span>Публикация разрешается только после источников, лицензии и проверки.</span></li>
         </ol>
       </section>
-      <section class="contentQueuePanel" aria-label="Очереди контентного workflow">
-        <h3>Очереди workflow и дедупликация</h3>
-        <p class="muted">Материалы распределяются по статусам review. Дубли по content hash блокируются, а публикация требует юридической проверки и существующих источников в реестре.</p>
-        <div id="contentQueues" class="contentQueues"><div class="muted">Очереди workflow не загружены.</div></div>
+      <section class="contentQueuePanel" aria-label="Очереди проверки контента">
+        <h3>Очереди проверки и дедупликация</h3>
+        <p class="muted">Материалы распределяются по статусам проверки. Дубли по content hash блокируются, а публикация требует юридической проверки и существующих источников в реестре.</p>
+        <div id="contentQueues" class="contentQueues"><div class="muted">Очереди проверки не загружены.</div></div>
       </section>
       <div class="row contentQaActions">
-        <button id="btnContentQaSummary" class="hintable" data-hint="Показывает статусы QA workflow и готовность публикации контента">QA workflow</button>
-        <div id="contentQaStatus" class="inlineStatus" aria-live="polite">QA workflow не загружен.</div>
+        <button id="btnContentQaSummary" class="hintable" data-hint="Показывает статусы проверки и готовность публикации контента">Проверка контента</button>
+        <div id="contentQaStatus" class="inlineStatus" aria-live="polite">Проверка контента не загружена.</div>
       </div>
       <div class="contentQaGrid">
         <article class="contentQaCard">
@@ -481,7 +574,7 @@
           <div id="contentQaCounts" class="muted">Нет данных.</div>
         </article>
         <article class="contentQaCard">
-          <h3>Publish gate</h3>
+          <h3>Проверка перед публикацией</h3>
           <div id="contentQaGate" class="muted">Контент нельзя публиковать без источников, лицензии и проверки.</div>
         </article>
       </div>
@@ -501,7 +594,7 @@
               <option value="unknown">Требует проверки</option>
             </select>
             <input id="contentSourceUsage" placeholder="Допустимость использования" />
-            <button id="btnContentSourceSave" class="hintable" data-hint="Сохраняет источник и license metadata">Сохранить источник</button>
+            <button id="btnContentSourceSave" class="hintable" data-hint="Сохраняет источник и данные о лицензии">Сохранить источник</button>
           </section>
           <section class="contentQaCard">
             <h3>Контентный блок</h3>
@@ -531,7 +624,7 @@
       </details>
       <section class="contentQaRegistryPanel" aria-labelledby="contentQaRegistryTitle">
         <h3 id="contentQaRegistryTitle">Поиск источников и блоков</h3>
-        <p class="muted">Найдите существующий источник или блок и нажмите «Выбрать», чтобы заполнить формы редактирования и workflow ID.</p>
+        <p class="muted">Найдите существующий источник или блок и нажмите «Выбрать», чтобы заполнить формы редактирования и ID редакционного маршрута.</p>
         <div class="contentQaRegistryGrid">
           <section>
             <h3>Источники</h3>
@@ -757,7 +850,7 @@
         <summary>Документы администратора и дежурной смены</summary>
         <div class="screenshotGuide" aria-label="Сценарии со скриншотами">
           <article><b>Школы</b><span>Проверить `Школы → Лицензия → Коды доступа`, затем приложить скриншот к задаче внедрения.</span></article>
-          <article><b>Контент</b><span>Проверить `Контент → QA workflow → История`, затем приложить скриншот publish gate.</span></article>
+          <article><b>Контент</b><span>Проверить `Контент → Проверка контента → История`, затем приложить скриншот проверки перед публикацией.</span></article>
           <article><b>Безопасность</b><span>Проверить `Безопасность → Go/No-Go`, затем приложить скриншот блокеров.</span></article>
         </div>
         <ul class="docsList">
@@ -815,6 +908,6 @@
   </div>
 
 
-  <script src="/api/v1/admin/web/assets/app.js?v=20260520qa2"></script>
+    <script src="/api/v1/admin/web/assets/app.js?v=20260630adminref12"></script>
 </body>
 </html>

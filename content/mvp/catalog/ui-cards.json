@@ -1,0 +1,242 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "cards": [
+    {
+      "id": "card-chem-school-reactions-types-signs",
+      "contentItemId": "chem-school-reactions-types-signs",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "title": "Химические реакции",
+      "summary": "Типы реакций и признаки превращений.",
+      "badges": [
+        "8-9 класс",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lesson"
+    },
+    {
+      "id": "card-chem-school-acids-intro",
+      "contentItemId": "chem-school-acids-intro",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "title": "Кислоты",
+      "summary": "Формулы, индикаторы и осторожная работа.",
+      "badges": [
+        "8-9 класс",
+        "безопасность",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lesson"
+    },
+    {
+      "id": "card-chem-school-metals-intro",
+      "contentItemId": "chem-school-metals-intro",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "title": "Металлы",
+      "summary": "Свойства металлов и идея активности.",
+      "badges": [
+        "8-9 класс",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lesson"
+    },
+    {
+      "id": "card-chem-school-zinc-hcl-reaction",
+      "contentItemId": "chem-school-zinc-hcl-reaction",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "title": "Zn + HCl",
+      "summary": "Уравнение, наблюдение газа и safety review.",
+      "badges": [
+        "8-9 класс",
+        "lab planned",
+        "safety review",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lab"
+    },
+    {
+      "id": "card-chem-school-lab-safety",
+      "contentItemId": "chem-school-lab-safety",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "title": "Лабораторная безопасность",
+      "summary": "Базовые правила работы в кабинете химии.",
+      "badges": [
+        "8-9 класс",
+        "safety",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lab"
+    },
+    {
+      "id": "card-phys-school-uniform-acceleration",
+      "contentItemId": "phys-school-uniform-acceleration",
+      "subject": "physics",
+      "educationLevel": "school",
+      "title": "Равноускоренное движение",
+      "summary": "Постоянное ускорение и изменение скорости.",
+      "badges": [
+        "9 класс",
+        "simulation planned",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "simulation"
+    },
+    {
+      "id": "card-phys-school-speed-acceleration-distance",
+      "contentItemId": "phys-school-speed-acceleration-distance",
+      "subject": "physics",
+      "educationLevel": "school",
+      "title": "Скорость, ускорение, путь",
+      "summary": "Три величины кинематики и их единицы.",
+      "badges": [
+        "9 класс",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lesson"
+    },
+    {
+      "id": "card-phys-school-formula-v-equals-v0-plus-at",
+      "contentItemId": "phys-school-formula-v-equals-v0-plus-at",
+      "subject": "physics",
+      "educationLevel": "school",
+      "title": "v = v0 + at",
+      "summary": "Скорость при постоянном ускорении.",
+      "badges": [
+        "9 класс",
+        "formula",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "simulation"
+    },
+    {
+      "id": "card-phys-school-formula-s-equals-v0t-plus-at2-half",
+      "contentItemId": "phys-school-formula-s-equals-v0t-plus-at2-half",
+      "subject": "physics",
+      "educationLevel": "school",
+      "title": "s = v0t + at^2 / 2",
+      "summary": "Путь при равноускоренном движении.",
+      "badges": [
+        "9 класс",
+        "formula",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "simulation"
+    },
+    {
+      "id": "card-phys-school-newton-laws-next-topic",
+      "contentItemId": "phys-school-newton-laws-next-topic",
+      "subject": "physics",
+      "educationLevel": "school",
+      "title": "Законы Ньютона: дальше",
+      "summary": "Переход от описания движения к причинам.",
+      "badges": [
+        "9 класс",
+        "next topic",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "lesson"
+    },
+    {
+      "id": "card-bio-school-cell-structure",
+      "contentItemId": "bio-school-cell-structure",
+      "subject": "biology",
+      "educationLevel": "school",
+      "title": "Строение клетки",
+      "summary": "Клетка как система и учебная схема.",
+      "badges": [
+        "5-6 класс",
+        "microscope planned",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "microscope"
+    },
+    {
+      "id": "card-bio-school-plant-cell",
+      "contentItemId": "bio-school-plant-cell",
+      "subject": "biology",
+      "educationLevel": "school",
+      "title": "Растительная клетка",
+      "summary": "Клеточная стенка, вакуоль, цитоплазма, ядро.",
+      "badges": [
+        "5-6 класс",
+        "microscope planned",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "microscope"
+    },
+    {
+      "id": "card-bio-school-onion-epidermis-microscope",
+      "contentItemId": "bio-school-onion-epidermis-microscope",
+      "subject": "biology",
+      "educationLevel": "school",
+      "title": "Кожица лука",
+      "summary": "Наблюдение растительных клеток под микроскопом.",
+      "badges": [
+        "5-6 класс",
+        "microscope",
+        "safety review",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "microscope"
+    },
+    {
+      "id": "card-bio-school-plant-cell-structures",
+      "contentItemId": "bio-school-plant-cell-structures",
+      "subject": "biology",
+      "educationLevel": "school",
+      "title": "Структуры клетки",
+      "summary": "Клеточная стенка, цитоплазма, ядро, вакуоль.",
+      "badges": [
+        "5-6 класс",
+        "labels",
+        "methodist review",
+        "draft only"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "primaryTarget": "microscope"
+    },
+    {
+      "id": "card-student-catalog",
+      "catalogSectionId": "student-mvp-section-catalog",
+      "subject": "chemistry",
+      "educationLevel": "university_intro",
+      "title": "Студенческие разделы",
+      "summary": "Каталог направлений без учебных материалов в этом MVP seed.",
+      "badges": [
+        "students",
+        "catalog only"
+      ],
+      "verificationStatus": "catalog_only",
+      "primaryTarget": "catalog_section"
+    }
+  ]
+}

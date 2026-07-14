@@ -13,6 +13,10 @@ from pathlib import Path
 from datetime import datetime, timezone
 from typing import Any, Dict, List
 
+from sqlalchemy import text
+
+from app.db.session import SessionLocal
+
 from app.security.policies import ALL_KNOWN_ROLES, ROLE_SCOPES
 from app.core.config import settings
 from app.services.ui_labels import (
@@ -3350,6 +3354,412 @@ def create_user_manual(
         "changedBy": changed_by,
     }
 
+
+
+def _safe_int(value: Any) -> int:
+    try:
+        return int(value or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _date_key(value: Any) -> str | None:
+    dt = _parse_iso_datetime(value)
+    if not dt:
+        return None
+    return dt.date().isoformat()
+
+
+def _content_status_counts() -> Dict[str, int]:
+    sess = SessionLocal()
+    try:
+        rows = sess.execute(text("SELECT publish_status, COUNT(*) AS count FROM content_blocks GROUP BY publish_status")).mappings().all()
+        return {str(row.get("publish_status") or "draft"): _safe_int(row.get("count")) for row in rows}
+    except Exception:
+        return {}
+    finally:
+        sess.close()
+
+
+def _content_subject_counts() -> Dict[str, int]:
+    sess = SessionLocal()
+    try:
+        rows = sess.execute(text("SELECT subject, COUNT(*) AS count FROM content_blocks GROUP BY subject")).mappings().all()
+        return {str(row.get("subject") or "").strip(): _safe_int(row.get("count")) for row in rows if str(row.get("subject") or "").strip()}
+    except Exception:
+        return {}
+    finally:
+        sess.close()
+
+
+def _content_recent(limit: int = 20) -> List[Dict[str, Any]]:
+    sess = SessionLocal()
+    try:
+        rows = sess.execute(
+            text(
+                """
+                SELECT id, title_ru, subject, section, topic, content_type, publish_status, updated_at
+                FROM content_blocks
+                ORDER BY updated_at DESC
+                LIMIT :limit
+                """
+            ),
+            {"limit": max(1, min(limit, 100))},
+        ).mappings().all()
+        return [
+            {
+                "id": row.get("id"),
+                "title": row.get("title_ru") or row.get("id"),
+                "subject": row.get("subject"),
+                "section": row.get("section"),
+                "topic": row.get("topic"),
+                "type": row.get("content_type"),
+                "status": row.get("publish_status"),
+                "updatedAt": row.get("updated_at").isoformat() if hasattr(row.get("updated_at"), "isoformat") else row.get("updated_at"),
+            }
+            for row in rows
+        ]
+    except Exception:
+        return []
+    finally:
+        sess.close()
+
+
+def _audit_rows() -> List[Dict[str, Any]]:
+    state = _read_state()
+    return [_normalized_audit_event(row) for row in state.get("admin_audit", []) if isinstance(row, dict)]
+
+
+
+def _latest_apk_metadata() -> Dict[str, Any]:
+    path = Path(__file__).resolve().parents[3] / "content_packs" / "allchemist-apk-latest.json"
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+        return data if isinstance(data, dict) else {}
+    except Exception:
+        return {}
+
+
+def _audit_count_contains(*needles: str, since_date: str | None = None) -> int:
+    total = 0
+    clean = [x.lower() for x in needles if x]
+    for row in _audit_rows():
+        if since_date and _date_key(row.get("createdAt")) != since_date:
+            continue
+        action = str(row.get("action") or "").lower()
+        payload = json.dumps(row.get("payload") or {}, ensure_ascii=False).lower()
+        hay = action + " " + payload
+        if any(x in hay for x in clean):
+            total += 1
+    return total
+
+
+def _admin_demo_dashboard(state: Dict[str, Any] | None = None) -> Dict[str, Any]:
+    source = state if isinstance(state, dict) else _read_state()
+    demo = source.get("admin_demo_dashboard")
+    if not isinstance(demo, dict) or demo.get("enabled") is not True:
+        return {}
+    return demo
+
+
+def _demo_section(name: str, state: Dict[str, Any] | None = None) -> Any:
+    demo = _admin_demo_dashboard(state)
+    return demo.get(name) if demo else None
+
+def admin_dashboard_summary() -> Dict[str, Any]:
+    state = _read_state()
+    _ensure_school_seed_state(state)
+    users = state.get("users", {}) if isinstance(state.get("users"), dict) else {}
+    schools = state.get("schools", {}) if isinstance(state.get("schools"), dict) else {}
+    licenses = state.get("school_licenses", {}) if isinstance(state.get("school_licenses"), dict) else {}
+    invites = state.get("school_invite_codes", {}) if isinstance(state.get("school_invite_codes"), dict) else {}
+    entitlements = state.get("entitlements", {}) if isinstance(state.get("entitlements"), dict) else {}
+    audit = _audit_rows()
+    today = datetime.now(timezone.utc).date().isoformat()
+    status_counts = _content_status_counts()
+    moderation_count = sum(status_counts.get(key, 0) for key in ("draft", "author_review", "scientific_review", "methodist_review", "content_qa", "legal_review"))
+    active_subs = 0
+    for ent in entitlements.values():
+        if not isinstance(ent, dict):
+            continue
+        plans = [str(x) for x in ent.get("plans", []) if str(x).strip()]
+        modules = [str(x) for x in ent.get("modules", []) if str(x).strip()]
+        if any(x != "free" for x in plans) or modules:
+            active_subs += 1
+    completed_lessons = sum(1 for row in audit if "lesson" in str(row.get("action") or "").lower() and "complete" in str(row.get("action") or "").lower())
+    ai_sessions = sum(1 for row in audit if "ai" in str(row.get("action") or "").lower())
+    mrr = sum(_safe_int(row.get("priceRub")) for row in licenses.values() if isinstance(row, dict) and str(row.get("status") or "active") == "active")
+    errors_24h = sum(1 for row in audit if _date_key(row.get("createdAt")) == today and any(x in str(row.get("action") or "").lower() for x in ("error", "failed", "critical")))
+    critical_errors = sum(1 for row in audit if _date_key(row.get("createdAt")) == today and "critical" in str(row.get("action") or "").lower())
+    active_users = len([row for row in users.values() if isinstance(row, dict) and row.get("lastLoginAt")])
+    users_count = len(users)
+    active_percent = int(round(active_users / users_count * 100)) if users_count else 0
+    published_materials = status_counts.get("published", 0)
+    apk = _latest_apk_metadata()
+    active_school_count = len([row for row in schools.values() if isinstance(row, dict) and str(row.get("status") or "active") == "active"])
+    payload = {
+        "totalUsers": users_count,
+        "totalSchools": len(schools),
+        "completedLessons": completed_lessons,
+        "aiSessions": ai_sessions,
+        "mrr": mrr,
+        "activeSubscriptions": active_subs,
+        "newRegistrations": sum(1 for row in users.values() if isinstance(row, dict) and _date_key(row.get("createdAt")) == today),
+        "apiErrorRate": errors_24h,
+        "moderationQueueCount": moderation_count,
+        "onlineUsers": 0,
+        "aiRequestsToday": sum(1 for row in audit if _date_key(row.get("createdAt")) == today and "ai" in str(row.get("action") or "").lower()),
+        "labRunsToday": sum(1 for row in audit if _date_key(row.get("createdAt")) == today and "lab" in str(row.get("action") or "").lower()),
+        "schoolsOnPlatform": active_school_count,
+        "inactiveInviteCodes": len([row for row in invites.values() if isinstance(row, dict) and str(row.get("status") or "active") == "active" and not row.get("activatedAt")]),
+        "emptyState": users_count == 0 and len(schools) == 0,
+        "generatedAt": _now_iso(),
+    }
+    payload.update({
+        "schoolsCount": len(schools),
+        "usersCount": users_count,
+        "activeUsersPercent": active_percent,
+        "licensesCount": len(licenses),
+        "expiringLicensesCount": 0,
+        "publishedMaterialsCount": published_materials,
+        "reviewMaterialsCount": moderation_count,
+        "errors24hCount": errors_24h,
+        "criticalErrorsCount": critical_errors,
+        "liveLessonsNowCount": _audit_count_contains("live", since_date=today),
+        "monthlyPaymentsAmount": mrr,
+        "serviceUptimePercent": 100 if not critical_errors else 0,
+        "currentApkVersion": apk.get("versionName") or "Нет данных",
+    })
+    demo_summary = _demo_section("summary", state)
+    if isinstance(demo_summary, dict):
+        payload.update(demo_summary)
+        payload["emptyState"] = False
+        payload["generatedAt"] = _admin_demo_dashboard(state).get("generatedAt") or payload.get("generatedAt")
+    return payload
+
+
+def admin_dashboard_activity(period: int = 30) -> Dict[str, Any]:
+    safe_period = period if period in {7, 30, 90} else 30
+    demo_activity = _demo_section("activity")
+    if isinstance(demo_activity, dict):
+        items = demo_activity.get(str(safe_period), demo_activity.get("items", []))
+        if isinstance(items, list) and items:
+            return {"period": safe_period, "items": [row for row in items[-safe_period:] if isinstance(row, dict)]}
+    today_dt = datetime.now(timezone.utc).date()
+    rows = {}
+    for i in range(safe_period):
+        key = today_dt.fromordinal(today_dt.toordinal() - i).isoformat()
+        rows[key] = {"date": key, "lessons": 0, "labs": 0, "aiRequests": 0}
+    for event in _audit_rows():
+        key = _date_key(event.get("createdAt"))
+        if key not in rows:
+            continue
+        action = str(event.get("action") or "").lower()
+        if "lesson" in action:
+            rows[key]["lessons"] += 1
+        if "lab" in action:
+            rows[key]["labs"] += 1
+        if "ai" in action:
+            rows[key]["aiRequests"] += 1
+    return {"period": safe_period, "items": [rows[k] for k in sorted(rows)]}
+
+
+def admin_subjects_activity() -> Dict[str, Any]:
+    demo_subjects = _demo_section("subjects")
+    if isinstance(demo_subjects, dict):
+        payload = dict(demo_subjects)
+        payload["empty"] = False
+        return payload
+    counts = _content_subject_counts()
+    chemistry = counts.get("chemistry", 0) + counts.get("Химия", 0)
+    physics = counts.get("physics", 0) + counts.get("Физика", 0)
+    biology = counts.get("biology", 0) + counts.get("Биология", 0)
+    total = chemistry + physics + biology
+    def pct(value: int) -> int:
+        return int(round((value / total) * 100)) if total else 0
+    return {"chemistryPercent": pct(chemistry), "physicsPercent": pct(physics), "biologyPercent": pct(biology), "counts": {"chemistry": chemistry, "physics": physics, "biology": biology}, "empty": total == 0}
+
+
+def admin_schools_map(region: str | None = None) -> Dict[str, Any]:
+    state = _read_state()
+    demo_map = _demo_section("schoolsMap", state)
+    if isinstance(demo_map, dict):
+        selected = str(region or "").strip().lower()
+        rows = [row for row in demo_map.get("items", []) if isinstance(row, dict)]
+        if selected:
+            rows = [
+                row for row in rows
+                if selected in str(row.get("region") or "").lower()
+                or selected in str(row.get("city") or "").lower()
+                or selected in str(row.get("country") or "").lower()
+            ]
+        return {"items": rows, "missingGeoCount": int(demo_map.get("missingGeoCount") or 0), "empty": not rows, "region": region or ""}
+    _ensure_school_seed_state(state)
+    schools = state.get("schools", {}) if isinstance(state.get("schools"), dict) else {}
+    selected = str(region or "").strip().lower()
+    grouped: Dict[str, Dict[str, Any]] = {}
+    missing_geo = 0
+    for school in schools.values():
+        if not isinstance(school, dict):
+            continue
+        city = str(school.get("city") or school.get("cityRu") or "").strip()
+        region_name = str(school.get("region") or school.get("regionRu") or "").strip()
+        country = str(school.get("country") or school.get("countryRu") or "Россия").strip()
+        lat = school.get("lat") or school.get("latitude")
+        lng = school.get("lng") or school.get("longitude")
+        if not (city or region_name) or lat is None or lng is None:
+            missing_geo += 1
+            continue
+        if selected and selected not in region_name.lower() and selected not in city.lower() and selected not in country.lower():
+            continue
+        key = f"{country}|{region_name}|{city}|{lat}|{lng}"
+        row = grouped.setdefault(key, {"country": country, "region": region_name, "city": city, "lat": lat, "lng": lng, "schoolsCount": 0, "activeSchools": 0, "newSchools": 0, "inactiveSchools": 0, "schoolIds": []})
+        row["schoolsCount"] += 1
+        row["schoolIds"].append(school.get("schoolId"))
+        if str(school.get("status") or "active") == "active":
+            row["activeSchools"] += 1
+        else:
+            row["inactiveSchools"] += 1
+    return {"items": list(grouped.values()), "missingGeoCount": missing_geo, "empty": not grouped, "region": region or ""}
+
+
+def _admin_event_title(action: str) -> str:
+    mapping = {"create_school": "Новая школа подключена", "create_user_manual": "Создан пользователь", "set_user_role": "Изменена роль пользователя", "create_school_invite": "Создан школьный код доступа", "grant_subscription": "Выдан доступ", "revoke_subscription": "Доступ отозван", "admin_password_login": "Вход администратора"}
+    return mapping.get(action, "Системное событие")
+
+
+def _admin_event_description(row: Dict[str, Any]) -> str:
+    parts = [str(row.get("action") or "событие")]
+    if row.get("targetUserId"):
+        parts.append("пользователь: " + str(row.get("targetUserId")))
+    if row.get("actorUserId"):
+        parts.append("инициатор: " + str(row.get("actorUserId")))
+    return " · ".join(parts)
+
+
+def admin_recent_events(limit: int = 20) -> Dict[str, Any]:
+    demo_events = _demo_section("recentEvents")
+    if isinstance(demo_events, dict):
+        rows = [row for row in demo_events.get("items", []) if isinstance(row, dict)]
+        return {"items": rows[:max(1, min(limit, 100))], "empty": not rows}
+    rows = _audit_rows()
+    out = []
+    for row in reversed(rows[-max(1, min(limit, 100)):]):
+        action = str(row.get("action") or "event")
+        severity = "warning" if "error" in action.lower() or "failed" in action.lower() else "info"
+        out.append({"id": row.get("id") or f"event-{len(out) + 1}", "createdAt": row.get("createdAt"), "type": action, "title": _admin_event_title(action), "description": _admin_event_description(row), "severity": severity, "actorUserId": row.get("actorUserId"), "targetUserId": row.get("targetUserId"), "details": row.get("payload") or {}})
+    return {"items": out, "empty": not out}
+
+
+def admin_content_qa_summary() -> Dict[str, Any]:
+    demo_qa = _demo_section("qa")
+    if isinstance(demo_qa, dict):
+        payload = dict(demo_qa)
+        payload["empty"] = False
+        return payload
+    counts = _content_status_counts()
+    return {"draftCount": counts.get("draft", 0), "reviewCount": sum(counts.get(key, 0) for key in ("author_review", "scientific_review", "methodist_review", "content_qa", "legal_review")), "approvedCount": counts.get("approved", 0), "publishedCount": counts.get("published", 0), "needsFixCount": counts.get("needs_fix", 0) + counts.get("fix_required", 0), "archivedCount": counts.get("archived", 0), "statusCounts": counts, "empty": not counts}
+
+
+
+def admin_dashboard_attention() -> Dict[str, Any]:
+    demo_attention = _demo_section("attention")
+    if isinstance(demo_attention, dict):
+        rows = [row for row in demo_attention.get("items", []) if isinstance(row, dict)]
+        return {"items": rows, "empty": not rows}
+    summary = admin_dashboard_summary()
+    qa = admin_content_qa_summary()
+    items: List[Dict[str, Any]] = []
+    def add(item_id: str, item_type: str, title: str, description: str, severity: str, target_url: str, count: int = 0) -> None:
+        if count <= 0:
+            return
+        items.append({"id": item_id, "type": item_type, "title": title, "description": description, "severity": severity, "targetUrl": target_url, "count": count})
+    add("content-review", "content", "Материалы на проверке", "Контент ожидает редакционной проверки.", "warning", "#qa", int(summary.get("reviewMaterialsCount") or 0))
+    add("critical-errors", "logs", "Critical ошибки", "В журнале есть критичные ошибки за 24 часа.", "critical", "#logs", int(summary.get("criticalErrorsCount") or 0))
+    add("api-errors", "logs", "Ошибки 24ч", "Проверьте журнал ошибок и последние события.", "warning", "#logs", int(summary.get("errors24hCount") or 0))
+    add("needs-fix", "content", "Контент требует исправления", "Есть материалы со статусом исправления.", "warning", "#qa", int(qa.get("needsFixCount") or 0))
+    return {"items": items, "empty": not items}
+
+
+def admin_dashboard_activity_totals() -> Dict[str, Any]:
+    demo_totals = _demo_section("activityTotals")
+    if isinstance(demo_totals, dict):
+        payload = dict(demo_totals)
+        payload.setdefault("today", datetime.now(timezone.utc).date().isoformat())
+        return payload
+    today = datetime.now(timezone.utc).date().isoformat()
+    labs = _audit_count_contains("lab")
+    molecules = _audit_count_contains("molecule", "3d")
+    ai_requests = _audit_count_contains("ai")
+    assessments = _audit_count_contains("quiz", "test", "assessment", "attempt")
+    return {
+        "labsRunsCount": labs,
+        "moleculesOpenCount": molecules,
+        "aiRequestsCount": ai_requests,
+        "assessmentsCount": assessments,
+        "popularLabs": [],
+        "popularMolecules": [],
+        "today": today,
+    }
+
+
+def admin_global_search(query: str, *, limit: int = 20) -> Dict[str, Any]:
+    q = str(query or "").strip().lower()
+    if not q:
+        return {"items": [], "empty": True}
+    items: List[Dict[str, Any]] = []
+    for row in list_schools_overview().get("items", []):
+        title = str(row.get("schoolTitle") or "")
+        if q in title.lower():
+            items.append({"type": "school", "title": title, "subtitle": row.get("organizationTitle") or "", "targetUrl": "#schools"})
+    for row in list_users(limit=1000, offset=0, query=q):
+        items.append({"type": "user", "title": row.get("userId"), "subtitle": row.get("roleLabelRu") or row.get("phone") or "", "targetUrl": "#users"})
+    for row in _content_recent(100):
+        hay = " ".join(str(row.get(k) or "") for k in ("title", "subject", "section", "topic", "id")).lower()
+        if q in hay:
+            items.append({"type": "content", "title": row.get("title"), "subtitle": row.get("topic") or row.get("subject") or "", "targetUrl": "#content"})
+    return {"items": items[:max(1, min(limit, 100))], "empty": not items}
+
+def admin_directory(section: str, *, limit: int = 50, query: str | None = None) -> Dict[str, Any]:
+    key = str(section or "").strip().lower()
+    if key in {"users", "students", "teachers", "parents"}:
+        rows = list_users(limit=1000, offset=0, query=query)
+        role_sets = {"students": {"student", "learner"}, "teachers": {"teacher", "homeroom_teacher"}, "parents": {"parent"}}
+        if key in role_sets:
+            rows = [row for row in rows if str(row.get("role") or "") in role_sets[key]]
+        return {"section": key, "items": rows[:max(1, min(limit, 200))], "empty": not rows}
+    if key == "schools":
+        rows = list_schools_overview().get("items", [])
+        return {"section": key, "items": rows[:max(1, min(limit, 200))], "empty": not rows}
+    if key in {"content", "labs"}:
+        rows = _content_recent(max(1, min(limit, 100)))
+        if key == "labs":
+            rows = [row for row in rows if str(row.get("type") or "") == "lab"]
+        return {"section": key, "items": rows, "empty": not rows}
+    if key == "qa":
+        qa = admin_content_qa_summary()
+        rows = [{"id": name, "title": name, "status": count, "type": "content_qa"} for name, count in (qa.get("statusCounts") or {}).items()]
+        return {"section": key, "items": rows, "empty": not rows, "message": "Данные появятся после добавления контента в QA."}
+    if key == "sources":
+        sess = SessionLocal()
+        try:
+            rows = sess.execute(text("SELECT id, title_ru, license_status, updated_at FROM content_sources ORDER BY updated_at DESC LIMIT :limit"), {"limit": max(1, min(limit, 100))}).mappings().all()
+            items = [{"id": row.get("id"), "title": row.get("title_ru"), "status": row.get("license_status") or "требует проверки", "type": "source", "updatedAt": row.get("updated_at").isoformat() if hasattr(row.get("updated_at"), "isoformat") else row.get("updated_at")} for row in rows]
+            return {"section": key, "items": items, "empty": not items, "message": "Источники появятся после добавления в реестр."}
+        except Exception:
+            return {"section": key, "items": [], "empty": True, "message": "Источники появятся после подключения таблицы источников."}
+        finally:
+            sess.close()
+    if key in {"events", "security", "logs"}:
+        events = admin_recent_events(limit=limit).get("items", [])
+        return {"section": key, "items": events, "empty": not events, "message": "Журнал событий пока пуст."}
+    if key == "apps":
+        apk = _latest_apk_metadata()
+        items = [{"id": "android", "title": "Android APK", "status": apk.get("versionName") or "Нет данных", "type": "mobile_app"}] if apk else []
+        return {"section": key, "items": items, "empty": not items, "message": "Версии приложений появятся после публикации."}
+    if key in {"analytics", "ai", "settings", "support", "subscriptions", "modules", "live"}:
+        return {"section": key, "items": [], "empty": True, "message": "Данные появятся после подключения соответствующих событий и таблиц."}
+    raise ValueError("Неизвестный раздел админки")
 
 def database_overview() -> Dict[str, Any]:
     state = _read_state()

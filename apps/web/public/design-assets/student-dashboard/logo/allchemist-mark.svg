@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Allchemist">
+  <defs>
+    <linearGradient id="mark-a" x1="8" y1="42" x2="40" y2="6" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1D7CFF"/>
+      <stop offset=".48" stop-color="#20D7FF"/>
+      <stop offset="1" stop-color="#7C5CFF"/>
+    </linearGradient>
+  </defs>
+  <path fill="none" stroke="url(#mark-a)" stroke-width="5.4" stroke-linecap="round" stroke-linejoin="round" d="M24 7 7.8 39.5h10.6L24 28.4l5.6 11.1h10.6L24 7Z"/>
+  <path fill="none" stroke="#6CF5FF" stroke-width="3.2" stroke-linecap="round" d="M24 7v12.7"/>
+  <circle cx="24" cy="24.5" r="3.2" fill="#6CF5FF"/>
+</svg>

@@ -1,0 +1,15 @@
+{
+  "contractFixture": true,
+  "reactions": [
+    {
+      "id": "reaction_contract",
+      "title": "Contract reaction placeholder",
+      "equation": "A + B -> C",
+      "conditions": [],
+      "reactants": [],
+      "products": []
+    }
+  ],
+  "count": 1,
+  "note": "No scientific visual facts are asserted by this fixture."
+}

@@ -1,0 +1,701 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "items": [
+    {
+      "id": "chem-school-reactions-types-signs",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "grade": "8-9",
+      "topic": "Химические реакции",
+      "title": "Химические реакции: типы и признаки",
+      "summary": "Вводный материал о том, как отличать химическую реакцию от физического изменения, какие внешние признаки могут сопровождать реакцию и почему признаки требуют проверки, а не угадывания.",
+      "learningObjectives": [
+        "Отличать химическое превращение от физического изменения по смыслу процесса.",
+        "Называть базовые типы реакций школьного курса: соединение, разложение, замещение и обмен.",
+        "Объяснять, почему газ, осадок, изменение цвета или тепловой эффект являются признаками, но не самостоятельным доказательством без уравнения и условий."
+      ],
+      "blocks": [
+        {
+          "id": "chem-school-reactions-types-signs-b1",
+          "kind": "concept",
+          "title": "Что меняется в реакции",
+          "body": "В химической реакции исходные вещества превращаются в другие вещества. У частиц меняется порядок соединения атомов, поэтому появляются новые свойства: например, другой цвет, растворимость, запах или способность реагировать дальше."
+        },
+        {
+          "id": "chem-school-reactions-types-signs-b2",
+          "kind": "explanation",
+          "title": "Типы реакций в школьной записи",
+          "body": "В реакции соединения из нескольких веществ образуется одно более сложное вещество. В реакции разложения одно вещество дает несколько продуктов. В реакции замещения атом или группа атомов одного вещества заменяет часть другого вещества. В реакции обмена части двух сложных веществ меняются местами."
+        },
+        {
+          "id": "chem-school-reactions-types-signs-b3",
+          "kind": "observation",
+          "title": "Признаки не заменяют вывод",
+          "body": "Выделение газа, выпадение осадка, изменение цвета, появление или поглощение тепла помогают заметить реакцию. Но вывод делают по совокупности данных: какие вещества взяли, какие условия были, какие продукты можно ожидать и как это записывается уравнением."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "chem-school-reactions-types-signs-t1",
+          "kind": "classification",
+          "prompt": "Определи тип реакции по схеме A + B -> AB и объясни выбор одним предложением.",
+          "expectedAnswer": "Это реакция соединения: из двух исходных веществ образуется одно вещество.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+              "src-openstax-chemistry-2e-4-2-reactions",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Chemistry 2e, 4.2 Classifying Chemical Reactions",
+                "url": "https://openstax.org/books/chemistry-2e/pages/4-2-classifying-chemical-reactions",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+          "src-openstax-chemistry-2e-4-2-reactions",
+          "src-textbook-placeholder-chemistry-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Chemistry 2e, 4.2 Classifying Chemical Reactions",
+            "url": "https://openstax.org/books/chemistry-2e/pages/4-2-classifying-chemical-reactions",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school chemistry textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "chem-school-acids-intro",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "grade": "8-9",
+      "topic": "Кислоты",
+      "title": "Кислоты: что важно узнать сначала",
+      "summary": "Короткий школьный ввод в тему кислот: состав, водород в формулах, кислый характер растворов, связь с индикаторами и обязательная осторожность при работе.",
+      "learningObjectives": [
+        "Понимать, что в школьной классификации кислоты рассматривают как сложные вещества, в формулах которых есть атомы водорода и кислотный остаток.",
+        "Связывать тему кислот с индикаторами и реакциями с металлами на качественном уровне.",
+        "Называть базовые правила осторожной работы с растворами кислот."
+      ],
+      "blocks": [
+        {
+          "id": "chem-school-acids-intro-b1",
+          "kind": "concept",
+          "title": "Формула и название",
+          "body": "В школьном курсе кислоты обычно узнают по формулам, где водород записан вместе с кислотным остатком: например, HCl или H2SO4. Название и свойства зависят не только от водорода, но и от состава всего вещества."
+        },
+        {
+          "id": "chem-school-acids-intro-b2",
+          "kind": "explanation",
+          "title": "Как кислоты проявляют себя",
+          "body": "Растворы кислот могут менять окраску индикаторов и вступать в реакции с некоторыми металлами. Эти признаки рассматривают вместе с условиями опыта и правилами безопасности."
+        },
+        {
+          "id": "chem-school-acids-intro-b3",
+          "kind": "safety",
+          "title": "Осторожность важнее скорости",
+          "body": "С кислотами работают только по инструкции: используют небольшие количества, защитные средства, аккуратную посуду и не пробуют вещества на вкус. Даже разбавленный раствор требует внимательности."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "chem-school-acids-intro-t1",
+          "kind": "check_understanding",
+          "prompt": "Почему нельзя определять кислоту только по слову 'кислый' в бытовом смысле?",
+          "expectedAnswer": "В химии вывод делают по составу, свойствам и условиям опыта; бытовое ощущение вкуса не является безопасным или научным способом проверки.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+              "src-openstax-chemistry-2e-14-1-acids",
+              "src-acs-secondary-chemical-lab-safety",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Chemistry 2e, 14.1 Brønsted-Lowry Acids and Bases",
+                "url": "https://openstax.org/books/chemistry-2e/pages/14-1-bronsted-lowry-acids-and-bases",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+                "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+          "src-openstax-chemistry-2e-14-1-acids",
+          "src-acs-secondary-chemical-lab-safety",
+          "src-textbook-placeholder-chemistry-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Chemistry 2e, 14.1 Brønsted-Lowry Acids and Bases",
+            "url": "https://openstax.org/books/chemistry-2e/pages/14-1-bronsted-lowry-acids-and-bases",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+            "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school chemistry textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "chem-school-metals-intro",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "grade": "8-9",
+      "topic": "Металлы",
+      "title": "Металлы: свойства и химическая активность",
+      "summary": "Вводная карточка о типичных физических свойствах металлов и о том, что химическая активность разных металлов различается.",
+      "learningObjectives": [
+        "Называть типичные признаки металлов: блеск, проводимость, пластичность.",
+        "Понимать, что не все металлы реагируют одинаково активно.",
+        "Использовать идею ряда активности как мост к реакциям металлов с кислотами."
+      ],
+      "blocks": [
+        {
+          "id": "chem-school-metals-intro-b1",
+          "kind": "concept",
+          "title": "Физические признаки",
+          "body": "Многие металлы имеют металлический блеск, проводят электрический ток и тепло, могут изменять форму без разрушения. Эти признаки помогают распознать группу веществ, но конкретные свойства у разных металлов отличаются."
+        },
+        {
+          "id": "chem-school-metals-intro-b2",
+          "kind": "explanation",
+          "title": "Активность металлов",
+          "body": "Один металл может вытеснять другой из соединения или реагировать с кислотой, а другой в тех же условиях почти не реагирует. Поэтому в химии важно сравнивать активность, а не говорить о металлах как об одинаковых веществах."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "chem-school-metals-intro-t1",
+          "kind": "check_understanding",
+          "prompt": "Почему фраза 'все металлы одинаково реагируют с кислотами' неверна?",
+          "expectedAnswer": "Разные металлы имеют разную химическую активность, поэтому условия и скорость реакций с кислотами могут сильно отличаться.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+              "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Chemistry 2e, 18.1 Periodicity",
+                "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+          "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+          "src-textbook-placeholder-chemistry-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Chemistry 2e, 18.1 Periodicity",
+            "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school chemistry textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "chem-school-zinc-hcl-reaction",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "grade": "8-9",
+      "topic": "Реакция металлов с кислотами",
+      "title": "Реакция Zn + HCl",
+      "summary": "Учебная карточка о реакции цинка с соляной кислотой: уравнение, наблюдение выделения газа и обязательный акцент на контролируемых условиях.",
+      "learningObjectives": [
+        "Записывать уравнение реакции Zn + 2HCl -> ZnCl2 + H2.",
+        "Связывать пузырьки газа с образованием водорода в этой реакции.",
+        "Понимать, почему опыт требует учителя, малых количеств и исключения источников огня."
+      ],
+      "blocks": [
+        {
+          "id": "chem-school-zinc-hcl-reaction-b1",
+          "kind": "formula",
+          "title": "Уравнение реакции",
+          "body": "Для школьного разбора реакцию записывают так: Zn + 2HCl -> ZnCl2 + H2. Цинк взаимодействует с соляной кислотой, образуются хлорид цинка и водород."
+        },
+        {
+          "id": "chem-school-zinc-hcl-reaction-b2",
+          "kind": "observation",
+          "title": "Что можно наблюдать",
+          "body": "В пробирке могут появляться пузырьки газа. Это наблюдение связывают с выделением водорода, но окончательный учебный вывод делают через уравнение реакции и обсуждение продуктов."
+        },
+        {
+          "id": "chem-school-zinc-hcl-reaction-b3",
+          "kind": "safety",
+          "title": "Безопасность",
+          "body": "Опыт нельзя выполнять самостоятельно. Водород горюч, соляная кислота раздражает кожу и слизистые, а работа с пробирками требует защитных очков, малых количеств и контроля учителя."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "chem-school-zinc-hcl-reaction-t1",
+          "kind": "classification",
+          "prompt": "К какому типу школьной классификации можно отнести реакцию Zn + 2HCl -> ZnCl2 + H2?",
+          "expectedAnswer": "К реакции замещения: металл замещает водород в кислоте, образуя соль и водород.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+              "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+              "src-acs-secondary-chemical-lab-safety",
+              "src-niosh-school-chemistry-lab-safety-guide",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Chemistry 2e, 18.1 Periodicity",
+                "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+                "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "School Chemistry Laboratory Safety Guide",
+                "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        },
+        {
+          "id": "chem-school-zinc-hcl-reaction-t2",
+          "kind": "safety_check",
+          "prompt": "Назови две причины, почему этот опыт нельзя проводить дома.",
+          "expectedAnswer": "Используется кислота, а выделяющийся водород горюч; нужен контроль учителя и школьное оборудование.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+              "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+              "src-acs-secondary-chemical-lab-safety",
+              "src-niosh-school-chemistry-lab-safety-guide",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Chemistry 2e, 18.1 Periodicity",
+                "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+                "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "School Chemistry Laboratory Safety Guide",
+                "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedLab": {
+        "id": "lab-chem-zinc-hcl-observation",
+        "kind": "lab",
+        "title": "Демонстрационное наблюдение реакции цинка с соляной кислотой",
+        "status": "planned",
+        "note": "Only as teacher-led demo after safety review; no student self-service lab instructions in MVP seed."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+          "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+          "src-acs-secondary-chemical-lab-safety",
+          "src-niosh-school-chemistry-lab-safety-guide",
+          "src-textbook-placeholder-chemistry-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Chemistry 2e, 18.1 Periodicity",
+            "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+            "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "School Chemistry Laboratory Safety Guide",
+            "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school chemistry textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "chem-school-lab-safety",
+      "subject": "chemistry",
+      "educationLevel": "school",
+      "grade": "8-9",
+      "topic": "Безопасность лабораторных работ",
+      "title": "Безопасность лабораторных работ",
+      "summary": "Базовые правила поведения в химической лаборатории: следовать инструкции, защищать глаза и руки, не пробовать вещества и сразу сообщать учителю о проблемах.",
+      "learningObjectives": [
+        "Объяснять, почему лабораторная работа начинается с инструкции и проверки рабочего места.",
+        "Называть базовые запреты: не пробовать вещества, не нюхать напрямую, не смешивать без задания.",
+        "Понимать, что любые повреждения посуды, проливы и недомогание сразу сообщают учителю."
+      ],
+      "blocks": [
+        {
+          "id": "chem-school-lab-safety-b1",
+          "kind": "safety",
+          "title": "Перед опытом",
+          "body": "До начала работы ученик читает инструкцию, надевает требуемую защиту, убирает лишние предметы и уточняет непонятные шаги у учителя. Самостоятельное изменение опыта недопустимо."
+        },
+        {
+          "id": "chem-school-lab-safety-b2",
+          "kind": "safety",
+          "title": "Во время опыта",
+          "body": "Вещества не пробуют на вкус, не нюхают напрямую и не смешивают без команды. Посуду держат аккуратно, нагревание и кислоты выполняют только в разрешенном формате."
+        },
+        {
+          "id": "chem-school-lab-safety-b3",
+          "kind": "safety",
+          "title": "Если что-то пошло не так",
+          "body": "О проливе, трещине, ожоге, попадании вещества на кожу или в глаза сразу сообщают учителю. Быстрое сообщение важнее попытки скрыть ошибку или исправить ее самому."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "chem-school-lab-safety-t1",
+          "kind": "safety_check",
+          "prompt": "Что нужно сделать, если раствор попал на кожу во время школьного опыта?",
+          "expectedAnswer": "Сразу сообщить учителю и действовать по инструкции безопасности; не скрывать ситуацию и не продолжать опыт.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-acs-secondary-chemical-lab-safety",
+              "src-niosh-school-chemistry-lab-safety-guide",
+              "src-osha-laboratory-safety-guidance",
+              "src-textbook-placeholder-chemistry-school"
+            ],
+            "candidates": [
+              {
+                "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+                "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "School Chemistry Laboratory Safety Guide",
+                "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Laboratory Safety Guidance",
+                "url": "https://www.osha.gov/sites/default/files/publications/OSHA3404LABORATORY-SAFETY-GUIDANCE.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school chemistry textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedLab": {
+        "id": "lab-chem-safety-onboarding",
+        "kind": "lab",
+        "title": "Вводный инструктаж по лабораторной безопасности",
+        "status": "planned",
+        "note": "Should be reviewed against school policy before becoming an interactive checklist."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-acs-secondary-chemical-lab-safety",
+          "src-niosh-school-chemistry-lab-safety-guide",
+          "src-osha-laboratory-safety-guidance",
+          "src-textbook-placeholder-chemistry-school"
+        ],
+        "candidates": [
+          {
+            "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+            "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "School Chemistry Laboratory Safety Guide",
+            "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Laboratory Safety Guidance",
+            "url": "https://www.osha.gov/sites/default/files/publications/OSHA3404LABORATORY-SAFETY-GUIDANCE.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school chemistry textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "not_applicable",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    }
+  ]
+}

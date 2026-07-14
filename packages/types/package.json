@@ -1,0 +1,11 @@
+{
+  "name": "@allchemist/types",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "src",
+    "README.md"
+  ]
+}

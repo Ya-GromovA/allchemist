@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "project": "Allchemist",
+  "purpose": "Canonical storage manifest for approved UI reference PNG files used by Codex and Playwright visual parity checks.",
+  "generatedAt": "2026-07-10T01:27:00+03:00",
+  "root": "/root/synapse",
+  "criticalReferenceIds": [
+    "student-dashboard",
+    "chemistry-lab",
+    "physics-simulation",
+    "biology-microscope"
+  ],
+  "references": [
+    {
+      "id": "student-dashboard",
+      "title": "Approved Web Student Dashboard",
+      "expectedPath": "apps/web/public/design-preview/student-dashboard/golden-approved-web-student-dashboard.png",
+      "relatedRoute": [
+        "/design-preview/student-dashboard",
+        "/dashboard/student"
+      ],
+      "requiredForMilestone": "nearest visual parity milestone",
+      "critical": true,
+      "status": "PRESENT",
+      "dimensions": {
+        "width": 1672,
+        "height": 941
+      },
+      "notes": "Canonical golden PNG is present and readable."
+    },
+    {
+      "id": "chemistry-lab",
+      "title": "Approved Web Chemistry Lab",
+      "expectedPath": "apps/web/public/design-preview/chemistry-lab/golden-approved-web-chemistry-lab.png",
+      "relatedRoute": [
+        "/modules/chemistry/lab/zinc-hcl"
+      ],
+      "requiredForMilestone": "nearest visual parity milestone",
+      "critical": true,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Upload the approved chemistry lab reference to the expected path."
+    },
+    {
+      "id": "physics-simulation",
+      "title": "Approved Web Physics Simulation",
+      "expectedPath": "apps/web/public/design-preview/physics-simulation/golden-approved-web-physics-simulation.png",
+      "relatedRoute": [
+        "/modules/physics/simulation/uniform-acceleration"
+      ],
+      "requiredForMilestone": "nearest visual parity milestone",
+      "critical": true,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Upload the approved physics simulation reference to the expected path."
+    },
+    {
+      "id": "biology-microscope",
+      "title": "Approved Web Biology Microscope",
+      "expectedPath": "apps/web/public/design-preview/biology-microscope/golden-approved-web-biology-microscope.png",
+      "relatedRoute": [
+        "/modules/biology/microscope/onion-skin"
+      ],
+      "requiredForMilestone": "nearest visual parity milestone",
+      "critical": true,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Upload the approved biology microscope reference to the expected path."
+    },
+    {
+      "id": "ai-assistant",
+      "title": "Approved AI Assistant",
+      "expectedPath": "apps/web/public/design-preview/ai-assistant/golden-approved-ai-assistant.png",
+      "relatedRoute": [
+        "shared assistant states"
+      ],
+      "requiredForMilestone": "assistant visual parity milestone",
+      "critical": false,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Upload the approved AI assistant states reference to the expected path."
+    },
+    {
+      "id": "admin-dashboard",
+      "title": "Approved Admin Dashboard",
+      "expectedPath": "apps/web/public/design-preview/admin-dashboard/golden-approved-admin-dashboard.png",
+      "relatedRoute": [
+        "/admin/dashboard",
+        "/dashboard"
+      ],
+      "requiredForMilestone": "admin visual parity milestone",
+      "critical": false,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Use /admin/dashboard if the admin app route exists; otherwise map to the existing admin dashboard route."
+    },
+    {
+      "id": "admin-content-qa",
+      "title": "Approved Admin Content QA",
+      "expectedPath": "apps/web/public/design-preview/admin-content-qa/golden-approved-admin-content-qa.png",
+      "relatedRoute": [
+        "/admin/content-qa",
+        "/content-qa"
+      ],
+      "requiredForMilestone": "admin content QA visual parity milestone",
+      "critical": false,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Use /admin/content-qa if the admin app route exists; otherwise map to the existing content QA route."
+    },
+    {
+      "id": "landing",
+      "title": "Approved Web Landing Main",
+      "expectedPath": "apps/web/public/design-preview/landing/golden-approved-web-landing-main.png",
+      "relatedRoute": [
+        "/"
+      ],
+      "requiredForMilestone": "landing visual parity milestone",
+      "critical": false,
+      "status": "MISSING",
+      "dimensions": null,
+      "notes": "Missing canonical PNG. Upload the approved landing reference to the expected path."
+    }
+  ]
+}

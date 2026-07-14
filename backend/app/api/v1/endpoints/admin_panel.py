@@ -18,6 +18,16 @@ from app.schemas.content import (
 )
 from app.security.policies import can, normalize_role
 from app.services.admin_panel_service import (
+    admin_global_search,
+    admin_dashboard_activity_totals,
+    admin_dashboard_attention,
+    admin_subjects_activity,
+    admin_schools_map,
+    admin_recent_events,
+    admin_directory,
+    admin_dashboard_summary,
+    admin_dashboard_activity,
+    admin_content_qa_summary,
     admin_form_options,
     admin_password_login,
     bulk_update_subscriptions,
@@ -118,6 +128,87 @@ def _require_system_admin(auth_user: Dict[str, Any]) -> str:
         raise HTTPException(status_code=403, detail="System admin role is required")
     return role
 
+
+
+@router.get("/admin/dashboard/summary", response_model=dict, tags=["admin"])
+async def admin_dashboard_summary_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_summary()
+
+
+@router.get("/admin/dashboard/activity", response_model=dict, tags=["admin"])
+async def admin_dashboard_activity_endpoint(
+    period: int = Query(default=30),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_dashboard_activity(period=period)
+
+
+@router.get("/admin/dashboard/subjects-activity", response_model=dict, tags=["admin"])
+async def admin_dashboard_subjects_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_subjects_activity()
+
+
+@router.get("/admin/dashboard/schools-map", response_model=dict, tags=["admin"])
+async def admin_dashboard_schools_map_endpoint(
+    region: str | None = Query(default=None),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_schools_map(region=region)
+
+
+
+@router.get("/admin/dashboard/attention", response_model=dict, tags=["admin"])
+async def admin_dashboard_attention_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_attention()
+
+
+@router.get("/admin/dashboard/activity-totals", response_model=dict, tags=["admin"])
+async def admin_dashboard_activity_totals_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_activity_totals()
+
+
+@router.get("/admin/search", response_model=dict, tags=["admin"])
+async def admin_search_endpoint(
+    q: str = Query(default="", max_length=120),
+    limit: int = Query(default=20, ge=1, le=100),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_global_search(q, limit=limit)
+
+@router.get("/admin/events/recent", response_model=dict, tags=["admin"])
+async def admin_recent_events_endpoint(
+    limit: int = Query(default=20, ge=1, le=100),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_recent_events(limit=limit)
+
+
+@router.get("/admin/content/qa/summary", response_model=dict, tags=["admin"])
+async def admin_content_qa_summary_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_content_qa_summary()
+
+
+@router.get("/admin/directory/{section}", response_model=dict, tags=["admin"])
+async def admin_directory_endpoint(
+    section: str,
+    limit: int = Query(default=50, ge=1, le=200),
+    query: str | None = Query(default=None),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    try:
+        return admin_directory(section, limit=limit, query=query)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 @router.get("/admin/users", response_model=list[dict], tags=["admin"])
 async def admin_users(

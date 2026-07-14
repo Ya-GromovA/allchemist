@@ -8,7 +8,6 @@ const PAYMENT_OPTIONS = [
 ];
 
 const state = {
-  selectedRole: "",
   phone: "",
   accessToken: "",
   refreshToken: "",
@@ -176,6 +175,14 @@ function renderPeriodicTable() {
         </div>
       </div>
       <div class="periodicModeHint">${escapeHtml(modeCopy)}</div>
+
+      <figure class="periodicReferenceCard">
+        <picture>
+          <source srcset="/api/v1/web/assets/periodic-table-reference.webp" type="image/webp" />
+          <img src="/api/v1/web/assets/periodic-table-reference.png" alt="Опорная схема периодической таблицы" loading="lazy" decoding="async" />
+        </picture>
+        <figcaption>Опорная схема: сверяйте группы, периоды и семейства, затем открывайте карточку элемента в интерактивной таблице.</figcaption>
+      </figure>
       <div class="periodicLayout">
         <div class="periodicGrid" data-element-count="${PERIODIC_ELEMENTS.length}">
           ${PERIODIC_ELEMENTS.map((element) => {
@@ -227,10 +234,58 @@ const MODULE_TO_API = {
   biology: "biology",
 };
 
+const PUBLIC_ROUTE_MODULES = {
+  "/demo/chemistry": "chemistry",
+  "/demo/physics": "physics",
+  "/demo/biology": "biology",
+  "/demo/ai": "ai_mentor",
+};
+
 const els = {};
 
 function byId(id) {
   return document.getElementById(id);
+}
+
+function normalizePublicRoute(pathname = window.location.pathname) {
+  let path = pathname || "/";
+  if (path === "/api/v1/web") return "/";
+  if (path.startsWith("/api/v1/web/")) path = path.slice("/api/v1/web".length);
+  if (path === "/web") return "/";
+  if (path.startsWith("/web/")) path = path.slice("/web".length);
+  if (!path.startsWith("/")) path = `/${path}`;
+  return path.replace(/\/$/, "") || "/";
+}
+
+function publicRouteUrl(route) {
+  const path = route === "/" ? "" : route;
+  if (window.location.pathname === "/api/v1/web" || window.location.pathname.startsWith("/api/v1/web/")) return `/api/v1/web${path}`;
+  if (window.location.pathname === "/web" || window.location.pathname.startsWith("/web/")) return `/web${path}`;
+  return path || "/";
+}
+
+function setPublicRoute(route, options = {}) {
+  const target = route || "/";
+  if (window.history && normalizePublicRoute() !== target) {
+    const method = options.replace ? "replaceState" : "pushState";
+    window.history[method]({ allchemistPublicRoute: target }, "", publicRouteUrl(target));
+  }
+  applyPublicRoute(target);
+}
+
+function goBrandHome() {
+  if (state.accessToken && state.userId) {
+    state.activeWorkspace = "cabinet";
+    renderWorkspaceTabs();
+    els.appShell?.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  setPublicRoute("/", { replace: true });
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.add("hidden");
+  els.accessCodePanel?.classList.add("hidden");
+  setStatus("Войдите по логину и паролю или активируйте персональный код доступа.");
+  window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 function initElements() {
@@ -250,12 +305,20 @@ function initElements() {
     "requestCodeBtn",
     "verifyCodeBtn",
     "roleContinueBtn",
+    "brandHomeBtn",
+    "heroLoginBtn",
+    "heroDemoBtn",
+    "heroBuyBtn",
+    "heroAccessBtn",
+    "schoolStaffLoginBtn",
     "phoneLoginPanel",
     "codeStep",
     "openAccessCodeBtn",
     "closeAccessCodeBtn",
     "accessCodePanel",
     "logoutBtn",
+    "publicDemoPanel",
+    "publicModulePanel",
     "snapshotRole",
     "snapshotSession",
     "profileSummary",
@@ -344,7 +407,18 @@ async function loadApkReleaseNotice() {
 }
 
 function normalizeRole(role) {
-  return ["student", "learner", "parent", "teacher", "homeroom_teacher"].includes(role) ? role : "";
+  return [
+    "student",
+    "learner",
+    "parent",
+    "teacher",
+    "homeroom_teacher",
+    "school_admin",
+    "admin",
+    "owner",
+    "content_editor",
+    "support",
+  ].includes(role) ? role : "";
 }
 
 function authRole(data) {
@@ -360,7 +434,6 @@ function readSession() {
     state.refreshToken = saved.refreshToken || "";
     state.userId = saved.userId || "";
     state.role = normalizeRole(saved.role || "");
-    state.selectedRole = state.role || "";
     state.phone = saved.phone || "";
   } catch {
     localStorage.removeItem(STORAGE_KEY);
@@ -392,7 +465,38 @@ function clearSession() {
   state.devices = null;
   state.teacherClasses = null;
   state.access = null;
+  state.activeWorkspace = "modules";
+  state.activeModule = "chemistry";
+  state.moduleLessons = [];
+  state.moduleTasks = [];
+  state.contentCatalog = null;
+  clearAuthForms();
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.add("hidden");
+  els.accessCodePanel?.classList.add("hidden");
   localStorage.removeItem(STORAGE_KEY);
+}
+
+function clearAuthForms() {
+  [
+    "loginInput",
+    "passwordInput",
+    "phoneInput",
+    "codeInput",
+    "accessCodeInput",
+    "accessDisplayNameInput",
+    "accessLoginInput",
+    "accessPasswordInput",
+    "accessPasswordConfirmInput",
+    "currentPasswordInput",
+    "newPasswordInput",
+    "newPasswordConfirmInput",
+  ].forEach((key) => {
+    if (els[key]) els[key].value = "";
+  });
+  setDebugCode("");
+  if (els.accessCodePreview) els.accessCodePreview.textContent = "Сначала проверьте код, затем создайте логин и пароль.";
+  if (els.accessCodeStatus) els.accessCodeStatus.textContent = "Код доступа ещё не вводился.";
 }
 
 function setStatus(text) {
@@ -409,12 +513,8 @@ function setDebugCode(text) {
   if (els.authDebugCode) els.authDebugCode.textContent = text;
 }
 
-function setRoleSelection(role) {
-  state.selectedRole = normalizeRole(role);
-  document.querySelectorAll("[data-role]").forEach((node) => {
-    node.classList.toggle("active", node.dataset.role === state.selectedRole);
-  });
-  if (els.snapshotRole) els.snapshotRole.textContent = state.selectedRole ? roleLabel(state.selectedRole) : "Не выбрано";
+function setRoleSelection() {
+  if (els.snapshotRole) els.snapshotRole.textContent = state.role ? roleLabel(state.role) : "Определит сервер";
 }
 
 function roleLabel(role) {
@@ -514,7 +614,7 @@ function renderSessionMeta() {
   if (els.authSectionSubtitle) {
     els.authSectionSubtitle.textContent = authenticated
       ? "Рабочее пространство настроено по роли и доступам, которые вернул сервер."
-      : "Полноценный вход в веб-кабинет: выберите способ входа в Алхимик";
+      : "Войдите по аккаунту или активируйте персональный код. Роль и доступы определит сервер.";
   }
   if (els.workspaceUserBadge) els.workspaceUserBadge.textContent = authenticated ? `${roleText} · ${displayUserName(state.profile)}` : "Пользователь";
   if (els.snapshotSession) els.snapshotSession.textContent = authenticated ? "Выполнен" : "Ожидает";
@@ -523,7 +623,7 @@ function renderSessionMeta() {
 }
 
 function workspaceHeaderCopy() {
-  const role = state.role || "student";
+  const role = state.role;
   const tab = state.activeWorkspace || "cabinet";
   const rolePrefix = {
     student: "Учебный кабинет",
@@ -585,7 +685,7 @@ function renderWorkspaceTabs() {
 }
 
 function getWorkspaceTabs() {
-  const role = state.role || state.selectedRole || "student";
+  const role = state.role;
   if (role === "teacher") {
     return [
       { key: "cabinet", label: "Главная" },
@@ -640,6 +740,24 @@ function normalizeAccessError(detail) {
   if (text.includes("ист") || text.includes("expired")) return "Срок действия кода истёк. Обратитесь к учителю или администратору школы за новым кодом.";
   if (text.includes("not found") || text.includes("не найден")) return "Код не найден.";
   return "Код не найден или уже был использован. Проверьте код или обратитесь к учителю.";
+}
+
+function safeUserMessage(detail, fallback) {
+  const raw = String(detail || "").trim();
+  if (!raw) return fallback;
+  const text = raw.toLowerCase();
+  const hiddenTechnicalMarkers = [
+    ["invalid", "access", "token"].join(" "),
+    ["expected", "role"].join(""),
+    ["source", "registry"].join(" "),
+    ["work", "flow"].join(""),
+    "traceback",
+    "exception",
+  ];
+  if (hiddenTechnicalMarkers.some((marker) => text.includes(marker))) {
+    return fallback;
+  }
+  return raw;
 }
 
 async function apiFetch(path, options = {}, allowRefresh = true) {
@@ -729,19 +847,13 @@ async function verifyCode() {
   state.accessToken = data.accessToken;
   state.refreshToken = data.refreshToken;
   state.role = authRole(data);
-  state.selectedRole = state.role;
+  if (!state.role) {
+    setStatus("Сервер не вернул роль кабинета. Обратитесь в поддержку школы.");
+    return;
+  }
   persistSession();
 
-  await fetch(`${API_BASE}/users/consents/accept`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      userId: state.userId,
-      role: state.role || "student",
-      version: "2026-04-27-web",
-      parentApproved: Boolean(state.role && state.role !== "student"),
-    }),
-  }).catch(() => null);
+  await acceptConsentForCurrentRole();
 
   await loadAppData();
   setStatus("Вход выполнен. Кабинет готов.");
@@ -766,14 +878,17 @@ async function loginPassword() {
   els.loginPasswordBtn.disabled = false;
   els.loginPasswordBtn.textContent = "Войти по логину";
   if (!response.ok) {
-    setStatus(data.detail || "Неверный логин или пароль.");
+    setStatus(safeUserMessage(data.detail, "Неверный логин или пароль."));
     return;
   }
   state.userId = data.userId;
   state.accessToken = data.accessToken;
   state.refreshToken = data.refreshToken;
-  state.role = authRole(data) || "student";
-  state.selectedRole = state.role;
+  state.role = authRole(data);
+  if (!state.role) {
+    setStatus("Сервер не вернул роль кабинета. Обратитесь в поддержку школы.");
+    return;
+  }
   persistSession();
   await loadAppData();
   setStatus("Вход выполнен. Кабинет готов.");
@@ -789,6 +904,7 @@ async function logout() {
   }
   clearSession();
   render();
+  setPublicRoute("/login", { replace: true });
   setStatus("Вы вышли из кабинета.");
 }
 
@@ -831,7 +947,10 @@ async function activateAccessCode() {
   state.accessToken = data.accessToken;
   state.refreshToken = data.refreshToken;
   state.role = authRole(data);
-  state.selectedRole = state.role;
+  if (!state.role) {
+    els.accessCodeStatus.textContent = "Сервер не вернул роль кабинета. Обратитесь в поддержку школы.";
+    return;
+  }
   persistSession();
   els.accessCodeStatus.innerHTML = `<strong>Доступ активирован</strong><br>Школа №2070, площадка «Новая звезда»<br>Роль: ${data.roleLabelRu || roleLabel(state.role)}<br>Логин: ${escapeHtml(data.login || login)}<br>Доступ: Партнёрская школьная лицензия`;
   await loadAppData();
@@ -972,7 +1091,7 @@ async function switchRoleMode(role) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    setStatus(data.detail || "Не удалось переключить режим работы.");
+    setStatus(safeUserMessage(data.detail, "Не удалось переключить режим работы."));
     return;
   }
   state.role = authRole(data) || nextRole;
@@ -1017,7 +1136,7 @@ async function changePassword() {
   els.changePasswordBtn.disabled = false;
   els.changePasswordBtn.textContent = "Сохранить новый пароль";
   if (!response.ok) {
-    els.changePasswordStatus.textContent = data.detail || "Не удалось сменить пароль.";
+    els.changePasswordStatus.textContent = safeUserMessage(data.detail, "Не удалось сменить пароль.");
     return;
   }
   els.currentPasswordInput.value = "";
@@ -1067,6 +1186,8 @@ async function loadUserAccess() {
 
 function continueAfterRole() {
   els.phoneLoginPanel?.classList.remove("hidden");
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.add("hidden");
   setStatus("Введите логин и пароль. Роль кабинета определится автоматически после входа.");
   els.loginInput?.focus();
 }
@@ -1079,7 +1200,145 @@ function openPhoneLoginPanel() {
 
 function openAccessCodePanel() {
   els.accessCodePanel?.classList.remove("hidden");
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.add("hidden");
   els.accessCodeInput?.focus();
+}
+
+function openBuyingPanel() {
+  state.activeWorkspace = "access";
+  if (state.accessToken && state.userId) {
+    renderWorkspaceTabs();
+    return;
+  }
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.remove("hidden");
+  els.publicModulePanel.innerHTML = `
+    <strong>Доступ к Алхимику</strong><br>
+    Личный, семейный и школьный доступ подключаются после входа или активации кода.<br>
+    <button id="publicBuyLoginBtn" class="btn btn-primary" type="button">Войти</button>
+    <button id="publicBuyAccessBtn" class="btn btn-secondary" type="button">Активировать код</button>
+  `;
+  byId("publicBuyLoginBtn")?.addEventListener("click", () => setPublicRoute("/login"));
+  byId("publicBuyAccessBtn")?.addEventListener("click", () => setPublicRoute("/activate-code"));
+  setStatus("Для покупки войдите или активируйте персональный код доступа.");
+}
+
+function openDemoMode() {
+  els.phoneLoginPanel?.classList.add("hidden");
+  els.accessCodePanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.add("hidden");
+  els.publicDemoPanel?.classList.remove("hidden");
+  els.publicDemoPanel.innerHTML = `
+    <strong>Демо-режим</strong><br>
+    Пример урока: химические реакции, короткое объяснение, мини-проверка и AI-разбор ошибки. Это публичный просмотр без входа в личный кабинет и без сохранения прогресса.<br>
+    <button id="publicDemoModuleBtn" class="btn btn-secondary" type="button">Посмотреть модуль</button>
+  `;
+  byId("publicDemoModuleBtn")?.addEventListener("click", () => setPublicRoute("/demo/chemistry"));
+  setStatus("Демо открыто в публичном режиме. Реальный кабинет не создан.");
+}
+
+function openPublicModule(moduleKey) {
+  const key = MODULE_COPY[moduleKey] ? moduleKey : "chemistry";
+  const copy = MODULE_COPY[key];
+  const visual = moduleVisual(key);
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.remove("hidden");
+  els.publicModulePanel.innerHTML = `
+    <strong>${escapeHtml(copy.title)}</strong><br>
+    ${escapeHtml(copy.summary)}<br>
+    <span class="muted small">${copy.highlights.map(escapeHtml).join(" · ")}</span><br>
+    <img class="moduleInlineVisual" src="${visual.card}" alt="${escapeHtml(copy.title)}" loading="lazy" />
+    <div class="modulePanelActions">
+      <button id="publicModuleLoginBtn" class="btn btn-primary" type="button">Войти</button>
+      <button id="publicModuleDemoBtn" class="btn btn-secondary" type="button">Попробовать демо</button>
+    </div>
+  `;
+  byId("publicModuleLoginBtn")?.addEventListener("click", () => setPublicRoute("/login"));
+  byId("publicModuleDemoBtn")?.addEventListener("click", () => setPublicRoute("/demo"));
+  setStatus("Описание модуля открыто без входа. Для личного прогресса войдите в кабинет.");
+}
+
+function openPublicPeriodicDemo() {
+  els.phoneLoginPanel?.classList.add("hidden");
+  els.accessCodePanel?.classList.add("hidden");
+  els.publicDemoPanel?.classList.add("hidden");
+  els.publicModulePanel?.classList.remove("hidden");
+  els.publicModulePanel.innerHTML = `
+    <strong>Демо таблицы элементов</strong><br>
+    Опорная схема помогает быстро сверить группы, периоды и семейства элементов. Интерактивный тренажёр и сохранение прогресса открываются после входа.<br>
+    <figure class="periodicReferenceCard publicPeriodicReference">
+      <picture>
+        <source srcset="/api/v1/web/assets/periodic-table-reference.webp" type="image/webp" />
+        <img src="/api/v1/web/assets/periodic-table-reference.png" alt="Опорная схема периодической таблицы" loading="lazy" decoding="async" />
+      </picture>
+      <figcaption>Публичный просмотр без входа в кабинет и без сохранения результата.</figcaption>
+    </figure>
+    <div class="modulePanelActions">
+      <button id="publicPeriodicLoginBtn" class="btn btn-primary" type="button">Войти</button>
+      <button id="publicPeriodicChemistryBtn" class="btn btn-secondary" type="button">Открыть химию</button>
+    </div>
+  `;
+  byId("publicPeriodicLoginBtn")?.addEventListener("click", () => setPublicRoute("/login"));
+  byId("publicPeriodicChemistryBtn")?.addEventListener("click", () => setPublicRoute("/demo/chemistry"));
+  setStatus("Демо таблицы элементов открыто в публичном режиме.");
+}
+
+function focusPublicPanel() {
+  const target = els.publicDemoPanel && !els.publicDemoPanel.classList.contains("hidden")
+    ? els.publicDemoPanel
+    : els.publicModulePanel && !els.publicModulePanel.classList.contains("hidden")
+      ? els.publicModulePanel
+      : els.authPanel;
+  target?.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function applyPublicRoute(route) {
+  const normalized = route || "/";
+  if (normalized === "/login" || normalized === "/school-login" || normalized === "/staff-login") {
+    continueAfterRole();
+    if (normalized !== "/login") setStatus("Введите логин сотрудника школы. Роль и права определит сервер после входа.");
+    focusPublicPanel();
+    return;
+  }
+  if (normalized === "/activate-code") {
+    openAccessCodePanel();
+    focusPublicPanel();
+    return;
+  }
+  if (normalized === "/plans" || normalized === "/pricing") {
+    openBuyingPanel();
+    focusPublicPanel();
+    return;
+  }
+  if (normalized === "/demo") {
+    openDemoMode();
+    focusPublicPanel();
+    return;
+  }
+  if (normalized === "/demo/periodic-table") {
+    openPublicPeriodicDemo();
+    focusPublicPanel();
+    return;
+  }
+  if (PUBLIC_ROUTE_MODULES[normalized]) {
+    openPublicModule(PUBLIC_ROUTE_MODULES[normalized]);
+    focusPublicPanel();
+  }
+}
+
+async function acceptConsentForCurrentRole() {
+  if (!state.userId || !state.role) return;
+  await fetch(`${API_BASE}/users/consents/accept`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      userId: state.userId,
+      role: state.role,
+      version: "2026-04-27-web",
+      parentApproved: state.role !== "student" && state.role !== "learner",
+    }),
+  }).catch(() => null);
 }
 
 function closeAccessCodePanel() {
@@ -1366,7 +1625,7 @@ async function generateExamVariantFromWeb() {
     body: JSON.stringify({ subject, examType, count: 6, seed: state.userId || "web" }),
   });
   const data = await response.json().catch(() => ({}));
-  state.examVariant = response.ok ? data : { questions: [], examTitleRu: "Ошибка", variantId: "", analysisPolicyRu: data.detail || "Не удалось собрать вариант." };
+  state.examVariant = response.ok ? data : { questions: [], examTitleRu: "Ошибка", variantId: "", analysisPolicyRu: safeUserMessage(data.detail, "Не удалось собрать вариант.") };
   renderModules();
 }
 
@@ -1381,7 +1640,7 @@ async function analyzeTicketFromWeb() {
     body: JSON.stringify({ subject, text }),
   });
   const data = await response.json().catch(() => ({}));
-  state.ticketAnalysis = response.ok ? data : { detectedTopics: [], repeatPlanRu: [data.detail || "Не удалось разобрать билет."] };
+  state.ticketAnalysis = response.ok ? data : { detectedTopics: [], repeatPlanRu: [safeUserMessage(data.detail, "Не удалось разобрать билет.")] };
   renderModules();
 }
 
@@ -1395,7 +1654,7 @@ async function askMentorFromWeb() {
     body: JSON.stringify({ question, subject: "chemistry", language: "ru", mode: "auto" }),
   });
   const data = await response.json().catch(() => ({}));
-  state.mentorAnswer = data.answer || data.detail || "AI-наставник пока не смог подготовить ответ.";
+  state.mentorAnswer = data.answer || safeUserMessage(data.detail, "AI-наставник пока не смог подготовить ответ.");
   renderModules();
 }
 
@@ -1448,7 +1707,7 @@ async function createPayment(moduleId) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    els.paymentStatus.textContent = data.detail || "Не удалось подготовить оплату.";
+    els.paymentStatus.textContent = safeUserMessage(data.detail, "Не удалось подготовить оплату.");
     return;
   }
   state.payment = data;
@@ -1497,7 +1756,7 @@ async function loadDevices() {
   const response = await apiFetch(`/users/devices?userId=${encodeURIComponent(state.userId)}`);
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    els.deviceStatus.textContent = data.detail || "Не удалось загрузить устройства.";
+    els.deviceStatus.textContent = safeUserMessage(data.detail, "Не удалось загрузить устройства.");
     return;
   }
   state.devices = data;
@@ -1516,7 +1775,7 @@ async function registerCurrentDevice() {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    els.deviceStatus.textContent = data.detail || "Не удалось привязать устройство.";
+    els.deviceStatus.textContent = safeUserMessage(data.detail, "Не удалось привязать устройство.");
     return;
   }
   state.devices = data.devices ? data : state.devices;
@@ -1533,7 +1792,7 @@ async function revokeDevice(deviceId) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    els.deviceStatus.textContent = data.detail || "Не удалось отключить устройство.";
+    els.deviceStatus.textContent = safeUserMessage(data.detail, "Не удалось отключить устройство.");
     return;
   }
   els.deviceStatus.textContent = "Устройство отключено.";
@@ -1555,7 +1814,7 @@ async function activateRecoveryCode() {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    els.deviceStatus.textContent = data.detail || "Не удалось войти по коду восстановления.";
+    els.deviceStatus.textContent = safeUserMessage(data.detail, "Не удалось войти по коду восстановления.");
     return;
   }
   state.phone = data.phone || phone;
@@ -1619,7 +1878,7 @@ async function loadTeacherClasses() {
   const response = await apiFetch("/cabinet/teacher/classes");
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    if (status) status.textContent = data.detail || "Не удалось загрузить классы.";
+    if (status) status.textContent = safeUserMessage(data.detail, "Не удалось загрузить классы.");
     return;
   }
   state.teacherClasses = data;
@@ -1637,7 +1896,7 @@ async function resetStudentDevices(studentUserId, classId, schoolId) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    if (status) status.textContent = data.detail || "Не удалось сбросить устройства.";
+    if (status) status.textContent = safeUserMessage(data.detail, "Не удалось сбросить устройства.");
     return;
   }
   if (status) status.innerHTML = `Устройства сброшены. Код восстановления: <strong>${escapeHtml(data.recoveryCode)}</strong> <button class="btn btn-secondary inlineCopyBtn" type="button" data-copy-recovery="${escapeHtml(data.recoveryCode)}">Копировать</button>`;
@@ -1776,7 +2035,7 @@ async function startTeacherLiveSession() {
   const joinCode = data.joinCode || data.join_code || data.code || data.sessionCode;
   const message = response.ok
     ? (joinCode ? `Онлайн-урок запущен. Код урока: ${joinCode}` : "Онлайн-урок запущен.")
-    : (data.detail || data.message || "Не удалось запустить онлайн-урок.");
+    : safeUserMessage(data.detail || data.message, "Не удалось запустить онлайн-урок.");
   box.textContent = message;
 }
 
@@ -1794,7 +2053,7 @@ async function joinStudentLive() {
   const data = await response.json().catch(() => ({}));
   const message = response.ok
     ? "Вы подключены к онлайн-уроку."
-    : (data.detail || data.message || "Не удалось подключиться к онлайн-уроку.");
+    : safeUserMessage(data.detail || data.message, "Не удалось подключиться к онлайн-уроку.");
   box.textContent = message;
 }
 
@@ -1860,11 +2119,18 @@ async function loadAppData() {
   if (!meRes.ok) {
     clearSession();
     render();
-    setStatus(me.detail || "Вход устарел. Войдите снова.");
+    setStatus(safeUserMessage(me.detail, "Вход устарел. Войдите снова."));
     return;
   }
   state.userId = me.userId;
   state.role = authRole(me);
+  if (!state.role) {
+    clearSession();
+    render();
+    setPublicRoute("/login", { replace: true });
+    setStatus("Сервер не вернул роль кабинета. Обратитесь в поддержку школы.");
+    return;
+  }
   persistSession();
 
   const [profileRes, modulesRes, catalogRes] = await Promise.all([
@@ -1919,19 +2185,31 @@ function render() {
 
 function bindEvents() {
   bindPasswordToggles();
-  document.querySelectorAll("[data-role]").forEach((node) => {
-    node.addEventListener("click", () => setRoleSelection(node.dataset.role));
-  });
   document.querySelectorAll("[data-auth-action]").forEach((node) => {
     node.addEventListener("click", () => {
       document.querySelectorAll("[data-auth-action]").forEach((item) => item.classList.toggle("active", item === node));
       if (node.dataset.authAction === "access-code") return openAccessCodePanel();
       if (node.dataset.authAction === "phone") return openPhoneLoginPanel();
-      return continueAfterRole();
+      if (node.dataset.authAction === "demo") return setPublicRoute("/demo");
+      if (node.dataset.authAction === "buy") return setPublicRoute("/plans");
+      if (node.dataset.authAction === "staff") return setPublicRoute("/school-login");
+      return setPublicRoute("/login");
     });
   });
-  els.roleContinueBtn?.addEventListener("click", continueAfterRole);
-  els.openAccessCodeBtn?.addEventListener("click", openAccessCodePanel);
+  document.querySelectorAll("[data-public-module]").forEach((node) => {
+    node.addEventListener("click", () => {
+      const key = node.dataset.publicModule === "ai_mentor" ? "ai" : node.dataset.publicModule;
+      setPublicRoute(`/demo/${key || "chemistry"}`);
+    });
+  });
+  els.brandHomeBtn?.addEventListener("click", goBrandHome);
+  els.heroLoginBtn?.addEventListener("click", () => setPublicRoute("/login"));
+  els.heroDemoBtn?.addEventListener("click", () => setPublicRoute("/demo"));
+  els.heroBuyBtn?.addEventListener("click", () => setPublicRoute("/plans"));
+  els.heroAccessBtn?.addEventListener("click", () => setPublicRoute("/activate-code"));
+  els.schoolStaffLoginBtn?.addEventListener("click", () => setPublicRoute("/school-login"));
+  els.roleContinueBtn?.addEventListener("click", () => setPublicRoute("/login"));
+  els.openAccessCodeBtn?.addEventListener("click", () => setPublicRoute("/activate-code"));
   els.closeAccessCodeBtn?.addEventListener("click", closeAccessCodePanel);
   els.requestCodeBtn.addEventListener("click", requestCode);
   els.verifyCodeBtn.addEventListener("click", verifyCode);
@@ -1960,6 +2238,8 @@ async function bootstrap() {
   readSession();
   bindEvents();
   render();
+  window.addEventListener("popstate", () => applyPublicRoute(normalizePublicRoute()));
+  applyPublicRoute(normalizePublicRoute());
   await loadApkReleaseNotice();
   if (state.accessToken && state.refreshToken) {
     await loadAppData();

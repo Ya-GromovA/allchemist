@@ -1,0 +1,18 @@
+{
+  "contractFixture": true,
+  "summary": {
+    "schools": 0,
+    "users": 0,
+    "licenses": 0,
+    "materials": 0
+  },
+  "activity": {
+    "items": []
+  },
+  "attention": {
+    "items": []
+  },
+  "contentQa": {
+    "statusCounts": {}
+  }
+}

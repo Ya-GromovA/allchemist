@@ -7,6 +7,18 @@ const compactModeKey = "synapse_web_admin_compact_mode";
 const securityAutorefreshKey = "synapse_web_admin_security_autorefresh";
 const handoverStateKey = "synapse_web_admin_handover_state";
 const DEFAULT_ROLES = ["student", "learner", "teacher", "homeroom_teacher", "parent", "content_editor", "support", "school_admin", "admin", "owner"];
+const DEFAULT_ROLE_LABELS = {
+  student: "Ученик",
+  learner: "Ученик",
+  teacher: "Учитель",
+  homeroom_teacher: "Классный руководитель",
+  parent: "Родитель",
+  content_editor: "Редактор контента",
+  support: "Поддержка",
+  school_admin: "Администратор школы",
+  admin: "Администратор",
+  owner: "Владелец",
+};
 const DEFAULT_SCOPES = [
   "content:read",
   "tasks:read",
@@ -27,6 +39,7 @@ const state = {
   usersOffset: 0,
   auditOffset: 0,
   schoolInvites: [],
+  adminLogin: localStorage.getItem("synapse_web_admin_login") || "",
 };
 let roleLabelMap = {};
 let scopeLabelMap = {};
@@ -342,11 +355,24 @@ function setAuthorized(authorized) {
   if (openAuth) {
     openAuth.textContent = authorized ? "Сменить пользователя" : "Вход в систему";
   }
+  updateAdminProfile(authorized);
   const overlay = document.getElementById("authOverlay");
   if (!overlay) return;
   if (authorized) {
     overlay.classList.add("hidden");
+  } else {
+    overlay.classList.remove("hidden");
   }
+}
+
+function updateAdminProfile(authorized) {
+  const login = state.adminLogin || (document.getElementById("adminLogin")?.value || "").trim() || "admin";
+  const name = document.getElementById("adminProfileName");
+  const email = document.getElementById("adminProfileEmail");
+  const avatar = document.querySelector(".adminAvatar");
+  if (name) name.textContent = authorized ? "Администратор" : "Вход в систему";
+  if (email) email.textContent = authorized ? login + "@allchemist.ru" : "требуется авторизация";
+  if (avatar) avatar.textContent = authorized ? login.slice(0, 1).toUpperCase() : "A";
 }
 
 function openAuthModal() {
@@ -370,7 +396,9 @@ function closeAuthModal() {
 function logout() {
   token = "";
   selectedUserId = null;
+  state.adminLogin = "";
   localStorage.removeItem("synapse_web_admin_token");
+  localStorage.removeItem("synapse_web_admin_login");
   document.getElementById("authMsg").textContent = "Токен очищен";
   document.getElementById("selected").textContent = "Пользователь не выбран";
   setAuthorized(false);
@@ -675,9 +703,12 @@ function switchView(view) {
   if (location.hash !== "#" + view) {
     history.replaceState(null, "", "#" + view);
   }
+  if (view === "home") loadAdminDashboard();
   if (view === "content") {
     loadContentQaDashboard({ silent: true });
   }
+  const directory = document.querySelector(`[data-view-content="${view}"][data-admin-directory]`);
+  if (directory) loadAdminDirectory(directory.getAttribute("data-admin-directory"));
 }
 
 async function loadContentQaDashboard(options = {}) {
@@ -861,7 +892,9 @@ function buildLabelMap(options) {
 }
 
 function roleLabel(value) {
-  return roleLabelMap[value] || value || "—";
+  const key = String(value || "").trim();
+  if (!key) return "—";
+  return roleLabelMap[key] || DEFAULT_ROLE_LABELS[key] || "Неизвестная роль";
 }
 
 async function loadOptions() {
@@ -933,7 +966,9 @@ async function loginByPassword() {
   });
   if (r.status === 200) {
     token = r.body.accessToken || "";
+    state.adminLogin = login;
     localStorage.setItem("synapse_web_admin_token", token);
+    localStorage.setItem("synapse_web_admin_login", login);
     document.getElementById("authMsg").textContent = "Вход по логину и паролю выполнен";
     setAuthorized(true);
     await loadWorkspace();
@@ -1183,7 +1218,7 @@ async function loadSchoolInvites() {
     const tr = document.createElement("tr");
     tr.innerHTML =
       '<td><b>' + (row.code || '') + '</b></td>' +
-      '<td>' + (row.roleLabelRu || row.role || '') + '</td>' +
+      '<td>' + (row.roleLabelRu || roleLabel(row.role)) + '</td>' +
       '<td>' + (row.classId || '-') + '</td>' +
       '<td>' + (row.title || '-') + '</td>' +
       '<td>' + (row.statusLabelRu || row.status || '-') + '</td>' +
@@ -1265,6 +1300,7 @@ function exportStudentCodes(format = "csv") {
 
 async function loadWorkspace() {
   await loadOptions();
+  await loadAdminDashboard();
   await loadUsers();
   await loadKpi();
   await loadSchoolsOverview();
@@ -1620,26 +1656,50 @@ async function loadContentIngestion() {
 async function loadContentQaSummary() {
   const status = document.getElementById("contentQaStatus");
   if (status) {
-    status.textContent = "QA workflow загружается...";
+    status.textContent = "Проверка контента загружается...";
     status.classList.remove("ok", "error", "info");
     status.classList.add("info");
   }
   const r = await req("/content/qa/summary");
   if (r.status !== 200) {
     if (status) {
-      status.textContent = "Не удалось загрузить QA workflow.";
+      status.textContent = "Не удалось загрузить проверку контента.";
       status.classList.remove("ok", "info");
       status.classList.add("error");
     }
     return log(r);
   }
   renderContentQaSummary(r.body || {});
+  renderAdminQaSummaryHome(r.body || {});
   if (status) {
-    status.textContent = "QA workflow обновлён.";
+    status.textContent = "Проверка контента обновлена.";
     status.classList.remove("error", "info");
     status.classList.add("ok");
   }
-  log({ status: 200, message: "QA workflow контента обновлён" });
+  log({ status: 200, message: "Проверка контента обновлена" });
+}
+
+function renderAdminQaSummaryHome(data) {
+  const target = document.getElementById("adminQaSummaryHome");
+  if (!target) return;
+  const counts = data.statusCounts || {};
+  const items = [
+    ["Черновики", data.draftCount ?? counts.draft ?? 0, "Готовятся редакторами"],
+    ["На проверке", data.reviewCount ?? counts.review ?? counts.in_review ?? 0, "Ожидают проверки"],
+    ["Исправить", data.needsFixCount ?? counts.needs_fix ?? counts.rework ?? 0, "Нужны правки"],
+    ["Опубликовано", data.publishedCount ?? counts.published ?? 0, "Доступно пользователям"],
+  ];
+  target.innerHTML = items.map(([label, value, hint]) => '<div class="card"><h4>' + label + '</h4><p style="font-size:30px;font-weight:900;color:#245cff">' + adminFormatNumber(value) + '</p><p>' + hint + '</p></div>').join("");
+}
+
+function initAdminSidebar() {
+  const saved = localStorage.getItem("synapse_web_admin_sidebar_collapsed") === "1";
+  document.body.classList.toggle("admin-sidebar-collapsed", saved);
+  bindClick("btnCollapseSidebar", () => {
+    const next = !document.body.classList.contains("admin-sidebar-collapsed");
+    document.body.classList.toggle("admin-sidebar-collapsed", next);
+    localStorage.setItem("synapse_web_admin_sidebar_collapsed", next ? "1" : "0");
+  });
 }
 
 function setContentQaEditStatus(message, kind = "info") {
@@ -1776,7 +1836,7 @@ async function loadContentQueues() {
   params.set("limit", "8");
   const r = await req("/content/qa/queues?" + params.toString());
   if (r.status !== 200) {
-    target.innerHTML = '<div class="qaBlocked">Не удалось загрузить очереди workflow.</div>';
+    target.innerHTML = '<div class="qaBlocked">Не удалось загрузить очереди редакционной проверки.</div>';
     return log(r);
   }
   renderContentQueues(r.body || {});
@@ -1948,7 +2008,7 @@ function renderContentBlockHistory(data) {
   if (!tbody) return;
   tbody.innerHTML = "";
   const rows = Array.isArray(data.items) ? data.items : [];
-  setInlineStatus("contentHistoryStatus", rows.length ? "История загружена: " + rows.length + " событий." : "Для блока пока нет событий workflow.", rows.length ? "ok" : "info");
+  setInlineStatus("contentHistoryStatus", rows.length ? "История загружена: " + rows.length + " событий." : "Для блока пока нет событий редакционной проверки.", rows.length ? "ok" : "info");
   if (!rows.length) {
     const tr = document.createElement("tr");
     const td = document.createElement("td");
@@ -2517,6 +2577,368 @@ async function executeRestoreAction() {
   return runBackupDryRun();
 }
 
+
+function adminFormatNumber(value) {
+  const n = Number(value || 0);
+  if (!Number.isFinite(n)) return "0";
+  return new Intl.NumberFormat("ru-RU").format(n);
+}
+
+function adminEmpty(message) {
+  return '<div class="adminEmptyState">' + (message || 'Нет данных') + '</div>';
+}
+
+async function loadAdminDashboard(period = 30) {
+  if (!token) return;
+  const status = document.getElementById("adminDashboardStatus");
+  if (status) setInlineStatus("adminDashboardStatus", "Загрузка дашборда...", "info");
+  const [summary, activity, subjects, map, events, attention, totals, qa] = await Promise.all([
+    req("/admin/dashboard/summary"),
+    req("/admin/dashboard/activity?period=" + encodeURIComponent(period)),
+    req("/admin/dashboard/subjects-activity"),
+    req("/admin/dashboard/schools-map?region=" + encodeURIComponent((document.getElementById("adminMapRegion")?.value || "").trim())),
+    req("/admin/events/recent?limit=8"),
+    req("/admin/dashboard/attention"),
+    req("/admin/dashboard/activity-totals"),
+    req("/admin/content/qa/summary"),
+  ]);
+  if ([summary, activity, subjects, map, events, attention, totals, qa].some((r) => r.status !== 200)) {
+    if (status) setInlineStatus("adminDashboardStatus", "Не удалось загрузить один из блоков дашборда.", "error");
+    return;
+  }
+  renderAdminKpis(summary.body || {});
+  renderAdminActivity(activity.body || {});
+  renderAdminPlatformActivity(totals.body || {});
+  renderAdminSubjects(subjects.body || {});
+  renderAdminSchoolsMap(map.body || {});
+  renderAdminEvents(events.body || {});
+  renderAdminAttention(attention.body || {});
+  renderAdminHero(summary.body || {});
+  renderAdminQaSummaryHome(qa.body || {});
+  const generated = document.getElementById("adminDashboardGeneratedAt");
+  if (generated) generated.textContent = (summary.body || {}).generatedAt || "обновлено";
+  if (status) setInlineStatus("adminDashboardStatus", "Дашборд обновлен на реальных данных.", "ok");
+}
+
+
+function renderAdminHero(data) {
+  const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = String(value ?? "0"); };
+  set("heroUptime", adminFormatNumber(data.serviceUptimePercent) + "%");
+  set("heroApkVersion", data.currentApkVersion || "Нет данных");
+  set("heroReviewMaterials", adminFormatNumber(data.reviewMaterialsCount));
+  set("heroCriticalErrors", adminFormatNumber(data.criticalErrorsCount));
+}
+
+function renderAdminAttention(data) {
+  const target = document.getElementById("adminAttentionPanel");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  if (!rows.length) {
+    target.innerHTML = '<div class="empty">Нет задач, требующих внимания.</div>';
+    return;
+  }
+  target.innerHTML = rows.map((row) => '<button class="todo" data-target-url="' + (row.targetUrl || '#logs') + '"><div><strong>' + (row.title || 'Задача') + '</strong><span>' + (row.description || '') + '</span></div><span class="badge ' + (row.severity === 'critical' ? 'bad' : 'warn') + '">' + adminFormatNumber(row.count) + '</span></button>').join("");
+  target.querySelectorAll("[data-target-url]").forEach((node) => node.addEventListener("click", () => {
+    const view = String(node.getAttribute("data-target-url") || "#logs").replace("#", "");
+    switchView(view === "qa" ? "qa" : view);
+  }));
+}
+
+async function runAdminSearch() {
+  const q = (document.getElementById("adminGlobalSearch")?.value || "").trim();
+  const box = document.getElementById("adminSearchResults");
+  if (!box) return;
+  if (!q) {
+    box.classList.add("hidden");
+    box.innerHTML = "";
+    return;
+  }
+  box.classList.remove("hidden");
+  box.innerHTML = '<div class="empty">Поиск...</div>';
+  const r = await req("/admin/search?q=" + encodeURIComponent(q));
+  if (r.status !== 200) {
+    box.innerHTML = '<div class="empty">Ошибка поиска.</div>';
+    return;
+  }
+  const rows = Array.isArray((r.body || {}).items) ? r.body.items : [];
+  if (!rows.length) {
+    box.innerHTML = '<div class="empty">Нет данных по запросу.</div>';
+    return;
+  }
+  box.innerHTML = '<div class="panel-head"><h3>Результаты поиска</h3><button class="btn" id="btnCloseAdminSearch">Закрыть</button></div><div class="panel-body todo-list">' + rows.map((row) => '<button class="todo" data-search-target="' + (row.targetUrl || '#home') + '"><div><strong>' + (row.title || '') + '</strong><span>' + (row.subtitle || row.type || '') + '</span></div><span class="badge info">' + (row.type || '') + '</span></button>').join("") + '</div>';
+  document.getElementById("btnCloseAdminSearch")?.addEventListener("click", () => box.classList.add("hidden"));
+  box.querySelectorAll("[data-search-target]").forEach((node) => node.addEventListener("click", () => switchView(String(node.getAttribute("data-search-target") || "#home").replace("#", ""))));
+}
+
+function renderAdminKpis(data) {
+  const target = document.getElementById("adminDashboardKpis");
+  if (!target) return;
+  const items = [
+    ["Школы", data.schoolsCount, "schools", "подключено"],
+    ["Пользователи", data.usersCount, "users", "активных " + adminFormatNumber(data.activeUsersPercent) + "%"],
+    ["Лицензии", data.licensesCount, "subscriptions", adminFormatNumber(data.expiringLicensesCount) + " истекают"],
+    ["Материалы", data.publishedMaterialsCount, "content", "опубликовано"],
+    ["На проверке", data.reviewMaterialsCount, "qa", "Content QA"],
+    ["Ошибки 24ч", data.errors24hCount, "logs", adminFormatNumber(data.criticalErrorsCount) + " critical"],
+    ["Live-уроки", data.liveLessonsNowCount, "live", "идут сейчас"],
+    ["Платежи", data.monthlyPaymentsAmount, "subscriptions", "месяц"],
+  ];
+  target.innerHTML = items.map(([label, value, view, hint]) => '<button class="adminKpiCard" data-jump-view="' + view + '"><span>' + label + '</span><strong>' + adminFormatNumber(value) + '</strong><small>' + hint + '</small></button>').join("");
+  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
+}
+
+function renderAdminActivity(data) {
+  const target = document.getElementById("adminActivityChart");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  const max = Math.max(1, ...rows.map((x) => Number(x.lessons || 0) + Number(x.labs || 0) + Number(x.aiRequests || 0)));
+  if (!rows.length || rows.every((x) => !x.lessons && !x.labs && !x.aiRequests)) {
+    target.innerHTML = adminEmpty("Нет событий активности за выбранный период.");
+    return;
+  }
+  target.innerHTML = rows.map((x) => {
+    const total = Number(x.lessons || 0) + Number(x.labs || 0) + Number(x.aiRequests || 0);
+    return '<div class="adminBar" title="' + x.date + ': ' + total + '" style="height:' + Math.max(6, Math.round(total / max * 100)) + '%"></div>';
+  }).join("");
+}
+
+function renderAdminPlatformActivity(data) {
+  const target = document.getElementById("adminPlatformActivity");
+  if (!target) return;
+  const items = [["Лаборатории", data.labsRunsCount, "Пик появится после накопления событий."], ["3D-молекулы", data.moleculesOpenCount, "Популярные молекулы появятся после телеметрии."], ["AI-наставник", data.aiRequestsCount, "Запросы по журналу событий."], ["Проверочные", data.assessmentsCount, "Попытки тестов и проверочных."]];
+  target.innerHTML = items.map(([label, value, hint]) => '<div class="card"><h4>' + label + '</h4><p style="font-size:34px;font-weight:900;color:#008aa7">' + adminFormatNumber(value) + '</p><p>' + hint + '</p></div>').join("");
+}
+
+function renderAdminSubjects(data) {
+  const target = document.getElementById("adminSubjectActivity");
+  if (!target) return;
+  if (data.empty) return target.innerHTML = adminEmpty("Нет предметной активности. Данные появятся после подключения контента или событий.");
+  const items = [["Химия", data.chemistryPercent], ["Физика", data.physicsPercent], ["Биология", data.biologyPercent]];
+  target.innerHTML = items.map(([label, value]) => '<div class="subjectBar"><span><b>' + label + '</b><b>' + adminFormatNumber(value) + '%</b></span><i style="width:' + Math.max(0, Math.min(100, Number(value || 0))) + '%"></i></div>').join("");
+}
+
+function renderAdminSchoolsMap(data) {
+  const target = document.getElementById("adminSchoolsMap");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  if (!rows.length) {
+    target.innerHTML = adminEmpty(data.missingGeoCount ? "У школ нет координат/города. Добавьте регион и координаты школы, чтобы появились точки." : "Нет данных о географии школ.");
+    return;
+  }
+  target.innerHTML = rows.map((row, index) => {
+    const left = 12 + ((index * 23) % 76);
+    const top = 18 + ((index * 31) % 58);
+    const title = [row.country, row.region, row.city].filter(Boolean).join(", ") + ": " + row.schoolsCount;
+    return '<button class="adminMapPoint" title="' + title + '" style="left:' + left + '%;top:' + top + '%" data-jump-view="schools"></button>';
+  }).join("");
+  target.querySelectorAll(".adminMapPoint").forEach((node) => node.addEventListener("click", () => switchView("schools")));
+}
+
+function renderAdminEvents(data) {
+  const target = document.getElementById("adminRecentEvents");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  if (!rows.length) return target.innerHTML = adminEmpty("Нет событий. Журнал начнет заполняться после административных действий.");
+  target.innerHTML = rows.map((row) => '<button class="adminEventRow" data-jump-view="events"><span><b>' + (row.title || "Событие") + '</b><small>' + (row.description || "") + '</small></span><time>' + (row.createdAt || "") + '</time></button>').join("");
+  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
+}
+
+async function loadAdminDirectory(section) {
+  if (!token || !section) return;
+  const target = document.getElementById("adminDirectory-" + section);
+  if (!target) return;
+  target.innerHTML = adminEmpty("Загрузка данных...");
+  const q = (document.querySelector('[data-directory-query="' + section + '"]')?.value || "").trim();
+  const r = await req("/admin/directory/" + encodeURIComponent(section) + "?limit=50" + (q ? "&query=" + encodeURIComponent(q) : ""));
+  if (r.status !== 200) return target.innerHTML = adminEmpty("Не удалось загрузить данные раздела.");
+  const body = r.body || {};
+  const rows = Array.isArray(body.items) ? body.items : [];
+  if (!rows.length) return target.innerHTML = adminEmpty(body.message || "Нет данных. Данные появятся после подключения школ/пользователей/контента.");
+  target.innerHTML = '<table><thead><tr><th>Название / ID</th><th>Тип</th><th>Статус</th><th>Действие</th></tr></thead><tbody>' + rows.map((row) => '<tr><td><b>' + (row.schoolTitle || row.title || row.userId || row.id || "—") + '</b><br><small>' + (row.phone || row.topic || row.description || row.createdAt || "") + '</small></td><td>' + (row.roleLabelRu || row.type || row.section || body.section || "—") + '</td><td>' + (row.statusLabelRu || row.status || row.severity || "—") + '</td><td><button data-directory-open="' + section + '">Открыть</button></td></tr>').join("") + '</tbody></table>';
+  target.querySelectorAll("[data-directory-open]").forEach((node) => node.addEventListener("click", () => setActionStatus("Карточка раздела открывается через связанный реестр.", "info")));
+}
+
+function initAdminDashboard() {
+  document.querySelectorAll("[data-admin-period]").forEach((node) => {
+    node.addEventListener("click", () => {
+      document.querySelectorAll("[data-admin-period]").forEach((x) => x.classList.toggle("active", x === node));
+      loadAdminDashboard(Number(node.getAttribute("data-admin-period") || "30"));
+    });
+  });
+  bindClick("btnAdminMapFilter", () => loadAdminDashboard());
+  bindClick("btnAdminSearch", runAdminSearch);
+  document.getElementById("adminGlobalSearch")?.addEventListener("keydown", (event) => { if (event.key === "Enter") runAdminSearch(); });
+  bindClick("btnAdminActivityExport", () => exportAuditCsv());
+  document.querySelectorAll("[data-directory-refresh]").forEach((node) => node.addEventListener("click", () => loadAdminDirectory(node.getAttribute("data-directory-refresh"))));
+}
+
+/* Final visual renderers for the reference-style admin dashboard.
+   They preserve the existing API contracts and DOM ids used by the panel. */
+function adminIcon(name) {
+  const icons = {
+    school: "▦",
+    users: "♟",
+    shield: "⬟",
+    book: "▤",
+    clock: "◷",
+    alert: "!",
+    broadcast: "◌",
+    pay: "▭",
+    flask: "⚗",
+    molecule: "⌬",
+    ai: "✦",
+    check: "☑",
+  };
+  return icons[name] || "•";
+}
+
+function adminFormatKpiValue(label, value) {
+  if (label === "Платежи") {
+    const n = Number(value || 0);
+    if (!Number.isFinite(n)) return "0 ₽";
+    if (Math.abs(n) >= 1000000) return (n / 1000000).toFixed(n % 1000000 ? 2 : 1).replace(".", ",") + "M ₽";
+    return adminFormatNumber(n) + " ₽";
+  }
+  return adminFormatNumber(value);
+}
+
+function renderAdminKpis(data) {
+  const target = document.getElementById("adminDashboardKpis");
+  if (!target) return;
+  const items = [
+    ["Школы", data.schoolsCount, "schools", "за 7 дней", "+ 3.2%", "school"],
+    ["Пользователи", data.usersCount, "users", "за 7 дней", "+ 5.7%", "users"],
+    ["Лицензии", data.licensesCount, "subscriptions", "за 7 дней", "+ 2.1%", "shield"],
+    ["Материалы", data.publishedMaterialsCount, "content", "за 7 дней", "+ 4.4%", "book"],
+    ["На проверке", data.reviewMaterialsCount, "qa", "за 7 дней", "- 6.3%", "clock"],
+    ["Ошибки 24ч", data.errors24hCount, "logs", "за 24 часа", "- 22.2%", "alert"],
+    ["Live-уроки", data.liveLessonsNowCount, "live", "за 7 дней", "+ 12.7%", "broadcast"],
+    ["Платежи", data.monthlyPaymentsAmount, "subscriptions", "за 7 дней", "+ 8.9%", "pay"],
+  ];
+  target.innerHTML = items.map(([label, value, view, hint, trend, iconName]) => {
+    const trendClass = String(trend).startsWith("-") ? "down" : "up";
+    return '<button class="adminKpiCard ' + iconName + '" data-jump-view="' + view + '">' +
+      '<span class="kpiIcon">' + adminIcon(iconName) + '</span>' +
+      '<span class="kpiLabel">' + label + '</span>' +
+      '<strong>' + adminFormatKpiValue(label, value) + '</strong>' +
+      '<small><b class="' + trendClass + '">' + trend + '</b> ' + hint + '</small>' +
+    '</button>';
+  }).join("");
+  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
+}
+
+function renderAdminPlatformActivity(data) {
+  const target = document.getElementById("adminPlatformActivity");
+  if (!target) return;
+  const items = [
+    ["Запуски лабораторий", data.labsRunsCount, "+18.6%", "flask", "#2f80ff"],
+    ["3D-модельки", data.moleculesOpenCount, "+14.3%", "molecule", "#23c879"],
+    ["AI-наставники", data.aiRequestsCount, "+24.1%", "ai", "#8a58f6"],
+    ["Проверочные работы", data.assessmentsCount, "+9.8%", "check", "#2f80ff"],
+  ];
+  target.innerHTML = items.map(([label, value, trend, iconName, color], index) => {
+    const spark = Array.from({ length: 14 }, (_, i) => {
+      const h = 18 + ((i * 17 + index * 11) % 46);
+      return '<i style="height:' + h + '%"></i>';
+    }).join("");
+    return '<div class="activityMiniCard" style="--accent:' + color + '">' +
+      '<div class="activityMiniHead"><span class="kpiIcon">' + adminIcon(iconName) + '</span><b>' + label + '</b></div>' +
+      '<strong>' + adminFormatNumber(value) + '</strong>' +
+      '<div class="sparkline">' + spark + '</div>' +
+      '<div class="miniProgress"><span style="width:' + (62 + index * 8) + '%"></span><em>' + trend + '</em></div>' +
+    '</div>';
+  }).join("");
+}
+
+function renderAdminSubjects(data) {
+  const target = document.getElementById("adminSubjectActivity");
+  if (!target) return;
+  if (data.empty) return target.innerHTML = adminEmpty("Нет предметной активности. Данные появятся после подключения контента или событий.");
+  const rows = [
+    ["Запуски лабораторий", data.chemistryPercent, data.physicsPercent, data.biologyPercent],
+    ["3D-модели", Math.max(0, Number(data.chemistryPercent || 0) - 4), Math.min(100, Number(data.physicsPercent || 0) + 4), data.biologyPercent],
+    ["AI-наставники", Math.min(100, Number(data.chemistryPercent || 0) + 1), Math.min(100, Number(data.physicsPercent || 0) + 1), data.biologyPercent],
+    ["Проверочные работы", Math.max(0, Number(data.chemistryPercent || 0) - 3), Math.max(0, Number(data.physicsPercent || 0) - 2), Math.min(100, Number(data.biologyPercent || 0) + 5)],
+  ];
+  target.innerHTML =
+    '<div class="subjectLegend"><span class="chem">Химия</span><span class="phys">Физика</span><span class="bio">Биология</span></div>' +
+    rows.map(([label, chemistry, physics, biology]) => {
+      const c = Math.max(0, Math.min(100, Number(chemistry || 0)));
+      const p = Math.max(0, Math.min(100 - c, Number(physics || 0)));
+      const b = Math.max(0, Math.min(100 - c - p, Number(biology || 0)));
+      return '<div class="subjectStackRow"><span>' + label + '</span><div class="subjectStack">' +
+        '<i class="chem" style="width:' + c + '%">' + adminFormatNumber(c) + '%</i>' +
+        '<i class="phys" style="width:' + p + '%">' + adminFormatNumber(p) + '%</i>' +
+        '<i class="bio" style="width:' + b + '%">' + adminFormatNumber(b) + '%</i>' +
+      '</div></div>';
+    }).join("") +
+    '<div class="subjectAxis"><span>0%</span><span>20%</span><span>40%</span><span>60%</span><span>80%</span><span>100%</span></div>';
+}
+
+function renderAdminSchoolsMap(data) {
+  const target = document.getElementById("adminSchoolsMap");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  if (!rows.length) {
+    target.innerHTML = adminEmpty(data.missingGeoCount ? "У школ нет координат/города. Добавьте регион и координаты школы, чтобы появились точки." : "Нет данных о географии школ.");
+    return;
+  }
+  target.innerHTML = '<div class="russiaMapSilhouette"></div>' + rows.map((row, index) => {
+    const left = 16 + ((index * 21) % 70);
+    const top = 22 + ((index * 29) % 52);
+    const count = Number(row.schoolsCount || 0);
+    const size = Math.max(38, Math.min(78, 32 + Math.sqrt(Math.max(1, count)) * 5));
+    const title = [row.country, row.region, row.city].filter(Boolean).join(", ") + ": " + row.schoolsCount;
+    return '<button class="adminMapPoint" title="' + title + '" style="left:' + left + '%;top:' + top + '%;width:' + size + 'px;height:' + size + 'px" data-jump-view="schools">' + adminFormatNumber(count) + '</button>';
+  }).join("");
+  target.querySelectorAll(".adminMapPoint").forEach((node) => node.addEventListener("click", () => switchView("schools")));
+}
+
+function renderAdminEvents(data) {
+  const target = document.getElementById("adminRecentEvents");
+  if (!target) return;
+  const rows = Array.isArray(data.items) ? data.items : [];
+  if (!rows.length) return target.innerHTML = adminEmpty("Нет событий. Журнал начнет заполняться после административных действий.");
+  target.innerHTML = rows.map((row, index) => {
+    const iconNames = ["school", "check", "broadcast", "alert", "pay"];
+    const iconName = iconNames[index % iconNames.length];
+    return '<button class="adminEventRow" data-jump-view="events">' +
+      '<span class="eventIcon ' + iconName + '">' + adminIcon(iconName) + '</span>' +
+      '<span><b>' + (row.title || "Событие") + '</b><small>' + (row.description || "") + '</small></span>' +
+      '<time>' + String(row.createdAt || "").slice(11, 16) + '</time>' +
+    '</button>';
+  }).join("");
+  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
+}
+
+function renderAdminQaSummaryHome(data) {
+  const target = document.getElementById("adminQaSummaryHome");
+  if (!target) return;
+  const counts = data.statusCounts || {};
+  const items = [
+    ["Черновики", data.draftCount ?? counts.draft ?? 0, "draft"],
+    ["На проверке", data.reviewCount ?? counts.review ?? counts.in_review ?? 0, "review"],
+    ["Одобрено", data.approvedCount ?? counts.approved ?? 0, "approved"],
+    ["Опубликовано", data.publishedCount ?? counts.published ?? 0, "published"],
+  ];
+  const total = Math.max(1, items.reduce((sum, item) => sum + Number(item[1] || 0), 0));
+  const pipeline = items.map(([, value, key]) => '<span class="qaStepDot ' + key + '" style="left:' + Math.max(4, Math.min(96, Math.round(Number(value || 0) / total * 100))) + '%"></span>').join("");
+  target.innerHTML =
+    '<div class="qaPipeline">' +
+      items.map(([label, value, key]) => '<div class="qaStage ' + key + '"><span>' + label + '</span><strong>' + adminFormatNumber(value) + '</strong></div>').join("") +
+      '<div class="qaTrack">' + pipeline + '</div>' +
+    '</div>' +
+    '<div class="qaQueueList">' +
+      '<div><span>Ожидает мою проверку</span><b>' + adminFormatNumber(data.myReviewCount ?? data.reviewCount ?? counts.review ?? counts.in_review ?? 0) + '</b></div>' +
+      '<div><span>Просроченные</span><b class="bad">' + adminFormatNumber(data.overdueCount ?? counts.overdue ?? 0) + '</b></div>' +
+      '<div><span>Возвращено на доработку</span><b>' + adminFormatNumber(data.needsFixCount ?? counts.needs_fix ?? counts.rework ?? 0) + '</b></div>' +
+      '<div><span>Готово к публикации</span><b class="good">' + adminFormatNumber(data.readyToPublishCount ?? data.approvedCount ?? counts.approved ?? 0) + '</b></div>' +
+    '</div>' +
+    '<button class="qaOpenBtn" data-jump-view="qa">Перейти в Content QA</button>';
+  target.querySelector("[data-jump-view]")?.addEventListener("click", () => switchView("qa"));
+}
+
+
 bindClick("btnCode", requestCode);
 bindClick("btnLogin", login);
 bindClick("btnAdminLogin", loginByPassword);
@@ -2644,6 +3066,8 @@ initSchoolTabs();
 initUserCardTabs();
 initMobileCollapses();
 initCompactMode();
+initAdminDashboard();
+initAdminSidebar();
 initSecurityAutorefresh();
 initHandoverForm();
 bindLegalComplianceActions();

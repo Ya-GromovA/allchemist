@@ -1,0 +1,10 @@
+{
+  "name": "@allchemist/physics-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "src"
+  ]
+}

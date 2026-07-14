@@ -12,7 +12,6 @@ type InvitePreview = Awaited<ReturnType<typeof previewInviteCode>>;
 
 export const OnboardingRoleScreen: React.FC<Props> = ({ navigation }) => {
   const { completeOnboarding, userId, setUserIdentity, setAuthTokens, theme, appMode, networkMode } = useAppSession();
-  const [saving, setSaving] = useState(false);
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
   const [login, setLogin] = useState("");
@@ -28,45 +27,15 @@ export const OnboardingRoleScreen: React.FC<Props> = ({ navigation }) => {
   const [invitePreviewLoading, setInvitePreviewLoading] = useState(false);
 
   const finishAuth = async (data: { userId: string; accessToken: string; refreshToken: string; role?: UserRole; activeRole?: UserRole }) => {
-    const nextRole = data.activeRole ?? data.role ?? "student";
+    const nextRole = data.activeRole ?? data.role;
+    if (!nextRole) {
+      Alert.alert("Роль не найдена", "Сервер не вернул роль кабинета. Обратитесь в поддержку школы.");
+      return;
+    }
     await setUserIdentity(data.userId);
     await setAuthTokens({ accessToken: data.accessToken, refreshToken: data.refreshToken });
     await completeOnboarding(nextRole, data.userId);
     navigation.reset({ index: 0, routes: [{ name: "MainTabs" }] });
-  };
-
-  const handleContinue = async () => {
-    const role: UserRole = "student";
-    if (saving) return;
-    setSaving(true);
-    try {
-      try {
-        await api.post("/users/consents/accept", {
-          userId,
-          role,
-          version: "2026-02-28",
-          parentApproved: role !== "student",
-        });
-      } catch {
-        await trackEvent({
-          name: "consent_sync_deferred",
-          userId,
-          role,
-          payload: { reason: "offline_first_or_network" },
-        });
-      }
-
-      await completeOnboarding(role);
-      await trackEvent({
-        name: "onboarding_completed",
-        userId,
-        role,
-        payload: { flow: "guest_learning" },
-      });
-      navigation.reset({ index: 0, routes: [{ name: "MainTabs" }] });
-    } finally {
-      setSaving(false);
-    }
   };
 
   const handleRequestCode = async () => {
@@ -129,7 +98,11 @@ export const OnboardingRoleScreen: React.FC<Props> = ({ navigation }) => {
       localPreferences: { theme, appMode, networkMode },
     });
 
-    const role = data.activeRole ?? data.role ?? "student";
+    const role = data.activeRole ?? data.role;
+    if (!role) {
+      Alert.alert("Роль не найдена", "Сервер не вернул роль кабинета. Обратитесь в поддержку школы.");
+      return;
+    }
     await setUserIdentity(data.userId);
     await setAuthTokens({ accessToken: data.accessToken, refreshToken: data.refreshToken });
 
@@ -159,24 +132,9 @@ export const OnboardingRoleScreen: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.subtitle}>Войдите в аккаунт или активируйте школьный код. Роль кабинета определяется автоматически после входа.</Text>
       <Text style={styles.metaHint}>Код доступа используется один раз для создания логина и пароля.</Text>
 
-      <View style={styles.scenarioGrid}>
-        <Pressable style={styles.card} onPress={() => trackEvent({ name: "onboarding_scenario", userId, payload: { scenario: "learn" } })}>
-          <Text style={styles.cardTitle}>Я учусь</Text>
-          <Text style={styles.cardSubtitle}>Откройте учебный кабинет по логину или школьному коду.</Text>
-        </Pressable>
-        <Pressable style={styles.card} onPress={() => trackEvent({ name: "onboarding_scenario", userId, payload: { scenario: "teach" } })}>
-          <Text style={styles.cardTitle}>Я учитель</Text>
-          <Text style={styles.cardSubtitle}>Назначение учителя или классного руководителя проверит сервер.</Text>
-        </Pressable>
-        <Pressable style={styles.card} onPress={() => trackEvent({ name: "onboarding_scenario", userId, payload: { scenario: "parent" } })}>
-          <Text style={styles.cardTitle}>Я родитель</Text>
-          <Text style={styles.cardSubtitle}>Войдите, чтобы смотреть прогресс ребёнка и рекомендации.</Text>
-        </Pressable>
-      </View>
-
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Ваш кабинет откроется автоматически</Text>
-        <Text style={styles.cardSubtitle}>Учащийся, учитель, классный руководитель или родитель видит только назначенный ему сценарий после проверки аккаунта.</Text>
+        <Text style={styles.cardTitle}>Кабинет откроется автоматически</Text>
+        <Text style={styles.cardSubtitle}>После входа приложение загрузит с сервера назначенную роль, доступы, классы и доступные модули. Выбирать служебную роль вручную не нужно.</Text>
       </View>
 
       <View style={styles.syncCard}>
@@ -242,10 +200,6 @@ export const OnboardingRoleScreen: React.FC<Props> = ({ navigation }) => {
           </Pressable>
         </View>
       </View>
-
-      <Pressable style={[styles.button, saving && { opacity: 0.7 }]} onPress={handleContinue} disabled={saving}>
-        <Text style={styles.buttonText}>{saving ? "Сохраняю..." : "Продолжить без входа"}</Text>
-      </Pressable>
     </ScrollView>
   );
 };

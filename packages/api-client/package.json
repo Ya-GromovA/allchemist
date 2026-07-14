@@ -1,0 +1,19 @@
+{
+  "name": "@allchemist/api-client",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "src",
+    "tests",
+    "README.md"
+  ],
+  "devDependencies": {
+    "vitest": "^4.1.9"
+  },
+  "scripts": {
+    "typecheck": "../../mobile/node_modules/.bin/tsc -p tsconfig.json --pretty false",
+    "test": "vitest run tests/vitest-runner.test.ts tests/contract-fixture-validation.test.ts tests/scientific-guardrails.test.ts"
+  }
+}

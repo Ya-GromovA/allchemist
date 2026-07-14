@@ -491,22 +491,83 @@ class AdminPanelTest(unittest.TestCase):
         )
         self.assertEqual(set_scope.status_code, 403, set_scope.text)
 
+
+    def test_admin_dashboard_api_requires_system_admin_and_returns_real_state(self) -> None:
+        owner_user, _ = self._login_and_set_role("student", "+79991110301")
+        self._bootstrap_owner(owner_user)
+        _, owner_token = self._login_and_set_role("student", "+79991110301")
+        _, student_token = self._login_and_set_role("student", "+79991110302")
+
+        denied = self.client.get("/api/v1/admin/dashboard/summary", headers=self._auth(student_token))
+        self.assertEqual(denied.status_code, 403, denied.text)
+
+        summary = self.client.get("/api/v1/admin/dashboard/summary", headers=self._auth(owner_token))
+        self.assertEqual(summary.status_code, 200, summary.text)
+        body = summary.json()
+        self.assertGreaterEqual(body.get("totalUsers", 0), 2)
+        self.assertIn("totalSchools", body)
+        self.assertIn("moderationQueueCount", body)
+        self.assertIn("onlineUsers", body)
+
+        activity = self.client.get("/api/v1/admin/dashboard/activity?period=7", headers=self._auth(owner_token))
+        self.assertEqual(activity.status_code, 200, activity.text)
+        self.assertEqual(activity.json().get("period"), 7)
+        self.assertEqual(len(activity.json().get("items", [])), 7)
+
+        subjects = self.client.get("/api/v1/admin/dashboard/subjects-activity", headers=self._auth(owner_token))
+        self.assertEqual(subjects.status_code, 200, subjects.text)
+        self.assertIn("chemistryPercent", subjects.json())
+
+        schools_map = self.client.get("/api/v1/admin/dashboard/schools-map", headers=self._auth(owner_token))
+        self.assertEqual(schools_map.status_code, 200, schools_map.text)
+        self.assertIn("items", schools_map.json())
+        self.assertIn("missingGeoCount", schools_map.json())
+
+        events = self.client.get("/api/v1/admin/events/recent", headers=self._auth(owner_token))
+        self.assertEqual(events.status_code, 200, events.text)
+        self.assertIn("items", events.json())
+
+        qa = self.client.get("/api/v1/admin/content/qa/summary", headers=self._auth(owner_token))
+        self.assertEqual(qa.status_code, 200, qa.text)
+        self.assertIn("draftCount", qa.json())
+        self.assertIn("reviewCount", qa.json())
+
+        attention = self.client.get("/api/v1/admin/dashboard/attention", headers=self._auth(owner_token))
+        self.assertEqual(attention.status_code, 200, attention.text)
+        self.assertIn("items", attention.json())
+
+        totals = self.client.get("/api/v1/admin/dashboard/activity-totals", headers=self._auth(owner_token))
+        self.assertEqual(totals.status_code, 200, totals.text)
+        self.assertIn("labsRunsCount", totals.json())
+        self.assertIn("aiRequestsCount", totals.json())
+
+        search = self.client.get("/api/v1/admin/search?q=2070", headers=self._auth(owner_token))
+        self.assertEqual(search.status_code, 200, search.text)
+        self.assertIn("items", search.json())
+
+        directory = self.client.get("/api/v1/admin/directory/students", headers=self._auth(owner_token))
+        self.assertEqual(directory.status_code, 200, directory.text)
+        self.assertEqual(directory.json().get("section"), "students")
+        self.assertIn("items", directory.json())
+
     def test_admin_web_stage8_markers(self) -> None:
         page = self.client.get("/api/v1/admin/web")
         self.assertEqual(page.status_code, 200, page.text)
-        self.assertIn("Границы полномочий", page.text)
-        self.assertIn("Редакционный маршрут без автопубликации", page.text)
-        self.assertIn("Очереди workflow и дедупликация", page.text)
-        self.assertIn("Чеклист перед выдачей лицензии", page.text)
-        self.assertIn("Сценарии со скриншотами", page.text)
+        self.assertIn("Admin Console", page.text)
+        self.assertIn("Админка «Алхимик»", page.text)
+        self.assertIn("Требует внимания", page.text)
+        self.assertIn("Лицензии и платежи", page.text)
+        self.assertIn("Content QA", page.text)
+        self.assertIn("Live-уроки", page.text)
+        self.assertIn("adminGlobalSearch", page.text)
 
         styles = self.client.get("/api/v1/admin/web/assets/styles.css")
         self.assertEqual(styles.status_code, 200, styles.text)
-        self.assertIn(".adminGuardRail", styles.text)
-        self.assertIn(".operationFlow", styles.text)
-        self.assertIn(".contentQueuePanel", styles.text)
-        self.assertIn(".licenseChecklist", styles.text)
-        self.assertIn(".screenshotGuide", styles.text)
+        self.assertIn(".logo-badge", styles.text)
+        self.assertIn(".nav-section", styles.text)
+        self.assertIn(".hero-grid", styles.text)
+        self.assertIn(".kpis", styles.text)
+        self.assertIn(".todo-list", styles.text)
 
 
 if __name__ == "__main__":

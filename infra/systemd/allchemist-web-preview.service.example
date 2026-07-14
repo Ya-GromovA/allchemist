@@ -1,0 +1,27 @@
+[Unit]
+Description=Allchemist Web Preview (production-mode)
+Documentation=/root/synapse/docs/infra/PERSISTENT_PREVIEW_DEPLOYMENT_PLAN.md
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/root/synapse
+Environment=NODE_ENV=production
+Environment=PORT=3010
+Environment=HOSTNAME=127.0.0.1
+ExecStartPre=/bin/rm -rf /root/synapse/apps/web/.next/standalone/apps/web/public
+ExecStartPre=/bin/rm -rf /root/synapse/apps/web/.next/standalone/apps/web/.next/static
+ExecStartPre=/bin/cp -a /root/synapse/apps/web/public /root/synapse/apps/web/.next/standalone/apps/web/public
+ExecStartPre=/bin/mkdir -p /root/synapse/apps/web/.next/standalone/apps/web/.next
+ExecStartPre=/bin/cp -a /root/synapse/apps/web/.next/static /root/synapse/apps/web/.next/standalone/apps/web/.next/static
+ExecStart=/usr/bin/node /root/synapse/apps/web/.next/standalone/apps/web/server.js
+Restart=always
+RestartSec=5
+KillSignal=SIGTERM
+TimeoutStopSec=20
+SyslogIdentifier=allchemist-web-preview
+
+[Install]
+WantedBy=multi-user.target

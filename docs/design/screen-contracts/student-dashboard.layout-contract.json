@@ -1,0 +1,32 @@
+{
+  "screenId": "student-dashboard",
+  "source": {
+    "figmaFile": "https://www.figma.com/design/OnwtlxHKp361n66TfjBOKL/Untitled?node-id=2-7",
+    "approvedReference": "APPROVED_WEB_STUDENT_DASHBOARD",
+    "nodeId": "3:12",
+    "measurementBasis": "Estimated from golden reference screenshot. Use Figma node dimensions as authoritative for viewport."
+  },
+  "viewport": {
+    "width": 1672,
+    "height": 941,
+    "deviceScaleFactor": 1
+  },
+  "zones": [
+    { "id": "page", "label": "student dashboard page", "x": 0, "y": 0, "width": 1672, "height": 941, "maxPositionDeltaPx": 2, "maxSizeDeltaPx": 24, "requiredTestId": "student-dashboard-page" },
+    { "id": "sidebar", "label": "sidebar", "x": 0, "y": 0, "width": 236, "height": 941, "maxPositionDeltaPx": 4, "maxSizeDeltaPx": 4, "requiredTestId": "student-sidebar" },
+    { "id": "topbar", "label": "topbar", "x": 236, "y": 0, "width": 1436, "height": 88, "maxPositionDeltaPx": 8, "maxSizeDeltaPx": 8, "requiredTestId": "student-topbar" },
+    { "id": "greeting_header", "label": "greeting/header", "x": 268, "y": 18, "width": 350, "height": 54, "maxPositionDeltaPx": 16, "maxSizeDeltaPx": 20, "requiredTestId": "student-greeting" },
+    { "id": "first_row_cards", "label": "first row cards", "x": 268, "y": 92, "width": 1368, "height": 260, "maxPositionDeltaPx": 12, "maxSizeDeltaPx": 12, "requiredTestId": "student-first-row-cards" },
+    { "id": "continue_learning_card", "label": "continue learning card", "x": 268, "y": 92, "width": 560, "height": 260, "maxPositionDeltaPx": 34, "maxSizeDeltaPx": 60, "requiredTestId": "continue-learning-card" },
+    { "id": "live_lesson_card", "label": "live lesson card", "x": 844, "y": 92, "width": 468, "height": 260, "maxPositionDeltaPx": 42, "maxSizeDeltaPx": 64, "requiredTestId": "live-lesson-card" },
+    { "id": "ai_recommendations_card", "label": "AI recommendations card", "x": 1330, "y": 92, "width": 306, "height": 260, "maxPositionDeltaPx": 42, "maxSizeDeltaPx": 64, "requiredTestId": "ai-recommendations-card" },
+    { "id": "quick_access_strip", "label": "quick access strip", "x": 268, "y": 366, "width": 1368, "height": 112, "maxPositionDeltaPx": 10, "maxSizeDeltaPx": 10, "requiredTestId": "quick-access-strip" },
+    { "id": "assignments_card", "label": "assignments card", "x": 268, "y": 500, "width": 430, "height": 218, "maxPositionDeltaPx": 16, "maxSizeDeltaPx": 16, "requiredTestId": "assignments-card" },
+    { "id": "progress_card", "label": "progress card", "x": 714, "y": 500, "width": 430, "height": 218, "maxPositionDeltaPx": 42, "maxSizeDeltaPx": 70, "requiredTestId": "subject-progress-card" },
+    { "id": "weak_topics_card", "label": "weak topics card", "x": 1160, "y": 500, "width": 476, "height": 218, "maxPositionDeltaPx": 50, "maxSizeDeltaPx": 90, "requiredTestId": "weak-topics-card" },
+    { "id": "popular_now_card", "label": "popular now card", "x": 268, "y": 734, "width": 430, "height": 190, "maxPositionDeltaPx": 16, "maxSizeDeltaPx": 16, "requiredTestId": "popular-now-card" },
+    { "id": "weekly_progress_card", "label": "weekly progress card", "x": 714, "y": 734, "width": 452, "height": 190, "maxPositionDeltaPx": 16, "maxSizeDeltaPx": 16, "requiredTestId": "weekly-progress-card" },
+    { "id": "locked_feature_card", "label": "locked feature card", "x": 1188, "y": 734, "width": 452, "height": 190, "maxPositionDeltaPx": 16, "maxSizeDeltaPx": 16, "requiredTestId": "locked-feature-card" },
+    { "id": "ai_assistant_widget", "label": "AI assistant widget", "x": 1390, "y": 735, "width": 260, "height": 190, "maxPositionDeltaPx": 32, "maxSizeDeltaPx": 32, "requiredTestId": "ai-assistant-widget" }
+  ]
+}

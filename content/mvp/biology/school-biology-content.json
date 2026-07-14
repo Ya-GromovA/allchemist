@@ -1,0 +1,541 @@
+{
+  "schemaVersion": "content-mvp-1",
+  "items": [
+    {
+      "id": "bio-school-cell-structure",
+      "subject": "biology",
+      "educationLevel": "school",
+      "grade": "5-6",
+      "topic": "Строение клетки",
+      "title": "Строение клетки",
+      "summary": "Вводная карточка объясняет клетку как основную единицу строения живого организма и подготавливает к изучению органоидов на простом школьном уровне.",
+      "learningObjectives": [
+        "Понимать, что клетка является единицей строения живых организмов.",
+        "Называть основные части клетки на вводном уровне.",
+        "Различать описание клетки в учебной схеме и наблюдение под микроскопом."
+      ],
+      "blocks": [
+        {
+          "id": "bio-school-cell-structure-b1",
+          "kind": "concept",
+          "title": "Клетка как система",
+          "body": "Клетку удобно представлять как маленькую живую систему: у нее есть границы, внутреннее содержимое и структуры, которые выполняют разные функции. На первом шаге важно не заучить все детали, а увидеть, что части клетки работают вместе."
+        },
+        {
+          "id": "bio-school-cell-structure-b2",
+          "kind": "explanation",
+          "title": "Схема и микроскоп",
+          "body": "Учебная схема показывает части клетки очень ясно, но реальный препарат под микроскопом выглядит сложнее. Поэтому подписи на изображении должны помогать наблюдать, а не подменять наблюдение."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "bio-school-cell-structure-t1",
+          "kind": "check_understanding",
+          "prompt": "Почему учебная схема клетки может отличаться от того, что видно под микроскопом?",
+          "expectedAnswer": "Схема упрощает и выделяет важные части, а реальный препарат зависит от подготовки, увеличения и видимости структур.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-biology-5-9-basic",
+              "src-openstax-biology-2e-4-1-studying-cells",
+              "src-openstax-biology-2e-4-3-eukaryotic-cells",
+              "src-textbook-placeholder-biology-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, 4.1 Studying Cells",
+                "url": "https://openstax.org/books/biology-2e/pages/4-1-studying-cells",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, 4.3 Eukaryotic Cells",
+                "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school biology textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedMicroscope": {
+        "id": "micro-bio-cell-intro",
+        "kind": "microscope",
+        "title": "Обзор клеточных структур на учебном изображении",
+        "status": "planned",
+        "note": "Future microscope viewer scene; labels require source-backed specimen imagery."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-biology-5-9-basic",
+          "src-openstax-biology-2e-4-1-studying-cells",
+          "src-openstax-biology-2e-4-3-eukaryotic-cells",
+          "src-textbook-placeholder-biology-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, 4.1 Studying Cells",
+            "url": "https://openstax.org/books/biology-2e/pages/4-1-studying-cells",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, 4.3 Eukaryotic Cells",
+            "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school biology textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "bio-school-plant-cell",
+      "subject": "biology",
+      "educationLevel": "school",
+      "grade": "5-6",
+      "topic": "Растительная клетка",
+      "title": "Растительная клетка",
+      "summary": "Карточка выделяет признаки растительной клетки, которые важны для первого знакомства: клеточная стенка, вакуоль, цитоплазма и ядро.",
+      "learningObjectives": [
+        "Называть несколько структур растительной клетки на школьном уровне.",
+        "Понимать роль клеточной стенки как наружной жесткой опоры.",
+        "Связывать большую вакуоль с внутренним объемом растительной клетки."
+      ],
+      "blocks": [
+        {
+          "id": "bio-school-plant-cell-b1",
+          "kind": "concept",
+          "title": "Почему растительная клетка имеет четкие границы",
+          "body": "У растительных клеток есть клеточная стенка. Она помогает клетке сохранять форму и делает границы на некоторых препаратах более заметными."
+        },
+        {
+          "id": "bio-school-plant-cell-b2",
+          "kind": "explanation",
+          "title": "Внутреннее содержимое",
+          "body": "Внутри клетки находится цитоплазма, где расположены клеточные структуры. В растительных клетках часто выделяют вакуоль, а ядро рассматривают как важную структуру, связанную с хранением наследственной информации."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "bio-school-plant-cell-t1",
+          "kind": "classification",
+          "prompt": "Какая структура помогает растительной клетке сохранять форму и заметна как граница клетки?",
+          "expectedAnswer": "Клеточная стенка.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-biology-5-9-basic",
+              "src-openstax-biology-2e-4-3-eukaryotic-cells",
+              "src-textbook-placeholder-biology-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, 4.3 Eukaryotic Cells",
+                "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school biology textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedMicroscope": {
+        "id": "micro-bio-plant-cell-labels",
+        "kind": "microscope",
+        "title": "Подписи к структурам растительной клетки",
+        "status": "planned",
+        "note": "Requires reviewed label set and source-backed image."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-biology-5-9-basic",
+          "src-openstax-biology-2e-4-3-eukaryotic-cells",
+          "src-textbook-placeholder-biology-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, 4.3 Eukaryotic Cells",
+            "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school biology textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "bio-school-onion-epidermis-microscope",
+      "subject": "biology",
+      "educationLevel": "school",
+      "grade": "5-6",
+      "topic": "Кожица лука под микроскопом",
+      "title": "Кожица лука под микроскопом",
+      "summary": "Материал готовит ученика к наблюдению клеток кожицы лука: что можно искать на препарате и почему подписи должны быть осторожными.",
+      "learningObjectives": [
+        "Понимать, что кожица лука используется как учебный объект для наблюдения растительных клеток.",
+        "Находить границы клеток на изображении препарата.",
+        "Отличать уверенно видимые структуры от структур, которые требуют окрашивания или лучшего препарата."
+      ],
+      "blocks": [
+        {
+          "id": "bio-school-onion-epidermis-microscope-b1",
+          "kind": "observation",
+          "title": "Что ищем в первую очередь",
+          "body": "На учебном препарате кожицы лука обычно начинают с поиска прямоугольных или вытянутых клеток и их границ. Это помогает связать реальное изображение с темой растительной клетки."
+        },
+        {
+          "id": "bio-school-onion-epidermis-microscope-b2",
+          "kind": "observation",
+          "title": "Почему нужны осторожные подписи",
+          "body": "Не все структуры одинаково хорошо видны на каждом препарате. Ядро и цитоплазма могут требовать правильной подготовки, окрашивания, освещения и увеличения, поэтому интерфейс должен показывать степень уверенности подписи."
+        },
+        {
+          "id": "bio-school-onion-epidermis-microscope-b3",
+          "kind": "safety",
+          "title": "Безопасность наблюдения",
+          "body": "Работа со стеклами, покровными стеклами, инструментами и красителями проводится по инструкции учителя. Разбитое стекло или попадание красителя на кожу нельзя исправлять самостоятельно."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "bio-school-onion-epidermis-microscope-t1",
+          "kind": "observation",
+          "prompt": "Что безопаснее подписать первым на изображении кожицы лука: границы клеток или ядро, если препарат не окрашен?",
+          "expectedAnswer": "Границы клеток, потому что они обычно заметнее; подпись ядра требует уверенности в видимости структуры.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-biology-5-9-basic",
+              "src-openstax-biology-2e-4-introduction-onion-cells",
+              "src-openstax-biology-2e-4-1-studying-cells",
+              "src-canada-biosafety-school-classroom",
+              "src-osha-laboratory-safety-guidance",
+              "src-textbook-placeholder-biology-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, Chapter 4 Introduction",
+                "url": "https://openstax.org/books/biology-2e/pages/4-introduction",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, 4.1 Studying Cells",
+                "url": "https://openstax.org/books/biology-2e/pages/4-1-studying-cells",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biosafety in the Elementary, Intermediate, and Secondary School Classroom",
+                "url": "https://www.canada.ca/en/public-health/services/canadian-biosafety-standards-guidelines/guidance/elementary-intermediate-secondary-school-classroom/document.html",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Laboratory Safety Guidance",
+                "url": "https://www.osha.gov/sites/default/files/publications/OSHA3404LABORATORY-SAFETY-GUIDANCE.pdf",
+                "usage": "safety_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school biology textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedMicroscope": {
+        "id": "micro-bio-onion-epidermis",
+        "kind": "microscope",
+        "title": "Кожица лука: учебное наблюдение",
+        "status": "planned",
+        "note": "Needs reviewed imagery, label confidence and safety notes before student use."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-biology-5-9-basic",
+          "src-openstax-biology-2e-4-introduction-onion-cells",
+          "src-openstax-biology-2e-4-1-studying-cells",
+          "src-canada-biosafety-school-classroom",
+          "src-osha-laboratory-safety-guidance",
+          "src-textbook-placeholder-biology-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, Chapter 4 Introduction",
+            "url": "https://openstax.org/books/biology-2e/pages/4-introduction",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, 4.1 Studying Cells",
+            "url": "https://openstax.org/books/biology-2e/pages/4-1-studying-cells",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biosafety in the Elementary, Intermediate, and Secondary School Classroom",
+            "url": "https://www.canada.ca/en/public-health/services/canadian-biosafety-standards-guidelines/guidance/elementary-intermediate-secondary-school-classroom/document.html",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Laboratory Safety Guidance",
+            "url": "https://www.osha.gov/sites/default/files/publications/OSHA3404LABORATORY-SAFETY-GUIDANCE.pdf",
+            "usage": "safety_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school biology textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    },
+    {
+      "id": "bio-school-plant-cell-structures",
+      "subject": "biology",
+      "educationLevel": "school",
+      "grade": "5-6",
+      "topic": "Клеточная стенка, цитоплазма, ядро, вакуоль",
+      "title": "Клеточная стенка, цитоплазма, ядро, вакуоль",
+      "summary": "Словарь-объяснение четырех структур растительной клетки для карточек, подписей и будущего microscope viewer.",
+      "learningObjectives": [
+        "Связывать клеточную стенку с формой и опорой.",
+        "Связывать цитоплазму с внутренней средой клетки.",
+        "Называть ядро и вакуоль как важные структуры растительной клетки на школьном уровне."
+      ],
+      "blocks": [
+        {
+          "id": "bio-school-plant-cell-structures-b1",
+          "kind": "concept",
+          "title": "Клеточная стенка",
+          "body": "Клеточная стенка - наружная структура растительной клетки, которая помогает сохранять форму. На препаратах она часто помогает увидеть границы соседних клеток."
+        },
+        {
+          "id": "bio-school-plant-cell-structures-b2",
+          "kind": "concept",
+          "title": "Цитоплазма",
+          "body": "Цитоплазма - внутреннее содержимое клетки, где находятся клеточные структуры. В учебном объяснении ее удобно связывать с пространством между границей клетки и внутренними органоидами."
+        },
+        {
+          "id": "bio-school-plant-cell-structures-b3",
+          "kind": "concept",
+          "title": "Ядро и вакуоль",
+          "body": "Ядро связывают с наследственной информацией и управлением процессами клетки на школьном уровне. Вакуоль у растительных клеток часто занимает значительную часть объема и связана с клеточным соком."
+        }
+      ],
+      "tasks": [
+        {
+          "id": "bio-school-plant-cell-structures-t1",
+          "kind": "classification",
+          "prompt": "Соотнеси структуру и подсказку: 'помогает сохранять форму клетки'.",
+          "expectedAnswer": "Клеточная стенка.",
+          "sourceMetadata": {
+            "sourceIds": [
+              "src-curriculum-ru-edsoo-biology-5-9-basic",
+              "src-openstax-biology-2e-4-3-eukaryotic-cells",
+              "src-textbook-placeholder-biology-school"
+            ],
+            "candidates": [
+              {
+                "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+                "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+                "usage": "curriculum_mapping",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Biology 2e, 4.3 Eukaryotic Cells",
+                "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+                "usage": "scientific_reference",
+                "status": "approved_reference",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              },
+              {
+                "title": "Approved school biology textbook mapping slot",
+                "usage": "textbook_mapping",
+                "status": "source_required",
+                "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+              }
+            ],
+            "sourceRequirement": "Methodist must verify task wording, expected answer and source fit before publication.",
+            "evidenceNote": "Task inherits Content-PROD-2 source candidates from the parent item; still needs human review."
+          },
+          "verificationStatus": "needs_methodist_review"
+        }
+      ],
+      "relatedMicroscope": {
+        "id": "micro-bio-plant-structure-label-bank",
+        "kind": "microscope",
+        "title": "Банк подписей: растительная клетка",
+        "status": "planned",
+        "note": "Label visibility must be mapped per specimen and magnification."
+      },
+      "sourceMetadata": {
+        "sourceIds": [
+          "src-curriculum-ru-edsoo-biology-5-9-basic",
+          "src-openstax-biology-2e-4-3-eukaryotic-cells",
+          "src-textbook-placeholder-biology-school"
+        ],
+        "candidates": [
+          {
+            "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+            "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+            "usage": "curriculum_mapping",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Biology 2e, 4.3 Eukaryotic Cells",
+            "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+            "usage": "scientific_reference",
+            "status": "approved_reference",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          },
+          {
+            "title": "Approved school biology textbook mapping slot",
+            "usage": "textbook_mapping",
+            "status": "source_required",
+            "note": "Reference candidate attached in Content-PROD-2; methodist/legal approval is still required."
+          }
+        ],
+        "sourceRequirement": "Methodist must verify source-to-topic fit; legal reviewer must confirm reference-only textbook mapping and OpenStax/official-source usage.",
+        "evidenceNote": "Content-PROD-2 attached curriculum/reference/safety source candidates. Item remains blocked from publication until methodist, safety where applicable and copyright review are complete."
+      },
+      "verificationStatus": "needs_methodist_review",
+      "copyrightPolicy": {
+        "textOrigin": "original_draft",
+        "textbookMappingPolicy": "no_copying_reference_only",
+        "allowedForPublication": false,
+        "note": "Original Allchemist draft. Source pack attached in Content-PROD-2; publication remains blocked until methodist/legal/safety review."
+      },
+      "lastReviewedAt": "2026-07-09",
+      "publicationAllowed": false
+    }
+  ]
+}

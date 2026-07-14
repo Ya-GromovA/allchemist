@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 130" fill="none">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="58%" r="54%"><stop stop-color="#16D9F6" stop-opacity=".55"/><stop offset="1" stop-color="#1479FF" stop-opacity="0"/></radialGradient>
+    <linearGradient id="liquid" x1="42" y1="80" x2="106" y2="119"><stop stop-color="#16D9F6"/><stop offset="1" stop-color="#6D5DFC"/></linearGradient>
+  </defs>
+  <circle cx="76" cy="77" r="62" fill="url(#halo)"/>
+  <path d="M63 14h27M68 14v34l-30 49a15 15 0 0 0 13 23h51a15 15 0 0 0 13-23L85 48V14" stroke="#C9FBFF" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M49 92c16 8 39 8 56 0l9 15a10 10 0 0 1-9 15H49a10 10 0 0 1-9-15l9-15Z" fill="url(#liquid)" opacity=".88"/>
+  <circle cx="101" cy="35" r="5" fill="#8D5CFF"/><circle cx="113" cy="51" r="4" fill="#16D9F6"/><circle cx="40" cy="41" r="4" fill="#58EAFF"/>
+</svg>

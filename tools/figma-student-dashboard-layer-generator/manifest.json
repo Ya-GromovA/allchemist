@@ -1,0 +1,13 @@
+{
+  "name": "Allchemist: Generate Student Dashboard Layers",
+  "id": "allchemist-student-dashboard-layer-generator",
+  "api": "1.0.0",
+  "main": "code.js",
+  "editorType": ["figma"],
+  "relaunchButtons": [
+    {
+      "command": "generate-student-dashboard-layers",
+      "name": "Generate Student Dashboard Layers"
+    }
+  ]
+}

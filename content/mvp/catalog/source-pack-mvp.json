@@ -1,0 +1,302 @@
+{
+  "schemaVersion": "content-mvp-source-pack-1",
+  "id": "source-pack-mvp-2026-07-09",
+  "createdAt": "2026-07-09",
+  "policyPath": "docs/content/MVP_SOURCE_PACK_POLICY.md",
+  "statusLegend": {
+    "reviewed_candidate": "Source URL/title/publisher were found and look suitable as a reference candidate, but a human methodist/legal reviewer has not approved the derived content.",
+    "source_required": "A source slot is known to be needed, but no specific reliable/usable source has been selected.",
+    "rejected": "Source was considered but must not be used."
+  },
+  "sources": [
+    {
+      "id": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+      "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+      "publisher": "Единое содержание общего образования / Минпросвещения РФ",
+      "type": "official_curriculum",
+      "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "chemistry curriculum mapping",
+        "school grade alignment"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Official curriculum reference. Use for mapping only; do not copy program text into learner content.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-curriculum-ru-edsoo-physics-7-9-basic",
+      "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+      "publisher": "Единое содержание общего образования / Минпросвещения РФ",
+      "type": "official_curriculum",
+      "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "physics curriculum mapping",
+        "mechanics topic sequence"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Official curriculum reference. Use for mapping only; do not copy program text into learner content.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-curriculum-ru-edsoo-biology-5-9-basic",
+      "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+      "publisher": "Единое содержание общего образования / Минпросвещения РФ",
+      "type": "official_curriculum",
+      "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "biology curriculum mapping",
+        "cell and onion epidermis lab placement"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Official curriculum reference. Use for mapping only; do not copy program text into learner content.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-chemistry-2e-4-2-reactions",
+      "title": "Chemistry 2e, 4.2 Classifying Chemical Reactions",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/chemistry-2e/pages/4-2-classifying-chemical-reactions",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "chemical reactions",
+        "reaction classification",
+        "acid-base reactions"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax content is under CC BY-NC-SA 4.0 per current OpenStax pages. Use as reference; copying requires attribution and legal/license review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-chemistry-2e-14-1-acids",
+      "title": "Chemistry 2e, 14.1 Brønsted-Lowry Acids and Bases",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/chemistry-2e/pages/14-1-bronsted-lowry-acids-and-bases",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "acids",
+        "acid-base concepts"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA 4.0 reference. Do not copy explanatory prose into proprietary content without legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+      "title": "Chemistry 2e, 18.1 Periodicity",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/chemistry-2e/pages/18-1-periodicity",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "metals",
+        "zinc with hydrochloric acid",
+        "hydrogen gas observation"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA 4.0 reference. Use facts as checked reference; do not copy figure/prose without attribution/legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-acs-secondary-chemical-lab-safety",
+      "title": "Guidelines for Chemical Laboratory Safety in Secondary Schools",
+      "publisher": "American Chemical Society",
+      "type": "official_safety_reference",
+      "url": "https://www.acs.org/content/dam/acsorg/about/governance/committees/chemicalsafety/publications/acs-secondary-safety-guidelines.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "chemistry lab safety",
+        "teacher-led safety review",
+        "secondary school chemical safety"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "ACS copyrighted safety guidance. Reference only; do not reproduce tables/procedures without permission.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-niosh-school-chemistry-lab-safety-guide",
+      "title": "School Chemistry Laboratory Safety Guide",
+      "publisher": "NIOSH / U.S. Consumer Product Safety Commission",
+      "type": "official_safety_reference",
+      "url": "https://www.cpsc.gov/s3fs-public/NIOSH2007107.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "school chemistry safety",
+        "chemical handling",
+        "emergency planning"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Government safety guide. Use as reference; local school safety policy still required.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-osha-laboratory-safety-guidance",
+      "title": "Laboratory Safety Guidance",
+      "publisher": "Occupational Safety and Health Administration",
+      "type": "official_safety_reference",
+      "url": "https://www.osha.gov/sites/default/files/publications/OSHA3404LABORATORY-SAFETY-GUIDANCE.pdf",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "general lab safety",
+        "chemical and biological hazards",
+        "safety gate"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Official U.S. safety guidance. Reference only; does not replace local classroom rules.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-physics-3-2-constant-acceleration",
+      "title": "Physics, 3.2 Representing Acceleration with Equations and Graphs",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/physics/pages/3-2-representing-acceleration-with-equations-and-graphs",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "constant acceleration",
+        "v = v0 + at",
+        "displacement with constant acceleration"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. Use as source; do not copy text/figures without attribution/legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-college-physics-2e-2-5-kinematics",
+      "title": "College Physics 2e, 2.5 Motion Equations for Constant Acceleration in One Dimension",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/college-physics-2e/pages/2-5-motion-equations-for-constant-acceleration-in-one-dimension",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "kinematic equations",
+        "v = v0 + at",
+        "s = v0t + at^2 / 2"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. Use as source; legal review required before reuse beyond reference.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-physics-4-1-force-newton",
+      "title": "Physics, 4.1 Force",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/physics/pages/4-1-force",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "Newton laws next topic",
+        "dynamics after kinematics"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. Do not copy explanatory prose without attribution/legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-biology-2e-4-1-studying-cells",
+      "title": "Biology 2e, 4.1 Studying Cells",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/biology-2e/pages/4-1-studying-cells",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "cell structure",
+        "microscopy context"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. No image/prose reuse without attribution/legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-biology-2e-4-3-eukaryotic-cells",
+      "title": "Biology 2e, 4.3 Eukaryotic Cells",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/biology-2e/pages/4-3-eukaryotic-cells",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "plant cell",
+        "cell wall",
+        "cytoplasm",
+        "nucleus",
+        "vacuole"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. Do not copy figures/text without attribution/legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-openstax-biology-2e-4-introduction-onion-cells",
+      "title": "Biology 2e, Chapter 4 Introduction",
+      "publisher": "OpenStax / Rice University",
+      "type": "open_educational_reference",
+      "url": "https://openstax.org/books/biology-2e/pages/4-introduction",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "onion cells visual reference",
+        "cell observation context"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "OpenStax CC BY-NC-SA reference. Image reuse needs attribution and legal review.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-canada-biosafety-school-classroom",
+      "title": "Biosafety in the Elementary, Intermediate, and Secondary School Classroom",
+      "publisher": "Public Health Agency of Canada",
+      "type": "official_safety_reference",
+      "url": "https://www.canada.ca/en/public-health/services/canadian-biosafety-standards-guidelines/guidance/elementary-intermediate-secondary-school-classroom/document.html",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "biology classroom safety",
+        "microscope/biological material safety gate"
+      ],
+      "reliability": "high",
+      "licenseCopyrightNotes": "Official public health guidance. Reference only; local school policy still required.",
+      "status": "reviewed_candidate"
+    },
+    {
+      "id": "src-textbook-placeholder-chemistry-school",
+      "title": "Approved school chemistry textbook mapping slot",
+      "publisher": "TBD by methodist",
+      "type": "textbook_mapping_placeholder",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "chemistry textbook mapping"
+      ],
+      "reliability": "unknown",
+      "licenseCopyrightNotes": "Placeholder only. No textbook text may be copied; mapping must be reference-only unless license is obtained.",
+      "status": "source_required"
+    },
+    {
+      "id": "src-textbook-placeholder-physics-school",
+      "title": "Approved school physics textbook mapping slot",
+      "publisher": "TBD by methodist",
+      "type": "textbook_mapping_placeholder",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "physics textbook mapping"
+      ],
+      "reliability": "unknown",
+      "licenseCopyrightNotes": "Placeholder only. No textbook text may be copied; mapping must be reference-only unless license is obtained.",
+      "status": "source_required"
+    },
+    {
+      "id": "src-textbook-placeholder-biology-school",
+      "title": "Approved school biology textbook mapping slot",
+      "publisher": "TBD by methodist",
+      "type": "textbook_mapping_placeholder",
+      "accessDate": "2026-07-09",
+      "usedFor": [
+        "biology textbook mapping"
+      ],
+      "reliability": "unknown",
+      "licenseCopyrightNotes": "Placeholder only. No textbook text may be copied; mapping must be reference-only unless license is obtained.",
+      "status": "source_required"
+    }
+  ]
+}

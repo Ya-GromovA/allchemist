@@ -1,0 +1,440 @@
+{
+  "schemaVersion": "content-mvp-curriculum-map-1",
+  "id": "curriculum-map-school-mvp-2026-07-09",
+  "createdAt": "2026-07-09",
+  "sourcePackId": "source-pack-mvp-2026-07-09",
+  "publicationAllowed": false,
+  "entries": [
+    {
+      "id": "map-chem-school-reactions-types-signs",
+      "contentItemId": "chem-school-reactions-types-signs",
+      "subject": "chemistry",
+      "grade": "8-9",
+      "topic": "Химические реакции: типы и признаки",
+      "learningObjectives": [
+        "Отличать химическое превращение от физического изменения.",
+        "Называть типы реакций школьного курса.",
+        "Объяснять наблюдаемые признаки реакции как повод для проверки, а не как самостоятельное доказательство."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-chemistry-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "src-openstax-chemistry-2e-4-2-reactions",
+        "src-textbook-placeholder-chemistry-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-chem-school-acids-intro",
+      "contentItemId": "chem-school-acids-intro",
+      "subject": "chemistry",
+      "grade": "8-9",
+      "topic": "Кислоты",
+      "learningObjectives": [
+        "Распознавать тему кислот по составу и свойствам на школьном уровне.",
+        "Связывать кислоты с индикаторами и реакциями.",
+        "Соблюдать базовую осторожность при обсуждении растворов кислот."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-chemistry-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "src-openstax-chemistry-2e-14-1-acids",
+        "src-acs-secondary-chemical-lab-safety",
+        "src-textbook-placeholder-chemistry-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-chem-school-metals-intro",
+      "contentItemId": "chem-school-metals-intro",
+      "subject": "chemistry",
+      "grade": "8-9",
+      "topic": "Металлы",
+      "learningObjectives": [
+        "Называть типичные физические свойства металлов.",
+        "Понимать различие химической активности металлов.",
+        "Готовиться к теме реакций металлов с кислотами."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-chemistry-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+        "src-textbook-placeholder-chemistry-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-chem-school-zinc-hcl-reaction",
+      "contentItemId": "chem-school-zinc-hcl-reaction",
+      "subject": "chemistry",
+      "grade": "8-9",
+      "topic": "Реакция Zn + HCl",
+      "learningObjectives": [
+        "Записывать уравнение Zn + 2HCl -> ZnCl2 + H2.",
+        "Связывать выделение газа с образованием водорода.",
+        "Объяснять, почему демонстрация требует контроля учителя."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-chemistry-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "src-openstax-chemistry-2e-18-1-metals-zinc-hcl",
+        "src-acs-secondary-chemical-lab-safety",
+        "src-niosh-school-chemistry-lab-safety-guide",
+        "src-textbook-placeholder-chemistry-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-chem-school-lab-safety",
+      "contentItemId": "chem-school-lab-safety",
+      "subject": "chemistry",
+      "grade": "8-9",
+      "topic": "Безопасность лабораторных работ",
+      "learningObjectives": [
+        "Следовать инструкции и требованиям учителя.",
+        "Называть базовые запреты при работе с веществами.",
+        "Сообщать учителю о проливах, повреждениях посуды и недомогании."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-chemistry-8-9-basic",
+        "title": "Федеральная рабочая программа | Химия. 8-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/22_%D0%A4%D0%A0%D0%9F-%D0%A5%D0%B8%D0%BC%D0%B8%D1%8F_8-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-chemistry-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-acs-secondary-chemical-lab-safety",
+        "src-niosh-school-chemistry-lab-safety-guide",
+        "src-osha-laboratory-safety-guidance",
+        "src-textbook-placeholder-chemistry-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-phys-school-uniform-acceleration",
+      "contentItemId": "phys-school-uniform-acceleration",
+      "subject": "physics",
+      "grade": "9",
+      "topic": "Равноускоренное движение",
+      "learningObjectives": [
+        "Описывать движение с постоянным ускорением.",
+        "Связывать изменение скорости со временем.",
+        "Отличать равномерное и равноускоренное движение."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-physics-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "src-openstax-physics-3-2-constant-acceleration",
+        "src-openstax-college-physics-2e-2-5-kinematics",
+        "src-textbook-placeholder-physics-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-phys-school-speed-acceleration-distance",
+      "contentItemId": "phys-school-speed-acceleration-distance",
+      "subject": "physics",
+      "grade": "9",
+      "topic": "Скорость, ускорение, путь",
+      "learningObjectives": [
+        "Различать физический смысл скорости, ускорения и пути.",
+        "Использовать типичные единицы измерения.",
+        "Выбирать величину из условия задачи."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-physics-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "src-openstax-physics-3-2-constant-acceleration",
+        "src-textbook-placeholder-physics-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-phys-school-formula-v-equals-v0-plus-at",
+      "contentItemId": "phys-school-formula-v-equals-v0-plus-at",
+      "subject": "physics",
+      "grade": "9",
+      "topic": "v = v0 + at",
+      "learningObjectives": [
+        "Расшифровывать величины в формуле.",
+        "Подставлять значения с согласованными единицами.",
+        "Объяснять знак ускорения в простых ситуациях."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-physics-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "src-openstax-physics-3-2-constant-acceleration",
+        "src-openstax-college-physics-2e-2-5-kinematics",
+        "src-textbook-placeholder-physics-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-phys-school-formula-s-equals-v0t-plus-at2-half",
+      "contentItemId": "phys-school-formula-s-equals-v0t-plus-at2-half",
+      "subject": "physics",
+      "grade": "9",
+      "topic": "s = v0t + at^2 / 2",
+      "learningObjectives": [
+        "Расшифровывать величины в формуле пути.",
+        "Понимать вклад начальной скорости и ускорения.",
+        "Решать короткую расчетную задачу."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-physics-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "src-openstax-physics-3-2-constant-acceleration",
+        "src-openstax-college-physics-2e-2-5-kinematics",
+        "src-textbook-placeholder-physics-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-phys-school-newton-laws-next-topic",
+      "contentItemId": "phys-school-newton-laws-next-topic",
+      "subject": "physics",
+      "grade": "9",
+      "topic": "Законы Ньютона как next topic",
+      "learningObjectives": [
+        "Отличать кинематику от динамики.",
+        "Связывать ускорение с будущим понятием силы.",
+        "Понимать место законов Ньютона в дальнейшей теме механики."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "title": "Федеральная рабочая программа | Физика. 7-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/20_%D0%A4%D0%A0%D0%9F-%D0%A4%D0%B8%D0%B7%D0%B8%D0%BA%D0%B0_7-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-physics-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-physics-7-9-basic",
+        "src-openstax-physics-4-1-force-newton",
+        "src-textbook-placeholder-physics-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-bio-school-cell-structure",
+      "contentItemId": "bio-school-cell-structure",
+      "subject": "biology",
+      "grade": "5-6",
+      "topic": "Строение клетки",
+      "learningObjectives": [
+        "Понимать клетку как единицу строения живых организмов.",
+        "Называть основные части клетки на вводном уровне.",
+        "Различать учебную схему и наблюдение под микроскопом."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-biology-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "src-openstax-biology-2e-4-1-studying-cells",
+        "src-openstax-biology-2e-4-3-eukaryotic-cells",
+        "src-textbook-placeholder-biology-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-bio-school-plant-cell",
+      "contentItemId": "bio-school-plant-cell",
+      "subject": "biology",
+      "grade": "5-6",
+      "topic": "Растительная клетка",
+      "learningObjectives": [
+        "Называть структуры растительной клетки.",
+        "Связывать клеточную стенку с формой и опорой.",
+        "Связывать вакуоль с внутренним объемом клетки."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-biology-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "src-openstax-biology-2e-4-3-eukaryotic-cells",
+        "src-textbook-placeholder-biology-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-bio-school-onion-epidermis-microscope",
+      "contentItemId": "bio-school-onion-epidermis-microscope",
+      "subject": "biology",
+      "grade": "5-6",
+      "topic": "Кожица лука под микроскопом",
+      "learningObjectives": [
+        "Использовать кожицу лука как учебный объект наблюдения.",
+        "Находить границы клеток на препарате.",
+        "Отделять уверенно видимые структуры от требующих лучшего препарата или окрашивания."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-biology-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "src-openstax-biology-2e-4-introduction-onion-cells",
+        "src-openstax-biology-2e-4-1-studying-cells",
+        "src-canada-biosafety-school-classroom",
+        "src-osha-laboratory-safety-guidance",
+        "src-textbook-placeholder-biology-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    },
+    {
+      "id": "map-bio-school-plant-cell-structures",
+      "contentItemId": "bio-school-plant-cell-structures",
+      "subject": "biology",
+      "grade": "5-6",
+      "topic": "Клеточная стенка, цитоплазма, ядро, вакуоль",
+      "learningObjectives": [
+        "Связывать клеточную стенку с формой клетки.",
+        "Связывать цитоплазму с внутренней средой клетки.",
+        "Называть ядро и вакуоль на школьном уровне."
+      ],
+      "curriculumReference": {
+        "sourceId": "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "title": "Федеральная рабочая программа | Биология. 5-9 классы (базовый уровень)",
+        "url": "https://edsoo.ru/wp-content/uploads/2023/08/24_%D0%A4%D0%A0%D0%9F-%D0%91%D0%B8%D0%BE%D0%BB%D0%BE%D0%B3%D0%B8%D1%8F_5-9-%D0%BA%D0%BB%D0%B0%D1%81%D1%81%D1%8B_%D0%B1%D0%B0%D0%B7%D0%B0.pdf",
+        "note": "Official curriculum candidate for topic placement; exact grade/lesson sequence must be verified by a methodist."
+      },
+      "textbookMappingPlaceholder": {
+        "sourceId": "src-textbook-placeholder-biology-school",
+        "status": "source_required",
+        "requiredAction": "Select an approved textbook/reference map. Do not copy textbook prose, exercises, diagrams or lab instructions."
+      },
+      "sourceIds": [
+        "src-curriculum-ru-edsoo-biology-5-9-basic",
+        "src-openstax-biology-2e-4-3-eukaryotic-cells",
+        "src-textbook-placeholder-biology-school"
+      ],
+      "verificationStatus": "needs_methodist_review",
+      "publicationAllowed": false
+    }
+  ]
+}

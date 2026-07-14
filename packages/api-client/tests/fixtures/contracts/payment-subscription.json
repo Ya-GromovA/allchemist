@@ -1,0 +1,10 @@
+{
+  "contractFixture": true,
+  "paymentId": "payment_contract",
+  "provider": "contract",
+  "status": "pending",
+  "amountRub": 0,
+  "currency": "RUB",
+  "moduleId": "chemistry",
+  "note": "Contract fixture only; does not represent a real paid subscription."
+}

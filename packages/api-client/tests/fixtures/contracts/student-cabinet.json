@@ -1,0 +1,4 @@
+{
+  "contractFixture": true,
+  "note": "No dedicated student cabinet endpoint found; student web currently composes auth/profile/modules/content/progress."
+}

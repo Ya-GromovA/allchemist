@@ -1,0 +1,40 @@
+{
+  "name": "allchemist-frontend-foundation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck:tokens": "tsc -p packages/design-tokens/tsconfig.json --pretty false",
+    "typecheck:ui": "tsc -p packages/ui/tsconfig.json --pretty false",
+    "typecheck:web": "tsc -p apps/web/tsconfig.json --pretty false",
+    "typecheck:admin": "tsc -p apps/admin/tsconfig.json --pretty false",
+    "build:web": "next build apps/web",
+    "build:admin": "next build apps/admin",
+    "typecheck:ai-assistant": "tsc -p packages/ai-assistant/tsconfig.json --pretty false",
+    "typecheck:content-core": "tsc -p packages/content-core/tsconfig.json --pretty false",
+    "typecheck:content-qa-core": "tsc -p packages/content-qa-core/tsconfig.json --pretty false",
+    "typecheck:science-core": "tsc -p packages/science-core/tsconfig.json --pretty false",
+    "typecheck:chemistry-core": "tsc -p packages/chemistry-core/tsconfig.json --pretty false",
+    "typecheck:chemistry-lab-engine": "tsc -p packages/chemistry-lab-engine/tsconfig.json --pretty false",
+    "typecheck:physics-core": "tsc -p packages/physics-core/tsconfig.json --pretty false",
+    "typecheck:physics-sim-engine": "tsc -p packages/physics-sim-engine/tsconfig.json --pretty false",
+    "typecheck:biology-core": "tsc -p packages/biology-core/tsconfig.json --pretty false",
+    "typecheck:microscope-viewer": "tsc -p packages/microscope-viewer/tsconfig.json --pretty false",
+    "typecheck:progress-core": "tsc -p packages/progress-core/tsconfig.json --pretty false"
+  },
+  "dependencies": {
+    "@next/env": "^16.0.10",
+    "next": "^16.0.10",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.2",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "5.9.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ]
+}

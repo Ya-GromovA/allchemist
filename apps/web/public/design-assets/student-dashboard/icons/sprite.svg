@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <g id="icon-home"><path d="M3.5 11.2 12 4l8.5 7.2M6 10.5V20h4.2v-5.2h3.6V20H18v-9.5"/></g>
+    <g id="icon-courses"><path d="M5 5.5h10.5a3 3 0 0 1 3 3V20H7.5A2.5 2.5 0 0 1 5 17.5v-12Zm0 12A2.5 2.5 0 0 1 7.5 15h11"/></g>
+    <g id="icon-theory"><path d="M6 5.5h12M6 9.5h12M6 13.5h8M7 19l2.4-2.4 2.1 2.1L17 12"/></g>
+    <g id="icon-book"><path d="M5 5.5h6a3 3 0 0 1 3 3V20a3 3 0 0 0-3-3H5V5.5Zm9 3a3 3 0 0 1 3-3h2V17h-2a3 3 0 0 0-3 3"/></g>
+    <g id="icon-tasks"><path d="M8 4.5h8l2 2V20H6V6.5l2-2Zm1.5 5h5M9.5 13h5M9.5 16.5h3M9 4.5V7h6V4.5"/></g>
+    <g id="icon-clipboard"><path d="M9 4.5h6M8 6h8v3H8V6Zm-1 1.5H5.5V20h13V7.5H17M8.5 12h7M8.5 16h5"/></g>
+    <g id="icon-laboratory"><path d="M9 3.8h6M10 4v5l-4.7 8.2A2 2 0 0 0 7 20h10a2 2 0 0 0 1.7-2.8L14 9V4M7.6 16h8.8"/></g>
+    <g id="icon-flask"><path d="M9 3.8h6M10 4v5l-4.7 8.2A2 2 0 0 0 7 20h10a2 2 0 0 0 1.7-2.8L14 9V4M8 16h8"/></g>
+    <g id="icon-visualization"><path d="M12 4v16M4 12h16M6.2 6.2c3.8 2.1 7.8 2.1 11.6 0M6.2 17.8c3.8-2.1 7.8-2.1 11.6 0"/></g>
+    <g id="icon-3d-molecules"><path d="M7 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm10 12a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5ZM17 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM9 7l6 8.5M15.2 7.2 9.2 12M8.8 13.4 14.7 17"/></g>
+    <g id="icon-references"><path d="M5 5.5h14M6.5 5.5V19h11V5.5M9 9h6M9 12.5h6M9 16h3"/></g>
+    <g id="icon-database"><path d="M5 7c0-1.7 3.1-3 7-3s7 1.3 7 3-3.1 3-7 3-7-1.3-7-3Zm0 0v5c0 1.7 3.1 3 7 3s7-1.3 7-3V7M5 12v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></g>
+    <g id="icon-exams"><path d="M12 3.8 20 8l-8 4.2L4 8l8-4.2Zm-5 7V15c0 2 2.2 3.5 5 3.5s5-1.5 5-3.5v-4"/></g>
+    <g id="icon-graduation-cap"><path d="M12 3.8 20 8l-8 4.2L4 8l8-4.2Zm-5 7V15c0 2 2.2 3.5 5 3.5s5-1.5 5-3.5v-4"/></g>
+    <g id="icon-diagnostics"><path d="M4 13h3l2-5 3.5 9 2.3-4H20M6 20h12M6 4h12"/></g>
+    <g id="icon-chart"><path d="M5 19V9M10 19V5M15 19v-7M20 19V7"/></g>
+    <g id="icon-ai-mentor"><path d="M8 8.5h8a3 3 0 0 1 3 3V15a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-3.5a3 3 0 0 1 3-3ZM9 6V3.8M15 6V3.8M9.2 13h.1M14.7 13h.1M10 16h4"/></g>
+    <g id="icon-chat"><path d="M5 6.5h14v9H9l-4 3v-12Z"/></g>
+    <g id="icon-progress"><path d="M5 19V9M10 19V5M15 19v-7M20 19V7"/></g>
+    <g id="icon-bars"><path d="M5 19V9M10 19V5M15 19v-7M20 19V7"/></g>
+    <g id="icon-messages"><path d="M5 6.5h14v9H9l-4 3v-12Z"/></g>
+    <g id="icon-mail"><path d="M4.5 6.5h15v11h-15v-11Zm.5 1L12 13l7-5.5"/></g>
+    <g id="icon-settings"><path d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0-4v2M12 17.5v2M5.5 6.5 7 8M17 16l1.5 1.5M4 12h2M18 12h2M5.5 17.5 7 16M17 8l1.5-1.5"/></g>
+    <g id="icon-gear"><path d="M12 8.5a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0-4v2M12 17.5v2M5.5 6.5 7 8M17 16l1.5 1.5M4 12h2M18 12h2M5.5 17.5 7 16M17 8l1.5-1.5"/></g>
+    <g id="icon-search"><path d="m16.5 16.5 3.5 3.5M10.8 18a7.2 7.2 0 1 1 0-14.4 7.2 7.2 0 0 1 0 14.4Z"/></g>
+    <g id="icon-notification"><path d="M6.5 16.5h11M8 16V10a4 4 0 0 1 8 0v6M10 19a2 2 0 0 0 4 0"/></g>
+    <g id="icon-calendar"><path d="M7 4v3M17 4v3M5 8h14M6 6h12v13H6V6Zm3 6h2M13 12h2M9 16h2"/></g>
+    <g id="icon-periodic-table"><path d="M5 5h14v14H5V5Zm4 10h6M9 9h6M8 5v14M16 5v14"/></g>
+    <g id="icon-simulators"><path d="M4 15c2.2-7 4.2-7 6 0s3.8 7 6 0 3.2-5 4-3M4 20h16"/></g>
+    <g id="icon-microscope"><path d="M10 4h5l-1 4h-5l1-4Zm1 4 5 6M7 20h12M9 17h6M7.5 14.5a4.5 4.5 0 0 0 6 2"/></g>
+    <g id="icon-chemistry"><path d="M9 3.8h6M10 4v5l-4.7 8.2A2 2 0 0 0 7 20h10a2 2 0 0 0 1.7-2.8L14 9V4M8 16h8"/></g>
+    <g id="icon-physics"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M4 12c2-4.8 14-4.8 16 0-2 4.8-14 4.8-16 0Zm8-8c4.8 2 4.8 14 0 16-4.8-2-4.8-14 0-16Z"/></g>
+    <g id="icon-biology"><path d="M5 18c7 0 12-5 14-13-8 2-13 7-14 13Zm0 0c2-3 5-5 8-6"/></g>
+    <g id="icon-atom"><path d="M12 12m-2 0a2 2 0 1 0 4 0 2 2 0 1 0-4 0M4 12c2-4.8 14-4.8 16 0-2 4.8-14 4.8-16 0Zm8-8c4.8 2 4.8 14 0 16-4.8-2-4.8-14 0-16Z"/></g>
+    <g id="icon-lock"><path d="M7 10h10v9H7v-9Zm2 0V7a3 3 0 0 1 6 0v3M12 14v2"/></g>
+    <g id="icon-close"><path d="m7 7 10 10M17 7 7 17"/></g>
+  </defs>
+  <style>
+    g { fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+  </style>
+</svg>
