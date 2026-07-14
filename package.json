@@ -3,6 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "check:repository-hygiene": "node tools/check-repository-hygiene.mjs",
     "typecheck:tokens": "tsc -p packages/design-tokens/tsconfig.json --pretty false",
     "typecheck:ui": "tsc -p packages/ui/tsconfig.json --pretty false",
     "typecheck:web": "tsc -p apps/web/tsconfig.json --pretty false",

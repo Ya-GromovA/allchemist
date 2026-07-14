@@ -25,6 +25,12 @@ venv/
 node_modules/
 **/.next/
 *.tsbuildinfo
+.npm/
+.cache/
+**/.cache/
+.turbo/
+.eslintcache
+.stylelintcache
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -89,6 +95,17 @@ Thumbs.db
 # Logs
 *.log
 assistant_log.md*
+
+# Disposable test/report output (approved goldens stay under source-owned paths)
+playwright-report/
+test-results/
+blob-report/
+*.lcov
+
+# Editor/tool temporary files
+*.tmp
+*.temp
+*.orig
 
 # SSH keys
 id_ed25519*
