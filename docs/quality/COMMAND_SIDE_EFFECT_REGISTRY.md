@@ -1,85 +1,81 @@
-# ALC-001 — Command Side-Effect Registry
+# ALC-001 Command Side-Effect Registry
 
-Дата: 2026-07-14. Registry основан на `package.json`, workspace manifests, tsconfig options и фактическом call graph scripts. Команды с `UNKNOWN_UNSAFE` не запускаются.
+Date: 2026-07-14. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
 
-## Classification meanings
+## Classes
 
-- `READ_ONLY_SAFE`: не создаёт project/runtime output при указанной форме.
-- `WRITES_BUILD_OUTPUT`: пишет dependencies, caches, `*.tsbuildinfo`, `.next`, dist или screenshots.
-- `WRITES_SOURCE`: изменяет source/docs/config.
-- `WRITES_RUNTIME_STATE`: создаёт процесс, лог, device/app state или иное runtime state.
-- `MAY_ACCESS_DATABASE`: может читать/писать DB в зависимости от environment.
-- `MAY_CHANGE_INFRA`: может менять services, images, routing or deployment state.
-- `UNKNOWN_UNSAFE`: side effects не доказаны безопасными.
+- `READ_ONLY_SAFE`: does not create project/runtime output in the inspected invocation.
+- `WRITES_BUILD_OUTPUT`: writes dependencies, caches, tsbuildinfo, `.next`, dist, or screenshots.
+- `WRITES_SOURCE`: edits source/docs/config.
+- `WRITES_RUNTIME_STATE`: creates a process, log, browser/device state, or mutable app state.
+- `MAY_ACCESS_DATABASE`: may read or write a configured database.
+- `MAY_CHANGE_INFRA`: may alter services, images, routing, or deployment state.
+- `UNKNOWN_UNSAFE`: safety was not proven; do not run.
 
-## Root and Next workspace commands
+## Root and Next workspace
 
-| Command | Calls | Classification | Writes | Network / DB | Isolated worktree | Production checkout |
-|---|---|---|---|---|---|---|
-| `npm ci` | npm installer from root lock | `WRITES_BUILD_OUTPUT` | `node_modules` | package registry; no DB | YES after lifecycle review | NO |
-| `npm run typecheck:tokens` | `tsc -p packages/design-tokens/tsconfig.json` | `READ_ONLY_SAFE` | none (`noEmit`, no incremental) | none | YES | NO by ALC-001 policy |
-| `npm run typecheck:ui` | UI `tsc` | `READ_ONLY_SAFE` | none | none | YES | NO |
-| `npm run typecheck:ai-assistant` | AI package `tsc` | `READ_ONLY_SAFE` | none | none | YES | NO |
-| other subject/core typechecks | corresponding package `tsc` | `READ_ONLY_SAFE` | none in inspected configs | none | YES | NO |
-| `npm run typecheck:web` | Next-aware `tsc` | `WRITES_BUILD_OUTPUT` | `apps/web/tsconfig.tsbuildinfo` because `incremental: true` | none | YES | NO |
-| `npm run typecheck:admin` | Next-aware `tsc` | `WRITES_BUILD_OUTPUT` | admin tsbuildinfo | none | YES | NO |
-| `npm run build:web` / `npm --prefix apps/web run build` | `next build` | `WRITES_BUILD_OUTPUT` | `apps/web/.next/**` | may perform build-time network if source requests it; no DB found | YES | PROHIBITED |
-| `npm run build:admin` | admin `next build` | `WRITES_BUILD_OUTPUT` | `apps/admin/.next/**` | same caveat | isolated only | PROHIBITED |
-| `npm --prefix apps/web run dev` | `next dev` | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | `.next`, listening process | local network | development worktree only | NO |
-| `npm --prefix apps/web run start` | `next start` | `WRITES_RUNTIME_STATE` | process/log; consumes `.next` | local network | YES for temporary smoke | NO |
+| Command | Actual call / output | Class | Network / DB | Isolated | Production checkout |
+|---|---|---|---|---|---|
+| `npm ci --ignore-scripts --no-audit --no-fund` | lock-based install to `node_modules` | `WRITES_BUILD_OUTPUT` | package registry; no DB path found | YES after lifecycle review | NO |
+| `npm run typecheck:tokens` | `tsc -p packages/design-tokens/tsconfig.json`; no emit/incremental | `READ_ONLY_SAFE` | none | YES | NO by ALC-001 policy |
+| `npm run typecheck:ui` | UI package `tsc`; no emit | `READ_ONLY_SAFE` | none | YES | NO |
+| `npm run typecheck:ai-assistant` | AI package `tsc`; no emit | `READ_ONLY_SAFE` | none | YES | NO |
+| `npm run typecheck:web` | web `tsc` with incremental metadata | `WRITES_BUILD_OUTPUT` | none | YES | NO |
+| `npm run typecheck:admin` | admin `tsc` with incremental metadata | `WRITES_BUILD_OUTPUT` | none | isolated only | NO |
+| `npm run build:web` | Next web build to `apps/web/.next` | `WRITES_BUILD_OUTPUT` | possible build-time network; no DB call found | YES | PROHIBITED |
+| `npm run build:admin` | Next admin build | `WRITES_BUILD_OUTPUT` | same caveat | isolated only | PROHIBITED |
+| web/admin `dev` | starts Next dev and writes `.next` | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | local network | dev worktree only | NO |
+| web/admin `start` | starts server from existing build | `WRITES_RUNTIME_STATE` | local network | temporary isolated smoke only | NO |
 
-No `preinstall`, `install`, `postinstall` or `prepare` lifecycle script exists in root, web, admin, mobile, tools or inspected package manifests.
+No `preinstall`, `install`, `postinstall`, or `prepare` lifecycle script exists in the root, web, admin, mobile, tools, or inspected package manifests.
 
 ## Verification and visual tools
 
-| Command | Actual behavior | Classification | Isolated | Production |
-|---|---|---|---|---|
-| `node tools/verify-contract-layer.mjs` | types/api-client tsc, Vitest, scoped `git diff --check` | `WRITES_BUILD_OUTPUT` (possible test/dependency cache) | YES | NO |
-| `node tools/verify-ui-foundation.mjs` | contract checks, web/admin typechecks, both Next builds, Playwright smoke, screenshot capture | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | YES only when all outputs are owned | **NO** |
-| `node tools/check-approved-references.mjs` | manifest/file metadata reads | `READ_ONLY_SAFE` | YES | YES |
-| `node --check <file.js>` | parser only | `READ_ONLY_SAFE` | YES | YES |
-| `node tools/ui-foundation-smoke.mjs` | starts Next on 3210/3211, launches Chromium | `WRITES_RUNTIME_STATE`, possible browser caches | YES with free ports | NO |
-| `node tools/check-layout-contract.mjs` | may build, starts Next, writes JSON/Markdown/artifacts | `WRITES_BUILD_OUTPUT`, `WRITES_SOURCE`, `WRITES_RUNTIME_STATE` | YES | NO |
-| `node tools/capture-ui-snapshots.mjs` | may build, starts Next, writes screenshots/ZIP | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | YES | NO |
-| `node tools/playwright-approved-ui-smoke.mjs` | creates artifact dirs and screenshots; accesses configured base URL | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | YES against isolated URL | NO |
-| `node tools/playwright-visual-smoke.mjs` | defaults to port 8000, writes screenshots | `WRITES_BUILD_OUTPUT`, may access production | isolated URL only | NO |
-| uninspected tool | unknown | `UNKNOWN_UNSAFE` | NO until classified | NO |
+| Command | Actual behavior | Class | Policy |
+|---|---|---|---|
+| `node tools/check-approved-references.mjs` | reads manifest and file metadata | `READ_ONLY_SAFE` | allowed |
+| `node --check <javascript-file>` | parser only | `READ_ONLY_SAFE` | allowed |
+| `node tools/verify-contract-layer.mjs` | typechecks, Vitest, scoped diff check | `WRITES_BUILD_OUTPUT` possible cache | isolated only |
+| `node tools/verify-ui-foundation.mjs` | typechecks, two Next builds, process/browser smoke, screenshots | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | **prohibited in production; not run in ALC-001** |
+| `node tools/ui-foundation-smoke.mjs` | starts Next on 3210/3211 and Chromium | `WRITES_RUNTIME_STATE`, possible cache | isolated only |
+| `node tools/check-layout-contract.mjs` | may build/start server and write JSON/Markdown/artifacts | `WRITES_BUILD_OUTPUT`, `WRITES_SOURCE`, `WRITES_RUNTIME_STATE` | isolated only |
+| `node tools/capture-ui-snapshots.mjs` | may build/start server and write screenshots/ZIP | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | isolated only |
+| Playwright approved/visual/auth tools | starts browser, may authenticate, writes artifacts/screenshots | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE`; possible remote state | isolated target only after explicit review |
+| uninspected tool | unknown | `UNKNOWN_UNSAFE` | do not run |
 
-`verify-ui-foundation.mjs` is classified by behavior, not name. It is not a read-only verification command.
+## Backend, database, and infrastructure
 
-## Backend, database and infrastructure commands
-
-| Command family | Classification | Production policy |
+| Command family | Class | Production policy |
 |---|---|---|
-| `pytest`, FastAPI tests, scripts importing application state | `MAY_ACCESS_DATABASE`, `WRITES_RUNTIME_STATE` | prohibited against production DB/state |
-| Alembic/migration/init/import scripts | `MAY_ACCESS_DATABASE`, `WRITES_RUNTIME_STATE` | prohibited |
+| `pytest` or scripts importing configured application state | `MAY_ACCESS_DATABASE`, `WRITES_RUNTIME_STATE` | prohibited without an isolated DB |
+| Alembic, migrations, init/import scripts | `MAY_ACCESS_DATABASE`, `WRITES_RUNTIME_STATE` | prohibited |
 | Docker build/up/down/restart | `WRITES_BUILD_OUTPUT`, `MAY_CHANGE_INFRA` | prohibited |
 | `docker compose ps`, formatted `docker ps` | `READ_ONLY_SAFE` | allowed |
-| nginx/systemd edit/reload/restart | `MAY_CHANGE_INFRA` | prohibited |
-| `systemctl show`, `ss -ltnp`, process metadata | `READ_ONLY_SAFE` | allowed |
-| safe HTTP GET/HEAD health probes | `READ_ONLY_SAFE` at known non-mutating routes | allowed |
+| nginx/systemd edit, reload, restart | `MAY_CHANGE_INFRA` | prohibited |
+| `systemctl is-active/show`, `ss -ltnp`, process metadata | `READ_ONLY_SAFE` | allowed |
+| safe HTTP GET/HEAD to known non-mutating routes | `READ_ONLY_SAFE` | allowed |
 
-## Mobile npm commands
+## Mobile commands
 
-| Script | Classification | Reason / policy |
+| Script | Class | Policy |
 |---|---|---|
-| `start`, `android`, `ios`, `web`, `web:remote` | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE`, network/device access | isolated mobile workspace only |
-| `web:export` | `WRITES_BUILD_OUTPUT` | writes export/dist |
-| `smoke:migration` | `UNKNOWN_UNSAFE` | migration/device-state semantics; do not run until separately classified |
-| `apk:preflight` | `UNKNOWN_UNSAFE` | do not run during ALC-001 |
-| `apk:build:demo` | `WRITES_BUILD_OUTPUT`, network/external EAS | prohibited in ALC-001 |
-| `quality:content` | `UNKNOWN_UNSAFE` until Python guard's complete `--check` path is reviewed | not run during ALC-001 |
+| `start`, `android`, `ios`, `web`, `web:remote` | `WRITES_BUILD_OUTPUT`, `WRITES_RUNTIME_STATE` | isolated mobile workspace only |
+| `web:export` | `WRITES_BUILD_OUTPUT` | isolated only |
+| `smoke:migration` | `UNKNOWN_UNSAFE` | not run |
+| `apk:preflight` | `UNKNOWN_UNSAFE` | not run |
+| `apk:build:demo` | `WRITES_BUILD_OUTPUT`, external network | not run |
+| `quality:content` | `UNKNOWN_UNSAFE` until complete guard path review | not run |
 
-## Commands approved for ALC-001 isolated build
+## ALC-001 executed commands
 
-After successful backup, explicit baseline commit and lifecycle review:
+| Command | Location | Exit | Observed side effect |
+|---|---|---:|---|
+| `npm ci --ignore-scripts --no-audit --no-fund` | isolated worktree | 0 | 91 packages in isolated `node_modules`; lock unchanged |
+| `npm run typecheck:tokens` | isolated worktree | 0 | none |
+| `npm run typecheck:ui` | isolated worktree | 0 | none |
+| `npm run typecheck:ai-assistant` | isolated worktree | 0 | none |
+| `npm run typecheck:web` | isolated worktree | 0 | ignored tsbuildinfo possible |
+| `npm run build:web` | isolated worktree | 0 | isolated `.next` |
+| direct standalone start with `HOSTNAME`/`PORT` names | release on `127.0.0.1:3011` | 0 | temporary process and protected log; process stopped |
 
-1. `npm ci`
-2. `npm run typecheck:tokens`
-3. `npm run typecheck:ui`
-4. `npm run typecheck:ai-assistant`
-5. `npm run typecheck:web`
-6. `npm run build:web`
-7. direct cold start of the copied standalone artifact on `127.0.0.1:3011`
-
-All build output must stay in the isolated worktree or `/root/allchemist-runtime/preview/releases/<timestamp>`. Production `/root/synapse` is not an allowed cwd for these commands.
+No npm command was executed in `/root/synapse`. No global install, dependency update, migration, backend pytest, infra command, or `verify-ui-foundation.mjs` execution occurred.

@@ -1,0 +1,1435 @@
+{
+  "schema_version": 1,
+  "task_id": "ALC-002",
+  "generated_at": "2026-07-14T16:00:00+03:00",
+  "authoritative_baseline_commit": "c18b3d89c38e28b47f46816326981720fb30e253",
+  "counts": {
+    "total": 40,
+    "severity": {
+      "P1": 27,
+      "P2": 10,
+      "P0": 2,
+      "P3": 1
+    },
+    "status": {
+      "OPEN": 30,
+      "NEEDS_VERIFICATION": 9,
+      "RESOLVED": 1
+    },
+    "category": {
+      "REPOSITORY": 2,
+      "SOURCE_CONTROL": 2,
+      "GENERATED_ARTIFACTS": 1,
+      "RUNTIME_STATE": 1,
+      "LEGACY": 2,
+      "PREVIEW_RUNTIME": 2,
+      "BUILD_TOOLING": 2,
+      "CI_CD": 1,
+      "MIGRATIONS": 1,
+      "DATABASE": 1,
+      "CACHE_REDIS": 1,
+      "OBJECT_STORAGE": 1,
+      "TESTING": 2,
+      "TENANT_ISOLATION": 1,
+      "AUTH": 1,
+      "RBAC": 1,
+      "BACKUP_RESTORE": 1,
+      "OBSERVABILITY": 1,
+      "SECURITY": 2,
+      "FRONTEND": 2,
+      "ADMIN": 1,
+      "MOBILE_PWA": 2,
+      "SCIENCE_ENGINES": 1,
+      "BACKEND": 1,
+      "CONTENT": 2,
+      "CONTENT_QA": 1,
+      "DESIGN_INPUT_PENDING": 1,
+      "INFRASTRUCTURE": 2,
+      "DOCUMENTATION": 1
+    }
+  },
+  "semantics": {
+    "NEEDS_VERIFICATION": "Risk or absence is not fully proven.",
+    "production_permission": "None of these issues authorizes production changes."
+  },
+  "issues": [
+    {
+      "id": "ALC-RM-001",
+      "title": "Production checkout is dirty",
+      "source_evidence": [
+        "Preflight: 34 modified tracked and 1375 untracked paths."
+      ],
+      "category": "REPOSITORY",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "/root/synapse"
+      ],
+      "production_impact": "Cleanup/build can overwrite unattributed state.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G1 prerequisites and ALC-003 scope approval",
+      "remediation_proposal": "Explicit-path reconciliation outside production; never clean in place.",
+      "proposed_task_id": "ALC-003",
+      "required_owner_workstream": "Repository + operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Repository + operations",
+        "G1 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G1",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-002",
+      "title": "Target architecture was previously untracked",
+      "source_evidence": [
+        "ALC-001 recovered 446 source/config/test/doc/asset candidates."
+      ],
+      "category": "SOURCE_CONTROL",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "apps",
+        "packages",
+        "content",
+        "tools",
+        "docs",
+        "infra"
+      ],
+      "production_impact": "History and durability remain incomplete.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G1 prerequisites and ALC-003 scope approval",
+      "remediation_proposal": "Review and publish the explicit baseline through an approved workflow.",
+      "proposed_task_id": "ALC-003",
+      "required_owner_workstream": "Repository",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Repository",
+        "G1 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G1",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-003",
+      "title": "Baseline commit exists only locally",
+      "source_evidence": [
+        "No remote branch contains commit c18b3d8."
+      ],
+      "category": "SOURCE_CONTROL",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "baseline/allchemist-recovery-20260714-112717"
+      ],
+      "production_impact": "Single-host loss can remove the Git baseline.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G1 prerequisites and ALC-003 scope approval",
+      "remediation_proposal": "Publish after review and verify the remote object and an independent clone.",
+      "proposed_task_id": "ALC-003",
+      "required_owner_workstream": "Repository + release",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Repository + release",
+        "G1 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G1",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-004",
+      "title": "Generated output remains entangled with production checkout history",
+      "source_evidence": [
+        "Production apps/web/.next is incomplete and lacks BUILD_ID."
+      ],
+      "category": "GENERATED_ARTIFACTS",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "apps/web/.next",
+        "artifacts",
+        "backend/app/web_public_react"
+      ],
+      "production_impact": "Build/cleanup can invalidate runtime or attribution.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G1 prerequisites and ALC-003 scope approval",
+      "remediation_proposal": "Keep output outside Git/source and regenerate only in CI/release workspaces.",
+      "proposed_task_id": "ALC-003",
+      "required_owner_workstream": "Release engineering",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Release engineering",
+        "G1 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G1",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-005",
+      "title": "Mutable runtime JSON lives under source paths",
+      "source_evidence": [
+        "ALC-001 attribution plus admin_panel_service/user_state_store consumer scan."
+      ],
+      "category": "RUNTIME_STATE",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend/data",
+        "backend/data_host_backup",
+        "content_packs/allchemist-apk-latest.json"
+      ],
+      "production_impact": "Git can expose or roll back live state.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G5 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Move durable/transient state to approved stores after tested migration; keep it out of Git.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Backend + security + data",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Backend + security + data",
+        "G5 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G5",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-006",
+      "title": "Twenty-three non-empty duplicate groups need consumer-aware decisions",
+      "source_evidence": [
+        "Hash inventory: 23 groups and 54 files, excluding three zero-byte .gitkeep files."
+      ],
+      "category": "REPOSITORY",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "web assets",
+        "legacy/mobile assets",
+        "package configs",
+        "docs"
+      ],
+      "production_impact": "Drift is possible; premature deletion can break packaging.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G1 prerequisites and ALC-003 scope approval",
+      "remediation_proposal": "Keep all copies, assign canonical candidates, consolidate only after consumer tests.",
+      "proposed_task_id": "ALC-003",
+      "required_owner_workstream": "Repository + frontend/mobile",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Repository + frontend/mobile",
+        "G1 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G1",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-007",
+      "title": "Legacy and target boundaries are incomplete",
+      "source_evidence": [
+        "Legacy routes are active while Next targets remain partial."
+      ],
+      "category": "LEGACY",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend/app/web_public",
+        "backend/app/web_admin",
+        "apps/web",
+        "apps/admin"
+      ],
+      "production_impact": "Migration can lose behavior or permissions.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Retain legacy as behavioral reference and define explicit adapters/ownership.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Architecture + product",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Architecture + product",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-008",
+      "title": "Preview 3010 runs from a deleted cwd",
+      "source_evidence": [
+        "PID 1603626 cwd resolves to a deleted standalone directory."
+      ],
+      "category": "PREVIEW_RUNTIME",
+      "severity": "P0",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "allchemist-web-preview",
+        "127.0.0.1:3010"
+      ],
+      "production_impact": "Any restart can remove preview availability.",
+      "data_loss_risk": "HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G3 prerequisites and ALC-004 scope approval",
+      "remediation_proposal": "Create an immutable-release permanent service; do not restart current PID before approval.",
+      "proposed_task_id": "ALC-004",
+      "required_owner_workstream": "Operations + release",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Operations + release",
+        "G3 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G3",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-009",
+      "title": "Recovered artifact is not connected to a permanent preview service",
+      "source_evidence": [
+        "Artifact passed 1399/1399 checksum and smoke but was not switched."
+      ],
+      "category": "PREVIEW_RUNTIME",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "/root/allchemist-runtime/preview/releases/20260714-112717"
+      ],
+      "production_impact": "Recovery is not operationally selectable or monitored.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G3 prerequisites and ALC-004 scope approval",
+      "remediation_proposal": "Define release pointer, systemd, health, access, and rollback.",
+      "proposed_task_id": "ALC-004",
+      "required_owner_workstream": "Operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Operations",
+        "G3 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G3",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-010",
+      "title": "verify-ui-foundation has unexpected side effects",
+      "source_evidence": [
+        "ALC-000 incident and COMMAND_SIDE_EFFECT_REGISTRY.md."
+      ],
+      "category": "BUILD_TOOLING",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "tools/verify-ui-foundation.mjs"
+      ],
+      "production_impact": "Audit-like invocation can replace active build output.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G2 prerequisites and ALC-006 scope approval",
+      "remediation_proposal": "Split check/build/server/browser phases and guard owned workspaces.",
+      "proposed_task_id": "ALC-006",
+      "required_owner_workstream": "Quality tooling",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Quality tooling",
+        "G2 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G2",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-011",
+      "title": "Tool commands are not uniformly separated by side effect",
+      "source_evidence": [
+        "Visual/mobile commands remain mixed or UNKNOWN_UNSAFE."
+      ],
+      "category": "BUILD_TOOLING",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "tools",
+        "mobile/scripts",
+        "package scripts"
+      ],
+      "production_impact": "Operators can mutate state through test-like commands.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G2 prerequisites and ALC-006 scope approval",
+      "remediation_proposal": "Define explicit check/test/build/smoke/deploy commands with declared outputs.",
+      "proposed_task_id": "ALC-006",
+      "required_owner_workstream": "Quality + release",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Quality + release",
+        "G2 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G2",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-012",
+      "title": "CI does not gate the target monorepo",
+      "source_evidence": [
+        "CI omits root target builds/typechecks, reference checks, and Playwright."
+      ],
+      "category": "CI_CD",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "github workflows",
+        "apps",
+        "packages"
+      ],
+      "production_impact": "Broken target source can merge without detection.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G2 prerequisites and ALC-006 scope approval",
+      "remediation_proposal": "Add clean lock-based target checks and isolated artifact handling.",
+      "proposed_task_id": "ALC-006",
+      "required_owner_workstream": "CI owner",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by CI owner",
+        "G2 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G2",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-013",
+      "title": "Legacy admin JavaScript fails syntax parsing",
+      "source_evidence": [
+        "Duplicate renderAdminKpis declaration is confirmed."
+      ],
+      "category": "LEGACY",
+      "severity": "P0",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend/app/web_admin/app.js",
+        "admin.allchemist.ru"
+      ],
+      "production_impact": "Critical admin behavior may be partially broken despite HTTP 200.",
+      "data_loss_risk": "HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G4 prerequisites and ALC-005 scope approval",
+      "remediation_proposal": "Make a minimal behavior-preserving repair with focused tests and rollback.",
+      "proposed_task_id": "ALC-005",
+      "required_owner_workstream": "Backend/admin + QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Backend/admin + QA",
+        "G4 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G4",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-014",
+      "title": "No repository Alembic revision tree exists",
+      "source_evidence": [
+        "SQL bootstrap files exist; no alembic.ini or versions tree found."
+      ],
+      "category": "MIGRATIONS",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend",
+        "backend/sql",
+        "infra/init_synapse_pg*.sql"
+      ],
+      "production_impact": "Schema evolution is not ordered or reproducible.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G5 prerequisites and ALC-008 scope approval",
+      "remediation_proposal": "Adopt an approved migration framework from a verified schema baseline.",
+      "proposed_task_id": "ALC-008",
+      "required_owner_workstream": "Backend + database",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Backend + database",
+        "G5 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G5",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-015",
+      "title": "Database migrations and rollback are untested",
+      "source_evidence": [
+        "Migrations were intentionally not run; 21 production tables were inventoried read-only."
+      ],
+      "category": "DATABASE",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "synapse-db",
+        "backend/sql",
+        "infra SQL"
+      ],
+      "production_impact": "Future changes can corrupt or strand data.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G5 prerequisites and ALC-008 scope approval",
+      "remediation_proposal": "Create isolated schema fixtures, dry run, rollback, and invariants.",
+      "proposed_task_id": "ALC-008",
+      "required_owner_workstream": "Database + QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Database + QA",
+        "G5 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G5",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-016",
+      "title": "Redis runtime and responsibility are not established",
+      "source_evidence": [
+        "Redis client/config exists but no runtime service was found."
+      ],
+      "category": "CACHE_REDIS",
+      "severity": "P2",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend config",
+        "runtime infra"
+      ],
+      "production_impact": "Scale/session/cache assumptions are unclear.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Decide whether Redis is required and define ephemeral-only responsibilities/failure behavior.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Architecture + backend + operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Architecture + backend + operations",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-017",
+      "title": "Object storage runtime is not confirmed",
+      "source_evidence": [
+        "Readiness tooling exists but no object-storage runtime was confirmed."
+      ],
+      "category": "OBJECT_STORAGE",
+      "severity": "P2",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "media",
+        "APK manifests",
+        "approved references",
+        "archives"
+      ],
+      "production_impact": "Durable publication and restore boundaries are unclear.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Approve provider/bucket classes, encryption, versioning, provenance, and restore.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Architecture + operations + content",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Architecture + operations + content",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-018",
+      "title": "Backend tests lack a current full isolated run",
+      "source_evidence": [
+        "13 backend test files exist; ALC-000/001 did not run full pytest."
+      ],
+      "category": "TESTING",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend/tests"
+      ],
+      "production_impact": "Current backend regression evidence is incomplete.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G5 prerequisites and ALC-008 scope approval",
+      "remediation_proposal": "Run focused then full suites only against guarded isolated DB/state.",
+      "proposed_task_id": "ALC-008",
+      "required_owner_workstream": "Backend QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Backend QA",
+        "G5 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G5",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-019",
+      "title": "School tenant isolation is only partially proven",
+      "source_evidence": [
+        "Filters/tests exist but no complete cross-tenant adversarial suite was run."
+      ],
+      "category": "TENANT_ISOLATION",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "school/class/membership endpoints"
+      ],
+      "production_impact": "Cross-school exposure remains an open security gate.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Add negative read/write/admin tests for every tenant-scoped path.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Security + backend QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Security + backend QA",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-020",
+      "title": "Registration and live session lifecycle are not fully verified",
+      "source_evidence": [
+        "Login/session contracts exist; public registration policy and full live lifecycle are unknown."
+      ],
+      "category": "AUTH",
+      "severity": "P1",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend auth",
+        "mobile auth",
+        "packages/types"
+      ],
+      "production_impact": "Onboarding/session migration behavior is undefined.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Approve flow policy and test login/refresh/logout/revocation/invite/failure paths.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Product + identity/backend",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Product + identity/backend",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-021",
+      "title": "RBAC parity lacks end-to-end verification",
+      "source_evidence": [
+        "Policies/tests exist; target admin is placeholder and no privileged E2E ran."
+      ],
+      "category": "RBAC",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend policies",
+        "apps/admin",
+        "packages/types"
+      ],
+      "production_impact": "Privileged UI/API mismatches can expose actions.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Create endpoint/action/role/tenant matrix and positive/negative E2E.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Security + backend/admin",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Security + backend/admin",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-022",
+      "title": "Backup exists but restore is not proven",
+      "source_evidence": [
+        "ALC-001 backup verifies; no restore rehearsal is confirmed."
+      ],
+      "category": "BACKUP_RESTORE",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backups",
+        "backup_synapse.sh",
+        "PostgreSQL volume"
+      ],
+      "production_impact": "Incident recovery may fail despite readable archives.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G5 prerequisites and ALC-008 scope approval",
+      "remediation_proposal": "Restore repository/state/database classes into isolated targets and record RTO/RPO.",
+      "proposed_task_id": "ALC-008",
+      "required_owner_workstream": "Operations + database + security",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Operations + database + security",
+        "G5 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G5",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-023",
+      "title": "Production error tracking is not confirmed",
+      "source_evidence": [
+        "No Sentry/error-tracking integration found in reports or source scan."
+      ],
+      "category": "OBSERVABILITY",
+      "severity": "P1",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend",
+        "web",
+        "admin",
+        "mobile"
+      ],
+      "production_impact": "Unhandled failures may be invisible.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Choose or document error tracking with redaction, sampling, owners, and alerts.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "SRE + security",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by SRE + security",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-024",
+      "title": "Audit retention and immutability are unverified",
+      "source_evidence": [
+        "Audit endpoints/events exist; retention and sink are unknown."
+      ],
+      "category": "SECURITY",
+      "severity": "P1",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "admin/payment/content-QA audit"
+      ],
+      "production_impact": "Forensic evidence may be incomplete or mutable.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Define append-only storage, access, retention, export, and tamper evidence.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Security + compliance + backend",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Security + compliance + backend",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-025",
+      "title": "Target web is demo-backed with no API-client wiring",
+      "source_evidence": [
+        "Source scan found 0 fetch/axios/api-client files and 12 demo/placeholder files."
+      ],
+      "category": "FRONTEND",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "apps/web"
+      ],
+      "production_impact": "Internal routes do not prove production workflows.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G9 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Add typed adapters only after auth/architecture gates; isolate demo data.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Web + API contracts",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Web + API contracts",
+        "G9 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G9",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-026",
+      "title": "Target admin is placeholder-only and has no runtime",
+      "source_evidence": [
+        "13 placeholder pages, 0 data wiring, no active Next admin service."
+      ],
+      "category": "ADMIN",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "apps/admin"
+      ],
+      "production_impact": "No migration-ready legacy admin replacement exists.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G9 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Implement privileged workflows only after RBAC/design gates; retain legacy.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Admin + security + product",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Admin + security + product",
+        "G9 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G9",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-027",
+      "title": "Mobile/PWA and offline migration are partial",
+      "source_evidence": [
+        "Expo uses SQLite/AsyncStorage/background/notifications; migration smoke was not run."
+      ],
+      "category": "MOBILE_PWA",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "mobile",
+        "future PWA"
+      ],
+      "production_impact": "Offline data and server contracts can diverge.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Define authoritative data, conflicts, local migrations, and PWA relationship.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Mobile + architecture",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Mobile + architecture",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-028",
+      "title": "Science engines are partial and mostly untested",
+      "source_evidence": [
+        "Science packages exist with zero subject unit tests; physics/biology routes are placeholders."
+      ],
+      "category": "SCIENCE_ENGINES",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "science/chemistry/physics/biology packages"
+      ],
+      "production_impact": "Scientific correctness is not production-proven.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G9 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Approve engine boundaries and source-backed deterministic tests before UI claims.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Science engineering + scientific QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Science engineering + scientific QA",
+        "G9 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G9",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-029",
+      "title": "Assignments workflow is partial",
+      "source_evidence": [
+        "Task types/table and homework summary exist; complete CRUD/submission is unproven."
+      ],
+      "category": "FRONTEND",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend cabinet",
+        "packages/types",
+        "apps/web"
+      ],
+      "production_impact": "Student/teacher lifecycle cannot be claimed ready.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G9 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Define states, submissions, grading, permissions, notifications, and audit.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Product + backend/web",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Product + backend/web",
+        "G9 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G9",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-030",
+      "title": "Feature flags lack a managed lifecycle",
+      "source_evidence": [
+        "featureFlags exist in auth/types/tests; owner/admin/audit lifecycle unconfirmed."
+      ],
+      "category": "BACKEND",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "backend auth",
+        "types",
+        "mobile"
+      ],
+      "production_impact": "Rollouts can lack safe ownership/defaults.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Define source, targeting, defaults, audit, expiry, and failure behavior.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Backend + product + operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Backend + product + operations",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-031",
+      "title": "Content publication boundary is incomplete",
+      "source_evidence": [
+        "Content APIs/tables/packages exist; publication ownership remains partial."
+      ],
+      "category": "CONTENT",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "content-core",
+        "content",
+        "backend content endpoints"
+      ],
+      "production_impact": "Unverified content can reach users inconsistently.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Make publication a backend-owned state transition gated by Content QA.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Content platform + scientific QA",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Content platform + scientific QA",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-032",
+      "title": "Content QA target workflow is not E2E verified",
+      "source_evidence": [
+        "Backend QA active; target admin page placeholder; authenticated workflow untested."
+      ],
+      "category": "CONTENT_QA",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "content-qa-core",
+        "apps/admin/content-qa",
+        "backend QA"
+      ],
+      "production_impact": "Publication safeguards are not operationally proven.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G9 prerequisites and ALC-009 scope approval",
+      "remediation_proposal": "Define queue/review/evidence/reject/publish states and privileged E2E.",
+      "proposed_task_id": "ALC-009",
+      "required_owner_workstream": "Content QA + admin + security",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Content QA + admin + security",
+        "G9 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G9",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-033",
+      "title": "Seven of eight approved references are missing",
+      "source_evidence": [
+        "Manifest has only student-dashboard PRESENT; three other critical references missing."
+      ],
+      "category": "DESIGN_INPUT_PENDING",
+      "severity": "P1",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "approved reference manifest",
+        "design-preview storage"
+      ],
+      "production_impact": "Visual acceptance cannot be objective.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G8 prerequisites and ALC-010 scope approval",
+      "remediation_proposal": "Import canonical references with provenance/hashes; reject generated substitutes.",
+      "proposed_task_id": "ALC-010",
+      "required_owner_workstream": "Design + product",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Design + product",
+        "G8 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G8",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-034",
+      "title": "Live infrastructure ownership/parity are unknown",
+      "source_evidence": [
+        "Live nginx/systemd differ from examples; backend image parity unproven."
+      ],
+      "category": "INFRASTRUCTURE",
+      "severity": "P1",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "live nginx/systemd",
+        "infra",
+        "Docker runtime"
+      ],
+      "production_impact": "Drift makes rollback/rebuild unreliable.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Create operations-owned redacted desired-state and drift inventory.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Operations + security",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Operations + security",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-035",
+      "title": "Secret-management boundary is not proven",
+      "source_evidence": [
+        "Baseline is secret-free; runtime secret store was not inspected."
+      ],
+      "category": "SECURITY",
+      "severity": "P1",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend config",
+        "CI/deployment environment"
+      ],
+      "production_impact": "Unknown rotation/access controls can compromise providers/auth.",
+      "data_loss_risk": "MEDIUM/HIGH",
+      "security_risk": "HIGH",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Define secret store, least privilege, rotation, audit, and no-secret logs/builds.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Security + operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Security + operations",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "NO",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-036",
+      "title": "Queue/background-job boundary is undefined",
+      "source_evidence": [
+        "BackgroundTasks/mobile background code exists; no queue runtime confirmed."
+      ],
+      "category": "INFRASTRUCTURE",
+      "severity": "P2",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend",
+        "mobile background services"
+      ],
+      "production_impact": "Retries/idempotency may be undefined.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G7 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Inventory workloads and approve sync/scheduled/retry/dead-letter semantics before technology.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Architecture + backend/operations",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Architecture + backend/operations",
+        "G7 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G7",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-037",
+      "title": "Notification delivery readiness is unverified",
+      "source_evidence": [
+        "Push provider and Expo code exist; provider E2E is unconfirmed."
+      ],
+      "category": "MOBILE_PWA",
+      "severity": "P2",
+      "current_status": "NEEDS_VERIFICATION",
+      "affected_paths_services": [
+        "backend push provider",
+        "mobile notifications"
+      ],
+      "production_impact": "Delivery and token lifecycle may be unreliable.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G6 prerequisites and ALC-007 scope approval",
+      "remediation_proposal": "Define consent, tokens, retries, receipts, tenant rules, and fallback.",
+      "proposed_task_id": "ALC-007",
+      "required_owner_workstream": "Mobile + backend + security",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Mobile + backend + security",
+        "G6 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G6",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-038",
+      "title": "Final ALC-001 reports were stale or missing in baseline",
+      "source_evidence": [
+        "ALC-002 synchronized 7 Markdown reports; 4 were already identical."
+      ],
+      "category": "DOCUMENTATION",
+      "severity": "P3",
+      "current_status": "RESOLVED",
+      "affected_paths_services": [
+        "docs/architecture",
+        "docs/quality"
+      ],
+      "production_impact": "Planning could use stale evidence.",
+      "data_loss_risk": "LOW",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G0 prerequisites and ALC-002 scope approval",
+      "remediation_proposal": "Commit synchronized reports with this planning pack.",
+      "proposed_task_id": "ALC-002",
+      "required_owner_workstream": "Documentation",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Documentation",
+        "G0 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G0",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-039",
+      "title": "No repository lint gate exists",
+      "source_evidence": [
+        "No lint script/config found."
+      ],
+      "category": "TESTING",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "root apps/packages",
+        "CI"
+      ],
+      "production_impact": "Static quality relies only on typecheck/tests.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G2 prerequisites and ALC-006 scope approval",
+      "remediation_proposal": "Select minimal check-only lint policy after toolchain review; no historical autofix.",
+      "proposed_task_id": "ALC-006",
+      "required_owner_workstream": "Quality tooling",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Quality tooling",
+        "G2 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G2",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    },
+    {
+      "id": "ALC-RM-040",
+      "title": "Media/design asset provenance is incomplete",
+      "source_evidence": [
+        "Duplicate assets, temporary images, and missing approved provenance are documented."
+      ],
+      "category": "CONTENT",
+      "severity": "P2",
+      "current_status": "OPEN",
+      "affected_paths_services": [
+        "design-assets",
+        "design-preview",
+        "mobile/assets",
+        "legacy assets"
+      ],
+      "production_impact": "Temporary or divergent assets can be shipped as approved.",
+      "data_loss_risk": "MEDIUM",
+      "security_risk": "LOW/MEDIUM",
+      "dependency": "G8 prerequisites and ALC-010 scope approval",
+      "remediation_proposal": "Record source/license/hash/consumer/canonical class and keep classes separate.",
+      "proposed_task_id": "ALC-010",
+      "required_owner_workstream": "Design + content + product",
+      "acceptance_criteria": [
+        "Issue-specific evidence is approved by Design + content + product",
+        "G8 exit criteria are met without direct production development"
+      ],
+      "validation_evidence": [
+        "Task report",
+        "Updated PROJECT_GATE_REGISTER.md",
+        "Explicit path/hash evidence where applicable"
+      ],
+      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "blocking_gate": "G8",
+      "safe_to_work_in_parallel": "YES",
+      "notes": ""
+    }
+  ]
+}

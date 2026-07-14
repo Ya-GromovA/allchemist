@@ -102,3 +102,29 @@ Only the manifest-declared golden is approved. Generated implementation screensh
 Required output: restart-safety proof, owner-approved file manifest, isolated worktree, and read-only/write-capable command classification. Do not implement screens, migrate routes or touch the database in that task unless separately authorized.
 
 Ready for architecture planning: **NO**.
+
+---
+
+# ALC-001 Readiness Update
+
+Date: 2026-07-14 (Europe/Moscow)
+
+ALC-001 resolved the repository-baseline and restart-artifact blockers without changing production:
+
+- protected backup `/root/backups/allchemist/ALC-001/20260714-112717` verified 60/60 checksum entries;
+- local baseline branch `baseline/allchemist-recovery-20260714-112717`;
+- clean local commit `c18b3d89c38e28b47f46816326981720fb30e253`;
+- dependency install and build performed only in the isolated worktree;
+- restart-safe artifact `/root/allchemist-runtime/preview/releases/20260714-112717`, BUILD_ID `foMZhxf6qk1kQrn7k-Y4I`;
+- artifact checksum 1399/1399;
+- cold-start smoke on 3011 passed 9/9 routes and 12/12 referenced static assets;
+- temporary 3011 process stopped;
+- production preview PID `1603626`, nginx, backend, PostgreSQL, routing, and DNS unchanged;
+- no push, migration, production test, service restart, reset, clean, or production build.
+
+Residual risks remain: the active 3010 process still has a deleted cwd; the recovered artifact is not switched into service; the baseline is local only; seven approved golden references are missing; and the legacy admin JavaScript parse failure remains.
+
+Recommended next task: `ALC-002 — TARGET ARCHITECTURE PLAN AND MIGRATION GATES`.
+
+Ready for architecture planning: **YES**.
+Ready for preview service switch: **NO**.
