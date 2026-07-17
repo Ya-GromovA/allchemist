@@ -1,6 +1,6 @@
 # Master Remediation Register
 
-Task: ALC-003
+Task: ALC-004B1
 Normalization source: `b7df19563be5df99dcde1b50d091d2d5335afbe6`
 Normalization hygiene commit: `13e07a54589a42c0b70649b098dc883d80ed81ee`
 Branch: `chore/alc-003-repository-normalization-20260714-140056`
@@ -18,6 +18,9 @@ This register consolidates confirmed findings from:
 - all six ALC-001 reports
 - ALC-002 read-only inspection of Git, manifests, routes, package imports, CI, state consumers, infrastructure inventory, and running service metadata
 - ALC-003 path-only secret/runtime/generated scan, duplicate hash/consumer review, source-control metadata inspection, isolated checks, and clean-checkout reproduction
+- ALC-003A/C1 verified publication of the normalization branch and its recovery-commit ancestry
+- ALC-004A immutable 3011 service, health, restart, and rollback evidence
+- ALC-004B1 read-only DNS/nginx/TLS/access readiness evidence
 
 `NEEDS_VERIFICATION` means the repository or runtime does not prove the condition strongly enough. It is not presented as fact. This register authorizes no production change or deletion.
 
@@ -30,10 +33,10 @@ This register consolidates confirmed findings from:
 | P1 | 27 |
 | P2 | 10 |
 | P3 | 1 |
-| OPEN | 26 |
+| OPEN | 24 |
 | NEEDS_VERIFICATION | 9 |
 | PARTIAL | 2 |
-| RESOLVED | 3 |
+| RESOLVED | 5 |
 
 Category counts:
 
@@ -61,13 +64,13 @@ Category counts:
 |---|---|---|---|---|---|---|---|
 | ALC-RM-001 | P1 | REPOSITORY | OPEN | Production checkout is dirty | ALC-003 | G1 | NO |
 | ALC-RM-002 | P1 | SOURCE_CONTROL | RESOLVED | Target architecture was previously untracked | ALC-003 | G1 | NO |
-| ALC-RM-003 | P1 | SOURCE_CONTROL | OPEN | Baseline commit exists only locally | ALC-003 | G1 | NO |
+| ALC-RM-003 | P1 | SOURCE_CONTROL | RESOLVED | Baseline commit exists only locally | ALC-003 | G1 | NO |
 | ALC-RM-004 | P1 | GENERATED_ARTIFACTS | PARTIAL | Generated output remains entangled with production history | ALC-003 | G1 | YES |
 | ALC-RM-005 | P1 | RUNTIME_STATE | PARTIAL | Mutable runtime JSON lives under source paths | ALC-007 | G5 | NO |
 | ALC-RM-006 | P2 | REPOSITORY | RESOLVED | 23 duplicate groups need consumer-aware decisions | ALC-003 | G1 | YES |
 | ALC-RM-007 | P1 | LEGACY | OPEN | Legacy and target boundaries are incomplete | ALC-009 | G7 | YES |
 | ALC-RM-008 | P0 | PREVIEW_RUNTIME | OPEN | Preview 3010 runs from deleted cwd | ALC-004 | G3 | NO |
-| ALC-RM-009 | P1 | PREVIEW_RUNTIME | OPEN | Recovered artifact is not a permanent service | ALC-004 | G3 | NO |
+| ALC-RM-009 | P1 | PREVIEW_RUNTIME | RESOLVED | Recovered artifact is not a permanent service | ALC-004 | G3 | NO |
 | ALC-RM-010 | P1 | BUILD_TOOLING | OPEN | verify-ui-foundation has unexpected side effects | ALC-006 | G2 | YES |
 | ALC-RM-011 | P1 | BUILD_TOOLING | OPEN | Tool commands are not uniformly separated by side effect | ALC-006 | G2 | YES |
 | ALC-RM-012 | P1 | CI_CD | OPEN | CI does not gate the target monorepo | ALC-006 | G2 | YES |
@@ -125,12 +128,19 @@ No issue may be closed from a code diff alone. Closure requires its acceptance e
 
 ## ALC-003 status evidence
 
-- `ALC-RM-002` is `RESOLVED` for the normalization branch: the recovered source is tracked, the branch builds from a zero-diff fresh checkout, and no production-only file is required. Remote durability remains a separate open issue under `ALC-RM-003` because push was prohibited.
+- `ALC-RM-003` is `RESOLVED`: recovery commit `c18b3d8` is an ancestor of normalization commit `32aef1e`, and that exact normalization ref is published on GitHub.
+- `ALC-RM-002` is `RESOLVED` for the normalization branch: the recovered source is tracked, the branch builds from a zero-diff fresh checkout, and no production-only file is required.
 - `ALC-RM-004` is `PARTIAL`: generated output is absent from the target tracked set, explicitly ignored, and reproduced only as ignored workspace output. The dirty production checkout/history was intentionally not normalized.
 - `ALC-RM-005` is `PARTIAL`: runtime/user/security paths are untracked and ignored, and every confirmed consumer is documented. Source-relative and `/root/synapse` fallbacks remain, so storage migration is blocked for ALC-007/008 rather than claimed complete.
 - `ALC-RM-006` is `RESOLVED` as a G1 classification item: all 23 groups/54 files reproduce the protected hash inventory, zero files were deleted, every group is explicitly retained, and each unresolved canonicalization has a follow-up ID. This does not authorize later consolidation.
-- `ALC-RM-001` and `ALC-RM-003` remain `OPEN`: production is still dirty by design and no remote publication occurred.
+- `ALC-RM-001` remains `OPEN`: production is still dirty by design.
 - `ALC-RM-040` remains `OPEN`; inspection additionally found the tracked 14,341,981-byte `mobile/assets/content/chemistry_molecules_layer_b_v1.json`, which requires content/provenance and large-file policy review before any relocation.
+
+## ALC-004A/B1 status evidence
+
+- `ALC-RM-009` is `RESOLVED`: `allchemist-preview.service` runs the verified immutable release on loopback port 3011 as an unprivileged user; cold start, health, restart, and rollback rehearsal passed.
+- `ALC-RM-008` remains `OPEN`: PID 1603626 still serves port 3010 from a deleted cwd and cannot be retired before protected public 3011 verification.
+- G3 remains `PARTIAL`: DNS, preview TLS, Basic Auth, public route verification, and retirement of 3010 are still pending.
 
 ## Update protocol
 

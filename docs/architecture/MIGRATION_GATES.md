@@ -1,6 +1,6 @@
 # Migration Gates
 
-Task: ALC-003 update. A gate status is evidence-based and does not authorize the next production action by itself.
+Task: ALC-004B1 update. A gate status is evidence-based and does not authorize the next production action by itself.
 
 ## Status summary
 
@@ -49,12 +49,12 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 
 - Required evidence: permanent immutable release, systemd/service ownership, restart test, health check, rollback, approved access/domain.
 - Owner: operations + release.
-- Blocking tasks: ALC-004; ALC-RM-008/009; ADR-013.
+- Blocking tasks: ALC-004B2; ALC-RM-008; ADR-013.
 - Entry: verified artifact from clean baseline and change authorization.
 - Exit: service survives restart; health/routes/static pass; rollback rehearsed; current process retired safely.
 - Rollback: atomic selection of prior verified release and config backup.
 - Current status: **PARTIAL**.
-- Evidence/gap: recovered artifact has BUILD_ID, 1399/1399 checksums, cold-start smoke; no permanent service/switch/restart/rollback/domain.
+- Evidence/gap: ALC-004A installed the verified 1399/1399 release as an unprivileged, enabled 3011 service; health, restart, and rollback rehearsal pass. ALC-004B1 confirmed DNS/TLS/access design and isolated nginx template validation. Missing: owner DNS action, dedicated certificate, Basic Auth credential, public route/PWA checks, observation, and retirement of legacy 3010.
 
 ## G4 — CRITICAL_LEGACY_STABILITY
 

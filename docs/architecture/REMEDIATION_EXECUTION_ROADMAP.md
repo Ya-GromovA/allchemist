@@ -1,6 +1,6 @@
 # Remediation Execution Roadmap
 
-Task: ALC-003 update. The roadmap remains gated; ALC-003 is completed locally without push or production mutation.
+Task: ALC-004B1 update. The roadmap remains gated; preview publication requires ALC-004B2 authorization and owner DNS action.
 
 ## Dependency sequence
 
@@ -32,8 +32,8 @@ Status 2026-07-14: **COMPLETED LOCALLY; G1 PARTIAL**.
 - Expected artifacts: reviewed path manifest, duplicate consumer inventory, approved `.gitignore`, remote baseline ref, clean-clone proof.
 - Acceptance: all source tracked; banned runtime/generated/secret scan zero; 23 duplicate groups classified; clean clone reproduces checks; production status/hash unchanged.
 - Parallel: first task; no overlapping repository normalization.
-- Result: clean normalization branch, read-only hygiene check, explicit duplicate retention, source-control metadata normalization, required checks and fresh-checkout build PASS. Runtime migration and remote publication were intentionally deferred.
-- Gate: advances G1 but does not close it; remote durability and runtime-consumer gaps remain.
+- Result: clean normalization branch, read-only hygiene check, explicit duplicate retention, required checks and fresh-checkout build PASS. The normalization ref is now published and contains the recovery commit in its ancestry.
+- Gate: advances G1 but does not close it; production dirtiness and runtime-consumer gaps remain.
 
 ## ALC-004 — PERMANENT PREVIEW SERVICE RECOVERY
 
@@ -45,7 +45,9 @@ Status 2026-07-14: **COMPLETED LOCALLY; G1 PARTIAL**.
 - Expected artifacts: service definition, release selector, health check, logs, restart and rollback report, access decision.
 - Acceptance: cold boot/restart passes, current routes/services remain unchanged, rollback rehearsal passes.
 - Parallel: can be developed in parallel after ALC-003, but production activation requires exclusive operations window.
-- Gate: closes G3.
+- Result: ALC-004A completed the immutable 3011 service, health, restart, and rollback evidence. ALC-004B1 confirmed Cloudflare DNS readiness, Certbot nginx TLS path, Basic Auth + TLS + NOINDEX, owner actions, and an isolated-valid nginx template without public mutation.
+- Remaining task: ALC-004B2 after manual DNS propagation; install protected access/TLS routing, verify public routes/PWA, observe, then retire 3010.
+- Gate: remains G3 PARTIAL until ALC-004B2 acceptance.
 
 ## ALC-005 — CRITICAL LEGACY ADMIN REPAIR
 

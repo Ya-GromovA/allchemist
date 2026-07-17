@@ -1,6 +1,6 @@
 # Command Side-Effect Registry
 
-Updated by ALC-003 on 2026-07-14. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
+Updated by ALC-004B1 on 2026-07-17. Classification is based on inspected package manifests, tool source, and observed operational behavior. A command named “verify” is not assumed read-only.
 
 ## Classes
 
@@ -53,6 +53,11 @@ No `preinstall`, `install`, `postinstall`, or `prepare` lifecycle script exists 
 | Docker build/up/down/restart | `WRITES_BUILD_OUTPUT`, `MAY_CHANGE_INFRA` | prohibited |
 | `docker compose ps`, formatted `docker ps` | `READ_ONLY_SAFE` | allowed |
 | nginx/systemd edit, reload, restart | `MAY_CHANGE_INFRA` | prohibited |
+| `nginx -t` against live or isolated config | `READ_ONLY_SAFE` for live; temporary-file writes for isolated render | allowed with no reload; delete temporary files |
+| DNS `dig` queries | `READ_ONLY_SAFE` | allowed; no provider API writes |
+| `openssl x509` certificate metadata | `READ_ONLY_SAFE` | allowed; never print private key content |
+| `npm run check:preview-replacement` | `READ_ONLY_SAFE` | allowed; fixed local target 127.0.0.1:3011 |
+| Certbot issuance/renewal, DNS edits, credential creation, nginx install/reload | `MAY_CHANGE_INFRA` | prohibited without ALC-004B2 authorization |
 | `systemctl is-active/show`, `ss -ltnp`, process metadata | `READ_ONLY_SAFE` | allowed |
 | safe HTTP GET/HEAD to known non-mutating routes | `READ_ONLY_SAFE` | allowed |
 
@@ -84,3 +89,7 @@ No npm command was executed in `/root/synapse`. No global install, dependency up
 ## ALC-003 execution note
 
 `npm ci`, the new hygiene check, four required typechecks, and `build:web` were run only in the normalization worktree and a disposable detached worktree. The disposable worktree was removed after evidence capture. No command was run in `/root/synapse`.
+
+## ALC-004B1 execution note
+
+DNS, nginx, TLS, firewall, Tailscale, systemd, process, Docker, and HTTP checks were read-only. Repository nginx validation wrote only a protected temporary config and dummy non-credential auth file, ran `nginx -t`, and deleted the temporary directory. No DNS, certificate, credential, live nginx, firewall, Tailscale, runtime, or production checkout change was made.

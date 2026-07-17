@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "task_id": "ALC-003",
-  "generated_at": "2026-07-14T17:20:00+03:00",
+  "task_id": "ALC-004B1",
+  "generated_at": "2026-07-17T01:57:13+03:00",
   "authoritative_baseline_commit": "b7df19563be5df99dcde1b50d091d2d5335afbe6",
   "normalization_hygiene_commit": "13e07a54589a42c0b70649b098dc883d80ed81ee",
   "counts": {
@@ -13,10 +13,10 @@
       "P3": 1
     },
     "status": {
-      "OPEN": 26,
+      "OPEN": 24,
       "NEEDS_VERIFICATION": 9,
       "PARTIAL": 2,
-      "RESOLVED": 3
+      "RESOLVED": 5
     },
     "category": {
       "REPOSITORY": 2,
@@ -132,11 +132,12 @@
       "id": "ALC-RM-003",
       "title": "Baseline commit exists only locally",
       "source_evidence": [
-        "No remote branch contains commit c18b3d8."
+        "Recovery commit c18b3d8 is an ancestor of normalization commit 32aef1e.",
+        "Remote normalization branch resolves exactly to 32aef1ecc8f49cc21436954cbd479205450fa1bc."
       ],
       "category": "SOURCE_CONTROL",
       "severity": "P1",
-      "current_status": "OPEN",
+      "current_status": "RESOLVED",
       "affected_paths_services": [
         "baseline/allchemist-recovery-20260714-112717"
       ],
@@ -153,13 +154,14 @@
       ],
       "validation_evidence": [
         "Task report",
-        "Updated PROJECT_GATE_REGISTER.md",
+        "Verified remote normalization ref",
+        "Ancestry check from c18b3d8 to 32aef1e",
         "Explicit path/hash evidence where applicable"
       ],
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G1",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Resolved by approved non-force publication; G1 remains partial for production dirtiness and runtime separation."
     },
     {
       "id": "ALC-RM-004",
@@ -344,13 +346,17 @@
       "id": "ALC-RM-009",
       "title": "Recovered artifact is not connected to a permanent preview service",
       "source_evidence": [
-        "Artifact passed 1399/1399 checksum and smoke but was not switched."
+        "Artifact passed 1399/1399 checksum before and after runtime copy.",
+        "allchemist-preview.service is enabled and active on 127.0.0.1:3011 under an unprivileged account.",
+        "Cold start, health, restart, and rollback rehearsal passed in ALC-004A."
       ],
       "category": "PREVIEW_RUNTIME",
       "severity": "P1",
-      "current_status": "OPEN",
+      "current_status": "RESOLVED",
       "affected_paths_services": [
-        "/root/allchemist-runtime/preview/releases/20260714-112717"
+        "/opt/allchemist/preview/releases/20260714-112717",
+        "allchemist-preview.service",
+        "127.0.0.1:3011"
       ],
       "production_impact": "Recovery is not operationally selectable or monitored.",
       "data_loss_risk": "MEDIUM/HIGH",
@@ -364,14 +370,15 @@
         "G3 exit criteria are met without direct production development"
       ],
       "validation_evidence": [
-        "Task report",
+        "ALC_004A_PREVIEW_REPLACEMENT_ACCEPTANCE.md",
+        "ALC_004A_HANDOFF_REPORT.md",
         "Updated PROJECT_GATE_REGISTER.md",
-        "Explicit path/hash evidence where applicable"
+        "ALC-004B1 recovery revalidation"
       ],
-      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "rollback_requirement": "Rollback rehearsal stops only the 3011 unit, verifies 3010 remains available, restores 3011, and repeats health checks.",
       "blocking_gate": "G3",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Permanent service gap resolved. G3 remains partial because public protected routing and retirement of legacy 3010 are pending."
     },
     {
       "id": "ALC-RM-010",
