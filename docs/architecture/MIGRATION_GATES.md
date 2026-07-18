@@ -137,3 +137,7 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 - PARTIAL never permits a production route switch or legacy deletion.
 - Evidence paths and owner approval must be recorded in `PROJECT_GATE_REGISTER.md`.
 - Gate status changes require a dedicated TASK-ID; ALC-002 itself changes no operational gate beyond documenting evidence.
+
+## ALC-007 evidence addendum
+
+G5 remains FAIL, G6/G7 remain PARTIAL, and G9 remains NOT_STARTED. Exit evidence now explicitly requires Alembic isolated reproduction, environment-separated databases, tenant negative tests, P0 network/permission remediation, restore drill, secrets/AI approvals and minimum observability. No status is promoted to PASS.

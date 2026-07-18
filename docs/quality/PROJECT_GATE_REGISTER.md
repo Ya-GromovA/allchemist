@@ -53,3 +53,10 @@ No task may mark G10 PASS implicitly. Production switching always requires a sep
 ## ALC-003 update
 
 G1 remains `PARTIAL`, not because clean-source reproduction failed, but because its full exit criteria require approved remote durability and completed/approved runtime separation. ALC-003 proved the local clean-source portion at hygiene commit `13e07a5`; it did not have permission to push or migrate production/runtime data.
+
+## ALC-007 gate update
+
+- G5 DATA_AND_MIGRATIONS: **FAIL** — catalog baseline exists, but no revision tree, isolated DB, restore proof or environment separation.
+- G6 SECURITY_FOUNDATION: **PARTIAL** — controls exist, but P0 exposure/permissions and tenant/auth/secrets evidence gaps remain.
+- G7 TARGET_ARCHITECTURE_APPROVAL: **PARTIAL** — target decisions documented; owner/architect/vendor/privacy approvals absent.
+- G9 IMPLEMENTATION_READY: **NOT_STARTED** — ALC-007 is planning evidence only; prerequisite gates remain incomplete.

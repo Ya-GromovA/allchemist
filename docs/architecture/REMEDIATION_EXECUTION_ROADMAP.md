@@ -142,3 +142,7 @@ The requested ALC-003 through ALC-010 IDs remain stable. No renumbering is recom
 3. ALC-006 may integrate the read-only hygiene command into clean CI and repair mixed-side-effect tooling.
 4. ALC-007 may perform read-only runtime/security ownership decisions; ALC-008 owns any later isolated migration/restore work.
 5. No production change, screen development, duplicate deletion, or legacy removal is authorized by ALC-003.
+
+## ALC-007 sequencing update
+
+Next recommended task is ALC-008: isolated PostgreSQL baseline, Alembic revision tree, restore rehearsal and non-production auth/tenant verification. P0 host permissions and listener/firewall remediation require a separately approved operations task. Object storage, queue, observability and AI governance follow owner/architect decisions; production feature rollout remains blocked.

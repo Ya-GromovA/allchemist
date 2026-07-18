@@ -84,3 +84,7 @@ No npm command was executed in `/root/synapse`. No global install, dependency up
 ## ALC-003 execution note
 
 `npm ci`, the new hygiene check, four required typechecks, and `build:web` were run only in the normalization worktree and a disposable detached worktree. The disposable worktree was removed after evidence capture. No command was run in `/root/synapse`.
+
+## ALC-007 read-only audit commands
+
+`hostname`, `whoami`, Git status/show/worktree metadata, `stat`, `getent`, `systemctl` status/list/cat, `docker ps`, `ss`, `ufw status`, `nft list ruleset`, filtered `nginx -T`, HTTP GET health, source searches and PostgreSQL catalog queries inside `BEGIN READ ONLY ... ROLLBACK` are classified READ_ONLY_SAFE. Secret values and user rows were excluded. Package install, migrations, DDL/DML, service changes and adversarial tests were not run.

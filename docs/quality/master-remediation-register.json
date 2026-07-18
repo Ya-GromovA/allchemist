@@ -1439,5 +1439,50 @@
       "safe_to_work_in_parallel": "YES",
       "notes": "ALC-003 made no asset relocation or deletion; provenance and large-file policy remain ALC-010 work."
     }
-  ]
+  ],
+  "alc_007_audit": {
+    "findings_register": "docs/security/ALC_007_FINDINGS_REGISTER.json",
+    "counts": {
+      "total": 20,
+      "severity": {
+        "P0": 2,
+        "P1": 14,
+        "P2": 4
+      },
+      "status": {
+        "NEEDS_VERIFICATION": 2,
+        "OPEN": 13,
+        "PARTIAL": 5
+      },
+      "category": {
+        "AI_GOVERNANCE": 1,
+        "AUTH": 1,
+        "BACKUP_RESTORE": 1,
+        "CACHE_QUEUE": 1,
+        "CONTENT_QA": 1,
+        "DATABASE": 1,
+        "INFRASTRUCTURE": 2,
+        "MIGRATIONS": 1,
+        "MOBILE_PWA": 1,
+        "NETWORK": 1,
+        "NOTIFICATIONS": 1,
+        "OBJECT_STORAGE": 1,
+        "OBSERVABILITY": 1,
+        "RBAC": 1,
+        "RELEASE_DR": 1,
+        "RUNTIME_STATE": 1,
+        "SECRETS": 1,
+        "TENANT_ISOLATION": 1,
+        "TRANSPORT_SECURITY": 1
+      }
+    },
+    "database_writes": 0,
+    "operational_changes": 0,
+    "gate_effect": {
+      "G5": "FAIL",
+      "G6": "PARTIAL",
+      "G7": "PARTIAL",
+      "G9": "NOT_STARTED"
+    }
+  }
 }

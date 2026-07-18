@@ -140,3 +140,7 @@ No issue may be closed from a code diff alone. Closure requires its acceptance e
 4. `PARTIAL` means an independently verifiable portion is corrected but the issue's complete acceptance evidence is not available.
 5. A production-impacting item cannot become `RESOLVED` without rollback evidence.
 6. Markdown and JSON counts must be validated together.
+
+## ALC-007 audit update
+
+Canonical ALC-007 findings are in `docs/security/ALC_007_FINDINGS_REGISTER.json`: 20 total, severity {'P0': 2, 'P1': 14, 'P2': 4}, status {'NEEDS_VERIFICATION': 2, 'OPEN': 13, 'PARTIAL': 5}. No finding is RESOLVED. P0 items are `ALC007-INF-001` and `ALC007-INF-002`. This update authorizes no remediation.
