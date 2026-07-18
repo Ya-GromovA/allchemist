@@ -1,6 +1,7 @@
 # Master Remediation Register
 
 Task: ALC-003
+Latest evidence update: ALC-005 on 2026-07-18
 Normalization source: `b7df19563be5df99dcde1b50d091d2d5335afbe6`
 Normalization hygiene commit: `13e07a54589a42c0b70649b098dc883d80ed81ee`
 Branch: `chore/alc-003-repository-normalization-20260714-140056`
@@ -18,6 +19,7 @@ This register consolidates confirmed findings from:
 - all six ALC-001 reports
 - ALC-002 read-only inspection of Git, manifests, routes, package imports, CI, state consumers, infrastructure inventory, and running service metadata
 - ALC-003 path-only secret/runtime/generated scan, duplicate hash/consumer review, source-control metadata inspection, isolated checks, and clean-checkout reproduction
+- ALC-005 read-only legacy-admin renderer analysis, ESM syntax validation, isolated static/backend tests, and no-deploy invariant checks
 
 `NEEDS_VERIFICATION` means the repository or runtime does not prove the condition strongly enough. It is not presented as fact. This register authorizes no production change or deletion.
 
@@ -30,9 +32,9 @@ This register consolidates confirmed findings from:
 | P1 | 27 |
 | P2 | 10 |
 | P3 | 1 |
-| OPEN | 26 |
+| OPEN | 25 |
 | NEEDS_VERIFICATION | 9 |
-| PARTIAL | 2 |
+| PARTIAL | 3 |
 | RESOLVED | 3 |
 
 Category counts:
@@ -71,7 +73,7 @@ Category counts:
 | ALC-RM-010 | P1 | BUILD_TOOLING | OPEN | verify-ui-foundation has unexpected side effects | ALC-006 | G2 | YES |
 | ALC-RM-011 | P1 | BUILD_TOOLING | OPEN | Tool commands are not uniformly separated by side effect | ALC-006 | G2 | YES |
 | ALC-RM-012 | P1 | CI_CD | OPEN | CI does not gate the target monorepo | ALC-006 | G2 | YES |
-| ALC-RM-013 | P0 | LEGACY | OPEN | Legacy admin JavaScript fails syntax parsing | ALC-005 | G4 | NO |
+| ALC-RM-013 | P0 | LEGACY | PARTIAL | Legacy admin JavaScript fails syntax parsing | ALC-005 | G4 | NO |
 | ALC-RM-014 | P1 | MIGRATIONS | OPEN | No Alembic revision tree exists | ALC-008 | G5 | NO |
 | ALC-RM-015 | P1 | DATABASE | OPEN | Database migrations and rollback are untested | ALC-008 | G5 | NO |
 | ALC-RM-016 | P2 | CACHE_REDIS | NEEDS_VERIFICATION | Redis responsibility is not established | ALC-007 | G7 | YES |
@@ -131,6 +133,13 @@ No issue may be closed from a code diff alone. Closure requires its acceptance e
 - `ALC-RM-006` is `RESOLVED` as a G1 classification item: all 23 groups/54 files reproduce the protected hash inventory, zero files were deleted, every group is explicitly retained, and each unresolved canonicalization has a follow-up ID. This does not authorize later consolidation.
 - `ALC-RM-001` and `ALC-RM-003` remain `OPEN`: production is still dirty by design and no remote publication occurred.
 - `ALC-RM-040` remains `OPEN`; inspection additionally found the tracked 14,341,981-byte `mobile/assets/content/chemistry_molecules_layer_b_v1.json`, which requires content/provenance and large-file policy review before any relocation.
+
+## ALC-005 status evidence
+
+- `ALC-RM-013` moves from `OPEN` to `PARTIAL`: six obsolete renderer implementations were removed while six canonical functions in `Final visual renderers` were retained.
+- `node --check`, duplicate-declaration scanning, four static regression tests, four isolated backend tests, and an isolated TestClient smoke pass.
+- The backend image tests ran with `--network none`, read-only source mount, read-only root filesystem, temporary `/tmp`, and empty database/Redis/cache URLs.
+- G4 remains `FAIL` because this task performs no merge, production deployment, production admin workflow test, or rollback rehearsal.
 
 ## Update protocol
 

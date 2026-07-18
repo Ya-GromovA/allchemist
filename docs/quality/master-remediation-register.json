@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "task_id": "ALC-003",
-  "generated_at": "2026-07-14T17:20:00+03:00",
+  "task_id": "ALC-005",
+  "generated_at": "2026-07-18T13:00:00+03:00",
   "authoritative_baseline_commit": "b7df19563be5df99dcde1b50d091d2d5335afbe6",
   "normalization_hygiene_commit": "13e07a54589a42c0b70649b098dc883d80ed81ee",
   "counts": {
@@ -13,9 +13,9 @@
       "P3": 1
     },
     "status": {
-      "OPEN": 26,
+      "OPEN": 25,
       "NEEDS_VERIFICATION": 9,
-      "PARTIAL": 2,
+      "PARTIAL": 3,
       "RESOLVED": 3
     },
     "category": {
@@ -480,11 +480,12 @@
       "id": "ALC-RM-013",
       "title": "Legacy admin JavaScript fails syntax parsing",
       "source_evidence": [
-        "Duplicate renderAdminKpis declaration is confirmed."
+        "Six old renderer declarations conflict with six canonical replacements in the Final visual renderers block.",
+        "ESM syntax validation passes only after the six obsolete implementations are removed."
       ],
       "category": "LEGACY",
       "severity": "P0",
-      "current_status": "OPEN",
+      "current_status": "PARTIAL",
       "affected_paths_services": [
         "backend/app/web_admin/app.js",
         "admin.allchemist.ru"
@@ -492,7 +493,7 @@
       "production_impact": "Critical admin behavior may be partially broken despite HTTP 200.",
       "data_loss_risk": "HIGH",
       "security_risk": "LOW/MEDIUM",
-      "dependency": "G4 prerequisites and ALC-005 scope approval",
+      "dependency": "ALC-005 branch integration and an approved legacy-admin release/rollback window",
       "remediation_proposal": "Make a minimal behavior-preserving repair with focused tests and rollback.",
       "proposed_task_id": "ALC-005",
       "required_owner_workstream": "Backend/admin + QA",
@@ -501,14 +502,16 @@
         "G4 exit criteria are met without direct production development"
       ],
       "validation_evidence": [
-        "Task report",
-        "Updated PROJECT_GATE_REGISTER.md",
-        "Explicit path/hash evidence where applicable"
+        "docs/architecture/ALC_005_LEGACY_ADMIN_REPAIR_REPORT.md",
+        "docs/quality/ALC_005_ACCEPTANCE_REPORT.md",
+        "node --check backend/app/web_admin/app.js: PASS",
+        "backend.tests.test_admin_web_javascript: 4/4 PASS",
+        "isolated backend container tests: 4/4 PASS"
       ],
-      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "rollback_requirement": "No deployment occurred; any later release must retain the prior legacy artifact and test rollback before activation.",
       "blocking_gate": "G4",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Source repair is validated in the ALC-005 branch. Status remains PARTIAL until approved integration, production workflow evidence, and rollback evidence exist."
     },
     {
       "id": "ALC-RM-014",

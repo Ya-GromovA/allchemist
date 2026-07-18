@@ -11,7 +11,7 @@ Detailed criteria: `docs/architecture/MIGRATION_GATES.md`
 | G1 CLEAN_REPOSITORY | PARTIAL | repository + path owners | ALC-003 publication follow-up; ALC-007/008 runtime migration | clean normalization branch; hygiene PASS; secret/runtime/generated tracked scans zero; 23 duplicate groups explicitly retained; fresh detached checkout install/typechecks/build PASS with zero diff | approved remote publication is prohibited/not done; production remains dirty; runtime consumers still use source-relative and `/root/synapse` fallbacks pending G5/G6 |
 | G2 SAFE_TOOLCHAIN | PARTIAL | quality + CI/release | ALC-006 | side-effect registry, safe isolated build evidence | repaired mixed tool, target CI, lint/check-mode guarantees |
 | G3 RESTART_SAFE_PREVIEW | PARTIAL | operations + release | ALC-004 | verified immutable artifact and cold-start smoke | permanent service, restart/health/access/rollback |
-| G4 CRITICAL_LEGACY_STABILITY | FAIL | legacy/backend + QA | ALC-005 | public route health and public JS parse evidence | admin JS syntax and critical workflow regression |
+| G4 CRITICAL_LEGACY_STABILITY | FAIL | legacy/backend + QA | ALC-005 integration/release follow-up | ALC-005 branch: admin JS syntax PASS, duplicate count 0, static tests 4/4, isolated backend tests 4/4 | approved merge/release, production admin workflow validation, owner acceptance, rollback rehearsal |
 | G5 DATA_AND_MIGRATIONS | FAIL | database + backend + ops | ALC-008 | production schema inventory and backup presence | revision tree, isolated DB, migration/rollback/restore |
 | G6 SECURITY_FOUNDATION | PARTIAL | security + backend/product | ALC-007 | auth/RBAC/tenant contracts and selected tests | full lifecycle, adversarial tenant/RBAC, secrets, immutable audit |
 | G7 TARGET_ARCHITECTURE_APPROVAL | PARTIAL | architecture + domain owners | ALC-007/009 | bounded-context proposal and ADR backlog | formal decisions and owner approval |
@@ -53,3 +53,7 @@ No task may mark G10 PASS implicitly. Production switching always requires a sep
 ## ALC-003 update
 
 G1 remains `PARTIAL`, not because clean-source reproduction failed, but because its full exit criteria require approved remote durability and completed/approved runtime separation. ALC-003 proved the local clean-source portion at hygiene commit `13e07a5`; it did not have permission to push or migrate production/runtime data.
+
+## ALC-005 update
+
+G4 remains `FAIL`. ALC-005 repaired the source-only parser blocker in an isolated branch and proved the retained renderers against DOM/API bindings. The command gates and isolated smoke passed without production network or state. This is not production workflow, deployment, or rollback evidence, so the gate cannot move to `PARTIAL` or `PASS` yet.

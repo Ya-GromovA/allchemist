@@ -1,6 +1,6 @@
 # Command Side-Effect Registry
 
-Updated by ALC-003 on 2026-07-14. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
+Updated by ALC-005 on 2026-07-18. Classification is based on inspected package manifests, tsconfig behavior, and called tool source. A command named “verify” is not assumed read-only.
 
 ## Classes
 
@@ -84,3 +84,11 @@ No npm command was executed in `/root/synapse`. No global install, dependency up
 ## ALC-003 execution note
 
 `npm ci`, the new hygiene check, four required typechecks, and `build:web` were run only in the normalization worktree and a disposable detached worktree. The disposable worktree was removed after evidence capture. No command was run in `/root/synapse`.
+
+## ALC-005 execution note
+
+- `node --check` and the declaration scan were read-only and ran only in the isolated ALC-005 worktree.
+- The host Python attempt stopped before tests because FastAPI was absent; it changed no source or runtime state.
+- Four backend tests ran in a disposable `infra-synapse-backend` container with `--network none`, read-only root/source mount, temporary `/tmp`, and empty database/Redis/cache URLs.
+- The static admin smoke used the same isolation and performed GET requests only against an in-process TestClient.
+- Both disposable containers were removed. No production container, route, service, database, cache, credential, or checkout was changed.

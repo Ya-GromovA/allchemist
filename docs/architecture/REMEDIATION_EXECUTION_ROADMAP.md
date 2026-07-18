@@ -58,6 +58,7 @@ Status 2026-07-14: **COMPLETED LOCALLY; G1 PARTIAL**.
 - Acceptance: `node --check` passes; focused tests/E2E pass; admin HTTP/workflows and scopes remain valid.
 - Parallel: isolated implementation can run beside ALC-006/007; release is serialized with operations.
 - Gate: closes G4.
+- ALC-005 implementation evidence: source repair and isolated validation complete on `fix/alc-005-legacy-admin-javascript-20260718-124731`; approved integration/release and G4 production evidence remain separate.
 
 ## ALC-006 — SAFE TOOLCHAIN AND CI
 

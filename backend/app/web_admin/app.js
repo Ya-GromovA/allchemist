@@ -1678,20 +1678,6 @@ async function loadContentQaSummary() {
   }
   log({ status: 200, message: "Проверка контента обновлена" });
 }
-
-function renderAdminQaSummaryHome(data) {
-  const target = document.getElementById("adminQaSummaryHome");
-  if (!target) return;
-  const counts = data.statusCounts || {};
-  const items = [
-    ["Черновики", data.draftCount ?? counts.draft ?? 0, "Готовятся редакторами"],
-    ["На проверке", data.reviewCount ?? counts.review ?? counts.in_review ?? 0, "Ожидают проверки"],
-    ["Исправить", data.needsFixCount ?? counts.needs_fix ?? counts.rework ?? 0, "Нужны правки"],
-    ["Опубликовано", data.publishedCount ?? counts.published ?? 0, "Доступно пользователям"],
-  ];
-  target.innerHTML = items.map(([label, value, hint]) => '<div class="card"><h4>' + label + '</h4><p style="font-size:30px;font-weight:900;color:#245cff">' + adminFormatNumber(value) + '</p><p>' + hint + '</p></div>').join("");
-}
-
 function initAdminSidebar() {
   const saved = localStorage.getItem("synapse_web_admin_sidebar_collapsed") === "1";
   document.body.classList.toggle("admin-sidebar-collapsed", saved);
@@ -2669,24 +2655,6 @@ async function runAdminSearch() {
   document.getElementById("btnCloseAdminSearch")?.addEventListener("click", () => box.classList.add("hidden"));
   box.querySelectorAll("[data-search-target]").forEach((node) => node.addEventListener("click", () => switchView(String(node.getAttribute("data-search-target") || "#home").replace("#", ""))));
 }
-
-function renderAdminKpis(data) {
-  const target = document.getElementById("adminDashboardKpis");
-  if (!target) return;
-  const items = [
-    ["Школы", data.schoolsCount, "schools", "подключено"],
-    ["Пользователи", data.usersCount, "users", "активных " + adminFormatNumber(data.activeUsersPercent) + "%"],
-    ["Лицензии", data.licensesCount, "subscriptions", adminFormatNumber(data.expiringLicensesCount) + " истекают"],
-    ["Материалы", data.publishedMaterialsCount, "content", "опубликовано"],
-    ["На проверке", data.reviewMaterialsCount, "qa", "Content QA"],
-    ["Ошибки 24ч", data.errors24hCount, "logs", adminFormatNumber(data.criticalErrorsCount) + " critical"],
-    ["Live-уроки", data.liveLessonsNowCount, "live", "идут сейчас"],
-    ["Платежи", data.monthlyPaymentsAmount, "subscriptions", "месяц"],
-  ];
-  target.innerHTML = items.map(([label, value, view, hint]) => '<button class="adminKpiCard" data-jump-view="' + view + '"><span>' + label + '</span><strong>' + adminFormatNumber(value) + '</strong><small>' + hint + '</small></button>').join("");
-  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
-}
-
 function renderAdminActivity(data) {
   const target = document.getElementById("adminActivityChart");
   if (!target) return;
@@ -2701,48 +2669,6 @@ function renderAdminActivity(data) {
     return '<div class="adminBar" title="' + x.date + ': ' + total + '" style="height:' + Math.max(6, Math.round(total / max * 100)) + '%"></div>';
   }).join("");
 }
-
-function renderAdminPlatformActivity(data) {
-  const target = document.getElementById("adminPlatformActivity");
-  if (!target) return;
-  const items = [["Лаборатории", data.labsRunsCount, "Пик появится после накопления событий."], ["3D-молекулы", data.moleculesOpenCount, "Популярные молекулы появятся после телеметрии."], ["AI-наставник", data.aiRequestsCount, "Запросы по журналу событий."], ["Проверочные", data.assessmentsCount, "Попытки тестов и проверочных."]];
-  target.innerHTML = items.map(([label, value, hint]) => '<div class="card"><h4>' + label + '</h4><p style="font-size:34px;font-weight:900;color:#008aa7">' + adminFormatNumber(value) + '</p><p>' + hint + '</p></div>').join("");
-}
-
-function renderAdminSubjects(data) {
-  const target = document.getElementById("adminSubjectActivity");
-  if (!target) return;
-  if (data.empty) return target.innerHTML = adminEmpty("Нет предметной активности. Данные появятся после подключения контента или событий.");
-  const items = [["Химия", data.chemistryPercent], ["Физика", data.physicsPercent], ["Биология", data.biologyPercent]];
-  target.innerHTML = items.map(([label, value]) => '<div class="subjectBar"><span><b>' + label + '</b><b>' + adminFormatNumber(value) + '%</b></span><i style="width:' + Math.max(0, Math.min(100, Number(value || 0))) + '%"></i></div>').join("");
-}
-
-function renderAdminSchoolsMap(data) {
-  const target = document.getElementById("adminSchoolsMap");
-  if (!target) return;
-  const rows = Array.isArray(data.items) ? data.items : [];
-  if (!rows.length) {
-    target.innerHTML = adminEmpty(data.missingGeoCount ? "У школ нет координат/города. Добавьте регион и координаты школы, чтобы появились точки." : "Нет данных о географии школ.");
-    return;
-  }
-  target.innerHTML = rows.map((row, index) => {
-    const left = 12 + ((index * 23) % 76);
-    const top = 18 + ((index * 31) % 58);
-    const title = [row.country, row.region, row.city].filter(Boolean).join(", ") + ": " + row.schoolsCount;
-    return '<button class="adminMapPoint" title="' + title + '" style="left:' + left + '%;top:' + top + '%" data-jump-view="schools"></button>';
-  }).join("");
-  target.querySelectorAll(".adminMapPoint").forEach((node) => node.addEventListener("click", () => switchView("schools")));
-}
-
-function renderAdminEvents(data) {
-  const target = document.getElementById("adminRecentEvents");
-  if (!target) return;
-  const rows = Array.isArray(data.items) ? data.items : [];
-  if (!rows.length) return target.innerHTML = adminEmpty("Нет событий. Журнал начнет заполняться после административных действий.");
-  target.innerHTML = rows.map((row) => '<button class="adminEventRow" data-jump-view="events"><span><b>' + (row.title || "Событие") + '</b><small>' + (row.description || "") + '</small></span><time>' + (row.createdAt || "") + '</time></button>').join("");
-  target.querySelectorAll("[data-jump-view]").forEach((node) => node.addEventListener("click", () => switchView(node.getAttribute("data-jump-view"))));
-}
-
 async function loadAdminDirectory(section) {
   if (!token || !section) return;
   const target = document.getElementById("adminDirectory-" + section);

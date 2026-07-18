@@ -60,12 +60,12 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 
 - Required evidence: legacy admin parses, critical public/admin/API routes and workflows pass, production backup, no hidden blocker.
 - Owner: legacy/backend + QA + operations.
-- Blocking tasks: ALC-005; ALC-RM-013.
+- Blocking tasks: ALC-005 integration/release follow-up; ALC-RM-013 production acceptance.
 - Entry: G0 and focused repair plan.
 - Exit: syntax and regression pass; auth/RBAC unchanged; rollback artifact verified.
 - Rollback: restore exact previous legacy artifact and route.
 - Current status: **FAIL**.
-- Evidence/gap: public JavaScript parsed, but admin JavaScript has a confirmed duplicate declaration.
+- Evidence/gap: ALC-005 branch removes six obsolete renderer declarations; syntax, duplicate scan, isolated backend tests, and static smoke pass. Merge/release, production workflow evidence, owner acceptance, and rollback rehearsal remain absent.
 
 ## G5 — DATA_AND_MIGRATIONS
 
