@@ -1,6 +1,6 @@
 # Remediation Execution Roadmap
 
-Task: ALC-004B1 update. The roadmap remains gated; preview publication requires ALC-004B2 authorization and owner DNS action.
+Task: ALC-004B2 update. Protected preview publication is complete; owner visual acceptance and ALC-004B3 legacy retirement remain gated.
 
 ## Dependency sequence
 
@@ -45,9 +45,9 @@ Status 2026-07-14: **COMPLETED LOCALLY; G1 PARTIAL**.
 - Expected artifacts: service definition, release selector, health check, logs, restart and rollback report, access decision.
 - Acceptance: cold boot/restart passes, current routes/services remain unchanged, rollback rehearsal passes.
 - Parallel: can be developed in parallel after ALC-003, but production activation requires exclusive operations window.
-- Result: ALC-004A completed the immutable 3011 service, health, restart, and rollback evidence. ALC-004B1 confirmed Cloudflare DNS readiness, Certbot nginx TLS path, Basic Auth + TLS + NOINDEX, owner actions, and an isolated-valid nginx template without public mutation.
-- Remaining task: ALC-004B2 after manual DNS propagation; install protected access/TLS routing, verify public routes/PWA, observe, then retire 3010.
-- Gate: remains G3 PARTIAL until ALC-004B2 acceptance.
+- Result: ALC-004A completed the immutable 3011 service. ALC-004B2 completed DNS, dedicated TLS, preview-only Basic Auth, 9/9 protected routes, JS/CSS/BUILD_ID and referenced icon/manifest assets, security headers, rollback protection, and a 308-second six-checkpoint observation with zero errors or unexpected restarts.
+- Remaining task: record owner desktop/mobile visual acceptance, then authorize ALC-004B3 to retire legacy 3010. Port 3010 must remain untouched and must never be reused until that task.
+- Gate: G3 remains PARTIAL until owner acceptance and ALC-004B3 retirement; production feature deployment is not approved.
 
 ## ALC-005 — CRITICAL LEGACY ADMIN REPAIR
 

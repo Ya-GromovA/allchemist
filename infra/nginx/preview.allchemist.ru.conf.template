@@ -1,12 +1,13 @@
 # ALC-004B1 repository template. Do not enable this file directly.
 # Render every placeholder token into a protected temporary file, validate it,
 # and install it only under an explicitly authorized ALC-004B2 change.
-# Port 3010 is the legacy fallback and MUST NOT be used by this configuration.
+# No fallback to any other upstream is permitted by this configuration.
 
 server {
     listen 80;
     listen [::]:80;
     server_name preview.allchemist.ru;
+    server_tokens off;
 
     access_log /var/log/nginx/preview.allchemist.ru.access.log combined;
     error_log /var/log/nginx/preview.allchemist.ru.error.log warn;
@@ -28,6 +29,7 @@ server {
     listen 443 ssl http2;
     listen [::]:443 ssl http2;
     server_name preview.allchemist.ru;
+    server_tokens off;
 
     access_log /var/log/nginx/preview.allchemist.ru.access.log combined;
     error_log /var/log/nginx/preview.allchemist.ru.error.log warn;
@@ -39,6 +41,10 @@ server {
     auth_basic "Allchemist Preview";
     auth_basic_user_file @@BASIC_AUTH_FILE@@;
 
+    proxy_hide_header X-Powered-By;
+    proxy_hide_header X-Nextjs-Cache;
+    proxy_hide_header X-Nextjs-Prerender;
+    proxy_hide_header X-Nextjs-Stale-Time;
     client_max_body_size 20m;
     proxy_connect_timeout 5s;
     proxy_send_timeout 60s;
@@ -87,7 +93,7 @@ server {
         add_header X-Content-Type-Options "nosniff" always;
     }
 
-    # No fallback to production, admin, API, or legacy port 3010 is permitted.
+    # No fallback to any other upstream is permitted.
     location / {
         proxy_pass http://127.0.0.1:3011;
         proxy_http_version 1.1;

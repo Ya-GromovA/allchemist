@@ -1,6 +1,6 @@
 # Migration Gates
 
-Task: ALC-004B1 update. A gate status is evidence-based and does not authorize the next production action by itself.
+Task: ALC-004B2 update. A gate status is evidence-based and does not authorize the next production action by itself.
 
 ## Status summary
 
@@ -49,12 +49,12 @@ Task: ALC-004B1 update. A gate status is evidence-based and does not authorize t
 
 - Required evidence: permanent immutable release, systemd/service ownership, restart test, health check, rollback, approved access/domain.
 - Owner: operations + release.
-- Blocking tasks: ALC-004B2; ALC-RM-008; ADR-013.
+- Blocking tasks: ALC-004B3; ALC-RM-008; ADR-013.
 - Entry: verified artifact from clean baseline and change authorization.
 - Exit: service survives restart; health/routes/static pass; rollback rehearsed; current process retired safely.
 - Rollback: atomic selection of prior verified release and config backup.
 - Current status: **PARTIAL**.
-- Evidence/gap: ALC-004A installed the verified 1399/1399 release as an unprivileged, enabled 3011 service; health, restart, and rollback rehearsal pass. ALC-004B1 confirmed DNS/TLS/access design and isolated nginx template validation. Missing: owner DNS action, dedicated certificate, Basic Auth credential, public route/PWA checks, observation, and retirement of legacy 3010.
+- Evidence/gap: ALC-004A installed the verified 1399/1399 release as an unprivileged, enabled 3011 service. ALC-004B2 completed DNS, dedicated TLS, preview-only Basic Auth, 9/9 protected routes, JS/CSS/BUILD_ID and referenced icon/manifest assets, security headers, rollback protection, and a 308-second six-checkpoint observation. Missing: recorded owner visual acceptance and ALC-004B3 retirement of legacy 3010. Port 3010 must never be reused.
 
 ## G4 — CRITICAL_LEGACY_STABILITY
 

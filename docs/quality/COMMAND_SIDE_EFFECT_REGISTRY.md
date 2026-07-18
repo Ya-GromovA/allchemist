@@ -1,6 +1,6 @@
 # Command Side-Effect Registry
 
-Updated by ALC-004B1 on 2026-07-17. Classification is based on inspected package manifests, tool source, and observed operational behavior. A command named “verify” is not assumed read-only.
+Updated by ALC-004B2 on 2026-07-18. Classification is based on inspected package manifests, tool source, and observed operational behavior. A command named “verify” is not assumed read-only.
 
 ## Classes
 
@@ -57,7 +57,7 @@ No `preinstall`, `install`, `postinstall`, or `prepare` lifecycle script exists 
 | DNS `dig` queries | `READ_ONLY_SAFE` | allowed; no provider API writes |
 | `openssl x509` certificate metadata | `READ_ONLY_SAFE` | allowed; never print private key content |
 | `npm run check:preview-replacement` | `READ_ONLY_SAFE` | allowed; fixed local target 127.0.0.1:3011 |
-| Certbot issuance/renewal, DNS edits, credential creation, nginx install/reload | `MAY_CHANGE_INFRA` | prohibited without ALC-004B2 authorization |
+| Certbot issuance/renewal, DNS edits, credential creation, nginx install/reload | `MAY_CHANGE_INFRA` | requires task-specific authorization and rollback; ALC-004B2 authorization is exhausted |
 | `systemctl is-active/show`, `ss -ltnp`, process metadata | `READ_ONLY_SAFE` | allowed |
 | safe HTTP GET/HEAD to known non-mutating routes | `READ_ONLY_SAFE` | allowed |
 
@@ -93,3 +93,18 @@ No npm command was executed in `/root/synapse`. No global install, dependency up
 ## ALC-004B1 execution note
 
 DNS, nginx, TLS, firewall, Tailscale, systemd, process, Docker, and HTTP checks were read-only. Repository nginx validation wrote only a protected temporary config and dummy non-credential auth file, ran `nginx -t`, and deleted the temporary directory. No DNS, certificate, credential, live nginx, firewall, Tailscale, runtime, or production checkout change was made.
+
+## ALC-004B2 execution note
+
+ALC-004B2 used explicit operational authorization for:
+
+- installing `apache2-utils` and its required `libapr1`/`libaprutil1` dependencies without upgrade, removal, or service restart;
+- creating one preview-only bcrypt cost-12 credential through stdin;
+- issuing a separate webroot certificate for `preview.allchemist.ru`;
+- installing and reloading only the dedicated preview nginx site;
+- running public unauthenticated/authenticated route and asset checks through protected temporary curl configuration.
+
+The final protected route proxies only to `127.0.0.1:3011`. A six-checkpoint
+308-second observation recorded zero HTTP 500, missing assets, TLS/authentication
+errors, or unexpected restarts. No credential value, bcrypt hash, private key,
+Authorization header, runtime log, certificate, htpasswd file, or backup is tracked.

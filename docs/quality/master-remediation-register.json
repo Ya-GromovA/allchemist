@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "task_id": "ALC-004B1",
-  "generated_at": "2026-07-17T01:57:13+03:00",
+  "task_id": "ALC-004B2",
+  "generated_at": "2026-07-18T01:19:03+03:00",
   "authoritative_baseline_commit": "b7df19563be5df99dcde1b50d091d2d5335afbe6",
   "normalization_hygiene_commit": "13e07a54589a42c0b70649b098dc883d80ed81ee",
   "counts": {
@@ -312,7 +312,10 @@
       "id": "ALC-RM-008",
       "title": "Preview 3010 runs from a deleted cwd",
       "source_evidence": [
-        "PID 1603626 cwd resolves to a deleted standalone directory."
+        "PID 1603626 cwd resolves to a deleted standalone directory.",
+        "ALC-004B2 published a dedicated TLS and Basic Auth protected preview that proxies only to 127.0.0.1:3011.",
+        "Nine protected routes, JS/CSS/BUILD_ID and referenced icon/manifest assets passed, followed by six passing checkpoints over 308 seconds.",
+        "Legacy PID 1603626 and HTTP 200 on port 3010 remained unchanged throughout publication and observation."
       ],
       "category": "PREVIEW_RUNTIME",
       "severity": "P0",
@@ -324,23 +327,27 @@
       "production_impact": "Any restart can remove preview availability.",
       "data_loss_risk": "HIGH",
       "security_risk": "LOW/MEDIUM",
-      "dependency": "G3 prerequisites and ALC-004 scope approval",
-      "remediation_proposal": "Create an immutable-release permanent service; do not restart current PID before approval.",
+      "dependency": "Recorded owner visual acceptance and separately authorized ALC-004B3",
+      "remediation_proposal": "After recorded owner acceptance, retire legacy PID 1603626 and prohibit any reuse of port 3010.",
       "proposed_task_id": "ALC-004",
       "required_owner_workstream": "Operations + release",
       "acceptance_criteria": [
-        "Issue-specific evidence is approved by Operations + release",
-        "G3 exit criteria are met without direct production development"
+        "Owner desktop/mobile visual acceptance is recorded",
+        "ALC-004B3 retires only legacy PID 1603626 without changing the protected 3011 preview",
+        "Port 3010 is unbound after retirement and is never reused"
       ],
       "validation_evidence": [
         "Task report",
         "Updated PROJECT_GATE_REGISTER.md",
-        "Explicit path/hash evidence where applicable"
+        "Explicit path/hash evidence where applicable",
+        "ALC_004B2_PREVIEW_PUBLICATION_REPORT.md",
+        "ALC_004B2_ACCEPTANCE_REPORT.md",
+        "ALC_004B2_HANDOFF_REPORT.md"
       ],
-      "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
+      "rollback_requirement": "ALC-004B3 must preserve protected 3011, record pre-retirement PID/HTTP evidence, and define rollback without restarting the deleted-cwd 3010 process.",
       "blocking_gate": "G3",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "ALC-004B2 is RESOLVED / PASS. Protected public preview, TLS/Auth, routes/assets, and 308-second observation passed. This issue remains OPEN because owner visual acceptance and ALC-004B3 retirement are pending; port 3010 must never be reused."
     },
     {
       "id": "ALC-RM-009",
@@ -348,7 +355,9 @@
       "source_evidence": [
         "Artifact passed 1399/1399 checksum before and after runtime copy.",
         "allchemist-preview.service is enabled and active on 127.0.0.1:3011 under an unprivileged account.",
-        "Cold start, health, restart, and rollback rehearsal passed in ALC-004A."
+        "Cold start, health, restart, and rollback rehearsal passed in ALC-004A.",
+        "ALC-004B2 published preview.allchemist.ru with dedicated TLS, preview-only Basic Auth, noindex/robots protection, and only the 127.0.0.1:3011 upstream.",
+        "Public 9/9 route and asset acceptance plus a 308-second observation passed with zero HTTP 500, missing assets, TLS/authentication errors, or unexpected restarts."
       ],
       "category": "PREVIEW_RUNTIME",
       "severity": "P1",
@@ -373,12 +382,15 @@
         "ALC_004A_PREVIEW_REPLACEMENT_ACCEPTANCE.md",
         "ALC_004A_HANDOFF_REPORT.md",
         "Updated PROJECT_GATE_REGISTER.md",
-        "ALC-004B1 recovery revalidation"
+        "ALC-004B1 recovery revalidation",
+        "ALC_004B2_PREVIEW_PUBLICATION_REPORT.md",
+        "ALC_004B2_ACCEPTANCE_REPORT.md",
+        "ALC_004B2_HANDOFF_REPORT.md"
       ],
       "rollback_requirement": "Rollback rehearsal stops only the 3011 unit, verifies 3010 remains available, restores 3011, and repeats health checks.",
       "blocking_gate": "G3",
       "safe_to_work_in_parallel": "NO",
-      "notes": "Permanent service gap resolved. G3 remains partial because public protected routing and retirement of legacy 3010 are pending."
+      "notes": "Permanent service and protected publication gaps are resolved. ALC-004B2 is RESOLVED / PASS. G3 remains PARTIAL only because owner visual acceptance and ALC-004B3 retirement of legacy 3010 are pending."
     },
     {
       "id": "ALC-RM-010",

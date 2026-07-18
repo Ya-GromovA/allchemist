@@ -1,9 +1,9 @@
 # Master Remediation Register
 
-Task: ALC-004B1
+Task: ALC-004B2
 Normalization source: `b7df19563be5df99dcde1b50d091d2d5335afbe6`
 Normalization hygiene commit: `13e07a54589a42c0b70649b098dc883d80ed81ee`
-Branch: `chore/alc-003-repository-normalization-20260714-140056`
+Branch: `chore/alc-004b2-preview-publication-20260717-234655`
 Machine-readable source of truth: `docs/quality/master-remediation-register.json`
 
 ## Scope and evidence
@@ -21,6 +21,7 @@ This register consolidates confirmed findings from:
 - ALC-003A/C1 verified publication of the normalization branch and its recovery-commit ancestry
 - ALC-004A immutable 3011 service, health, restart, and rollback evidence
 - ALC-004B1 read-only DNS/nginx/TLS/access readiness evidence
+- ALC-004B2 protected public preview, route/asset acceptance, rollback, and 308-second observation evidence
 
 `NEEDS_VERIFICATION` means the repository or runtime does not prove the condition strongly enough. It is not presented as fact. This register authorizes no production change or deletion.
 
@@ -136,11 +137,13 @@ No issue may be closed from a code diff alone. Closure requires its acceptance e
 - `ALC-RM-001` remains `OPEN`: production is still dirty by design.
 - `ALC-RM-040` remains `OPEN`; inspection additionally found the tracked 14,341,981-byte `mobile/assets/content/chemistry_molecules_layer_b_v1.json`, which requires content/provenance and large-file policy review before any relocation.
 
-## ALC-004A/B1 status evidence
+## ALC-004A/B1/B2 status evidence
 
 - `ALC-RM-009` is `RESOLVED`: `allchemist-preview.service` runs the verified immutable release on loopback port 3011 as an unprivileged user; cold start, health, restart, and rollback rehearsal passed.
-- `ALC-RM-008` remains `OPEN`: PID 1603626 still serves port 3010 from a deleted cwd and cannot be retired before protected public 3011 verification.
-- G3 remains `PARTIAL`: DNS, preview TLS, Basic Auth, public route verification, and retirement of 3010 are still pending.
+- ALC-004B2 is `RESOLVED / PASS`: DNS, dedicated TLS, preview-only Basic Auth, 9/9 protected routes, JS/CSS/BUILD_ID and referenced icon/manifest assets, security headers, and a six-checkpoint 308-second observation all passed.
+- `ALC-RM-008` remains `OPEN`: PID 1603626 still serves port 3010 from a deleted cwd. Owner visual acceptance and the separate ALC-004B3 retirement task are pending; port 3010 must never be reused.
+- G3 remains `PARTIAL`: protected public preview evidence is complete, but owner visual acceptance and safe retirement of legacy 3010 are not.
+- ALC-004B2 does not authorize a production feature deployment.
 
 ## Update protocol
 

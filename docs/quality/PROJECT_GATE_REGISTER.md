@@ -1,6 +1,6 @@
 # Project Gate Register
 
-Task: ALC-004B1
+Task: ALC-004B2
 Detailed criteria: `docs/architecture/MIGRATION_GATES.md`
 
 ## Current register
@@ -10,7 +10,7 @@ Detailed criteria: `docs/architecture/MIGRATION_GATES.md`
 | G0 BACKUP_AND_BASELINE | PASS | repository + operations | complete ALC-000/001 | verified backup, attribution, local commit, clean isolated baseline | approved remote publication belongs to G1 |
 | G1 CLEAN_REPOSITORY | PARTIAL | repository + path owners | ALC-007/008 runtime migration | published clean normalization branch; hygiene PASS; recovery commit is in durable remote ancestry; fresh detached checkout checks/build PASS | production remains dirty; runtime consumers still use source-relative and `/root/synapse` fallbacks pending G5/G6 |
 | G2 SAFE_TOOLCHAIN | PARTIAL | quality + CI/release | ALC-006 | side-effect registry, safe isolated build evidence | repaired mixed tool, target CI, lint/check-mode guarantees |
-| G3 RESTART_SAFE_PREVIEW | PARTIAL | operations + release | ALC-004B2; ALC-RM-008 | immutable 3011 release; unprivileged enabled service; health, restart and rollback PASS; DNS/TLS/access plan validated | owner DNS action, preview certificate, Basic Auth, public route/PWA verification, observation, retirement of 3010 |
+| G3 RESTART_SAFE_PREVIEW | PARTIAL | operations + release | ALC-004B3; ALC-RM-008 | immutable 3011 release; protected public TLS/Auth; 9/9 routes and assets PASS; 308-second observation PASS | owner visual acceptance and safe retirement of legacy 3010 |
 | G4 CRITICAL_LEGACY_STABILITY | FAIL | legacy/backend + QA | ALC-005 | public route health and public JS parse evidence | admin JS syntax and critical workflow regression |
 | G5 DATA_AND_MIGRATIONS | FAIL | database + backend + ops | ALC-008 | production schema inventory and backup presence | revision tree, isolated DB, migration/rollback/restore |
 | G6 SECURITY_FOUNDATION | PARTIAL | security + backend/product | ALC-007 | auth/RBAC/tenant contracts and selected tests | full lifecycle, adversarial tenant/RBAC, secrets, immutable audit |
@@ -54,8 +54,8 @@ No task may mark G10 PASS implicitly. Production switching always requires a sep
 
 G1 remains `PARTIAL`, not because clean-source reproduction or remote durability failed, but because production remains dirty and runtime consumers still require approved separation. The normalization ref at `32aef1e` is published and contains recovery commit `c18b3d8` in its ancestry.
 
-## ALC-004B1 update
+## ALC-004B2 update
 
-G3 remains `PARTIAL`. ALC-004A established an immutable, restart-safe 3011 service with health and rollback evidence. ALC-004B1 confirmed Cloudflare DNS ownership, origin IPv4, Certbot nginx issuance, and the Basic Auth + TLS + NOINDEX decision; it validated the repository nginx template without applying it.
+ALC-004B2 is `RESOLVED / PASS`. The dedicated preview certificate, preview-only Basic Auth, HTTP-to-HTTPS redirect, noindex/robots policy, 9/9 authenticated routes, all discovered JS/CSS/BUILD_ID and referenced icon/manifest assets, security headers, and production-domain invariants passed. Six checkpoints over 308 seconds recorded zero HTTP 500, missing assets, TLS/authentication errors, or unexpected restarts.
 
-Remaining blockers are the manual preview A record, dedicated certificate, protected credential, public route verification, observation window, and safe retirement of legacy 3010. This planning evidence authorizes no public change by itself.
+G3 remains `PARTIAL` because owner visual acceptance is not recorded and PID 1603626 still serves legacy port 3010 from a deleted cwd. ALC-004B3 owns retirement after owner acceptance. Port 3010 must never be reused. No production feature deployment is authorized.
