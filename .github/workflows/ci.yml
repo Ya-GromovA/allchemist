@@ -1,104 +1,122 @@
-name: Allchemist CI
+name: Safe Quality Foundation
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
-      - master
-      - develop
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 concurrency:
-  group: allchemist-ci-${{ github.ref }}
+  group: safe-quality-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  CI: 'true'
+  NEXT_TELEMETRY_DISABLED: '1'
+
 jobs:
-  backend:
-    name: Backend contract tests
-    runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:16
-        env:
-          POSTGRES_DB: synapse
-          POSTGRES_USER: synapse
-          POSTGRES_PASSWORD: synapse_ci_password
-        ports:
-          - 5433:5432
-        options: >-
-          --health-cmd "pg_isready -U synapse -d synapse"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 10
-    defaults:
-      run:
-        working-directory: backend
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-          cache: pip
-          cache-dependency-path: backend/requirements.txt
-      - name: Install backend dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt
-          python -m pip install pytest
-      - name: Compile key backend files
-        run: |
-          python -m py_compile app/services/user_state_store.py app/services/auth_tokens.py app/api/v1/endpoints/auth_sync.py app/api/v1/endpoints/content_readonly.py
-      - name: Run backend regression
-        env:
-          POSTGRES_HOST: 127.0.0.1
-          POSTGRES_PORT: '5433'
-          POSTGRES_DB: synapse
-          POSTGRES_USER: synapse
-          POSTGRES_PASSWORD: synapse_ci_password
-          PYTHONPATH: ${{ github.workspace }}/backend
-        run: |
-          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py
-
-  web-static:
-    name: Public/admin web static checks
+  repository-hygiene:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - name: Check browser JavaScript syntax
-        run: |
-          node --check backend/app/web_public/app.js
-          node --check backend/app/web_admin/app.js
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run check:repository-hygiene
+      - run: node -e "JSON.parse(require('fs').readFileSync('package.json')); JSON.parse(require('fs').readFileSync('package-lock.json'))"
+      - run: git diff --check
 
-  tools:
-    name: Ops tools syntax
+  secret-pattern-scan:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-      - name: Check shell and Python tools
-        run: |
-          bash -n tools/backup_synapse.sh tools/stage11-production-preflight.sh tools/stage15-production-hardening-check.sh
-          python -m py_compile tools/revoke_sessions.py tools/content_quality_guard.py
-
-  mobile:
-    name: Mobile TypeScript
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: mobile
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run check:secrets
+
+  design-tokens-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run typecheck:tokens
+
+  ui-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run typecheck:ui
+
+  ai-assistant-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run typecheck:ai-assistant
+
+  web-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run typecheck:web
+
+  safe-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run test:unit:safe
+
+  explicit-isolated-web-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run build:web:isolated
+      - uses: actions/upload-artifact@v4
         with:
-          node-version: '20'
-          cache: npm
-          cache-dependency-path: mobile/package-lock.json
-      - name: Install mobile dependencies
-        run: npm ci
-      - name: Type-check mobile app
-        run: npx tsc --noEmit
+          name: isolated-web-build
+          path: apps/web/.next
+          include-hidden-files: true
+          retention-days: 1
+
+  generated-artifact-verification:
+    needs: explicit-isolated-web-build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - uses: actions/download-artifact@v4
+        with:
+          name: isolated-web-build
+          path: apps/web/.next
+      - run: npm run check:generated-artifacts
+        env:
+          REQUIRE_WEB_BUILD: '1'
+
+  utf8-cyrillic-regression-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20', cache: npm }
+      - run: npm ci --ignore-scripts --no-audit --no-fund
+      - run: npm run check:utf8
