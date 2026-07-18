@@ -7,4 +7,4 @@
 | Firewall/SSH preservation | PASS |
 | Legacy 3010 retirement | PASS |
 | Observation/public routes | PASS |
-| Branch publication | PASS |
+| Branch publication | BLOCKED: GitHub credential rejected |
