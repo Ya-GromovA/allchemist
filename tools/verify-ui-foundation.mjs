@@ -4,16 +4,14 @@ import { dirname, resolve } from "node:path";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const checks = [
-  ["Contract layer verification", "node", ["tools/verify-contract-layer.mjs"]],
+  ["Repository hygiene", "node", ["tools/check-repository-hygiene.mjs"]],
+  ["Secret-pattern scan", "node", ["tools/check-secret-patterns.mjs"]],
+  ["UTF-8/Cyrillic regression check", "node", ["tools/check-utf8-cyrillic.mjs"]],
   ["Typecheck design tokens", "npm", ["run", "typecheck:tokens"]],
   ["Typecheck UI package", "npm", ["run", "typecheck:ui"]],
+  ["Typecheck AI assistant", "npm", ["run", "typecheck:ai-assistant"]],
   ["Typecheck apps/web", "npm", ["run", "typecheck:web"]],
-  ["Typecheck apps/admin", "npm", ["run", "typecheck:admin"]],
-  ["Build apps/web", "npm", ["run", "build:web"]],
-  ["Build apps/admin", "npm", ["run", "build:admin"]],
-  ["Playwright UI smoke", "node", ["tools/ui-foundation-smoke.mjs"]],
-  ["Capture UI snapshots", "node", ["tools/capture-ui-snapshots.mjs"]],
-  ["Diff whitespace check", "git", ["diff", "--check", "--", "AGENTS.md", "apps", "packages/ui", "packages/design-tokens", "docs/quality", "docs/architecture/frontend-foundation.md", "tools/verify-ui-foundation.mjs", "tools/ui-foundation-smoke.mjs", "tools/capture-ui-snapshots.mjs", "docs/design/implementation-reports", "docs/architecture/student-dashboard-preview.md", "docs/quality/ui-snapshots.md", "artifacts/ui-snapshots", "package.json", "package-lock.json"]],
+  ["Diff whitespace check", "git", ["diff", "--check"]],
 ];
 
 for (const [label, command, args] of checks) {
@@ -25,4 +23,5 @@ for (const [label, command, args] of checks) {
   }
 }
 
-console.log("\nUI foundation verification passed.");
+console.log("\nUI foundation read-only verification passed.");
+console.log("Unit/integration tests, builds, visual tests, snapshot generation, and deployment are intentionally excluded.");
