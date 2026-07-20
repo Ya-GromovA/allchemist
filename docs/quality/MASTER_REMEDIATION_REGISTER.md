@@ -30,10 +30,10 @@ This register consolidates confirmed findings from:
 | P1 | 27 |
 | P2 | 10 |
 | P3 | 1 |
-| OPEN | 26 |
+| OPEN | 25 |
 | NEEDS_VERIFICATION | 9 |
 | PARTIAL | 2 |
-| RESOLVED | 3 |
+| RESOLVED | 4 |
 
 Category counts:
 
@@ -66,7 +66,7 @@ Category counts:
 | ALC-RM-005 | P1 | RUNTIME_STATE | PARTIAL | Mutable runtime JSON lives under source paths | ALC-007 | G5 | NO |
 | ALC-RM-006 | P2 | REPOSITORY | RESOLVED | 23 duplicate groups need consumer-aware decisions | ALC-003 | G1 | YES |
 | ALC-RM-007 | P1 | LEGACY | OPEN | Legacy and target boundaries are incomplete | ALC-009 | G7 | YES |
-| ALC-RM-008 | P0 | PREVIEW_RUNTIME | OPEN | Preview 3010 runs from deleted cwd | ALC-004 | G3 | NO |
+| ALC-RM-008 | P0 | PREVIEW_RUNTIME | RESOLVED | Preview 3010 runs from deleted cwd | ALC-004 | G3 | NO |
 | ALC-RM-009 | P1 | PREVIEW_RUNTIME | OPEN | Recovered artifact is not a permanent service | ALC-004 | G3 | NO |
 | ALC-RM-010 | P1 | BUILD_TOOLING | OPEN | verify-ui-foundation has unexpected side effects | ALC-006 | G2 | YES |
 | ALC-RM-011 | P1 | BUILD_TOOLING | OPEN | Tool commands are not uniformly separated by side effect | ALC-006 | G2 | YES |
@@ -144,3 +144,7 @@ No issue may be closed from a code diff alone. Closure requires its acceptance e
 ## ALC-007 audit update
 
 Canonical ALC-007 findings are in `docs/security/ALC_007_FINDINGS_REGISTER.json`: 20 total, severity {'P0': 2, 'P1': 14, 'P2': 4}, status {'NEEDS_VERIFICATION': 2, 'OPEN': 13, 'PARTIAL': 5}. No finding is RESOLVED. P0 items are `ALC007-INF-001` and `ALC007-INF-002`. This update authorizes no remediation.
+
+## ALC-007A final acceptance update
+
+`ALC-RM-008` is RESOLVED: canonical preview 3011 is enabled/active and locally returns 200, nginx uses only 3011, and obsolete deleted-cwd preview 3010 is disabled and unbound. Owner manual Basic Auth acceptance passed on 2026-07-20. The ALC-007A branch is remotely published through the repository deploy key. Production was unchanged during publication recovery and database writes were zero.

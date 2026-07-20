@@ -146,3 +146,7 @@ The requested ALC-003 through ALC-010 IDs remain stable. No renumbering is recom
 ## ALC-007 sequencing update
 
 Next recommended task is ALC-008: isolated PostgreSQL baseline, Alembic revision tree, restore rehearsal and non-production auth/tenant verification. P0 host permissions and listener/firewall remediation require a separately approved operations task. Object storage, queue, observability and AI governance follow owner/architect decisions; production feature rollout remains blocked.
+
+## ALC-007A completion and publication recovery
+
+Status: **PASS**. Repository permissions, backend/PostgreSQL exposure, firewall, and obsolete preview 3010 were contained with rollback and six stable checkpoints. Repository deploy-key publication and owner manual Basic Auth acceptance passed; the previous invalid-token blocker is resolved. Next authorized task: ALC-008. Production feature deployment remains blocked.

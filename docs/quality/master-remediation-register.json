@@ -13,10 +13,10 @@
       "P3": 1
     },
     "status": {
-      "OPEN": 26,
+      "OPEN": 25,
       "NEEDS_VERIFICATION": 9,
       "PARTIAL": 2,
-      "RESOLVED": 3
+      "RESOLVED": 4
     },
     "category": {
       "REPOSITORY": 2,
@@ -314,7 +314,7 @@
       ],
       "category": "PREVIEW_RUNTIME",
       "severity": "P0",
-      "current_status": "OPEN",
+      "current_status": "RESOLVED",
       "affected_paths_services": [
         "allchemist-web-preview",
         "127.0.0.1:3010"
@@ -338,7 +338,7 @@
       "rollback_requirement": "No production change in ALC-002; the implementation task must approve and test rollback before mutation.",
       "blocking_gate": "G3",
       "safe_to_work_in_parallel": "NO",
-      "notes": ""
+      "notes": "Resolved by ALC-007A: canonical 3011 verified; obsolete deleted-cwd 3010 disabled and unbound. Owner manual Basic Auth acceptance passed 2026-07-20; branch publication recovered with repository deploy key."
     },
     {
       "id": "ALC-RM-009",

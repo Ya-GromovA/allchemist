@@ -6,8 +6,8 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 
 | Status | Count | Gates |
 |---|---:|---|
-| PASS | 1 | G0 |
-| PARTIAL | 5 | G1, G2, G3, G6, G7 |
+| PASS | 2 | G0, G3 |
+| PARTIAL | 4 | G1, G2, G6, G7 |
 | FAIL | 3 | G4, G5, G8 |
 | NOT_STARTED | 2 | G9, G10 |
 
@@ -53,8 +53,8 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 - Entry: verified artifact from clean baseline and change authorization.
 - Exit: service survives restart; health/routes/static pass; rollback rehearsed; current process retired safely.
 - Rollback: atomic selection of prior verified release and config backup.
-- Current status: **PARTIAL**.
-- Evidence/gap: recovered artifact has BUILD_ID, 1399/1399 checksums, cold-start smoke; no permanent service/switch/restart/rollback/domain.
+- Current status: **PASS**.
+- Evidence: ALC-007A verified canonical 3011 enabled/active, nine routes and referenced assets, protected public ingress with owner manual acceptance, rollback, and safe retirement of obsolete 3010.
 
 ## G4 — CRITICAL_LEGACY_STABILITY
 
@@ -141,3 +141,7 @@ Task: ALC-003 update. A gate status is evidence-based and does not authorize the
 ## ALC-007 evidence addendum
 
 G5 remains FAIL, G6/G7 remain PARTIAL, and G9 remains NOT_STARTED. Exit evidence now explicitly requires Alembic isolated reproduction, environment-separated databases, tenant negative tests, P0 network/permission remediation, restore drill, secrets/AI approvals and minimum observability. No status is promoted to PASS.
+
+## ALC-007A publication recovery addendum
+
+Publication through the repository deploy key and owner manual Basic Auth acceptance passed. G3 is PASS. The ALC-007 P0 network and permission blockers are resolved; G6 remains PARTIAL for its other controls. ALC-008 may begin, while G5 remains FAIL pending isolated migration/restore evidence.

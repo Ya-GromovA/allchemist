@@ -14,8 +14,9 @@
     },
     "status": {
       "NEEDS_VERIFICATION": 2,
-      "OPEN": 13,
-      "PARTIAL": 5
+      "OPEN": 11,
+      "PARTIAL": 5,
+      "RESOLVED": 2
     },
     "category": {
       "AI_GOVERNANCE": 1,
@@ -45,8 +46,8 @@
       "category": "INFRASTRUCTURE",
       "title": "Production repository is world-writable",
       "severity": "P0",
-      "status": "OPEN",
-      "evidence": "stat mode 777 on /root/synapse",
+      "status": "RESOLVED",
+      "evidence": "ALC-007A: /root/synapse changed from mode 0777 UID/GID 1000 to root:root 0750; verified runtime consumers retained access.",
       "affected_components": "production source and runtime",
       "user_business_impact": "Uncontrolled mutation and attribution loss",
       "security_data_impact": "Source/config integrity compromise",
@@ -61,15 +62,15 @@
       "estimated_implementation_phase": "ALC-008/009",
       "rollback_consideration": "Restore recorded ACL/mode",
       "acceptance_criteria": "No world-writable production tree; services retain required access",
-      "source_references": "server preflight; FILE_OWNERSHIP_AND_BOUNDARIES.md"
+      "source_references": "docs/ops/ALC_007A_REPOSITORY_PERMISSION_REPORT.md"
     },
     {
       "id": "ALC007-INF-002",
       "category": "NETWORK",
       "title": "Backend and PostgreSQL published on all interfaces",
       "severity": "P0",
-      "status": "OPEN",
-      "evidence": "listeners 0.0.0.0:8000 and :5433; UFW inactive",
+      "status": "RESOLVED",
+      "evidence": "ALC-007A: backend 8000 and PostgreSQL 5433 loopback-only; UFW active inbound-deny; external 8000/5433/3010/3011 unreachable.",
       "affected_components": "Docker compose, host firewall",
       "user_business_impact": "Avoidable public attack surface",
       "security_data_impact": "Direct DB/API exposure",
@@ -84,7 +85,7 @@
       "estimated_implementation_phase": "ALC-008",
       "rollback_consideration": "Restore prior bindings from versioned config",
       "acceptance_criteria": "Only approved ingress ports externally reachable",
-      "source_references": "ss/nft/docker ps evidence"
+      "source_references": "docs/ops/ALC_007A_NETWORK_CONTAINMENT_REPORT.md; docs/ops/ALC_007A_FIREWALL_DECISION_REPORT.md"
     },
     {
       "id": "ALC007-INF-003",

@@ -88,3 +88,14 @@ No npm command was executed in `/root/synapse`. No global install, dependency up
 ## ALC-007 read-only audit commands
 
 `hostname`, `whoami`, Git status/show/worktree metadata, `stat`, `getent`, `systemctl` status/list/cat, `docker ps`, `ss`, `ufw status`, `nft list ruleset`, filtered `nginx -T`, HTTP GET health, source searches and PostgreSQL catalog queries inside `BEGIN READ ONLY ... ROLLBACK` are classified READ_ONLY_SAFE. Secret values and user rows were excluded. Package install, migrations, DDL/DML, service changes and adversarial tests were not run.
+
+## ALC-007A-P1/P1C publication recovery commands
+
+| Command family | Class | Observed scope |
+|---|---|---|
+| `ssh -T git@github.com` with explicit repository deploy key and strict host checking | `READ_ONLY_EXTERNAL_AUTH` | authentication only; no runtime or DB access |
+| `git ls-remote` exact branch ref | `READ_ONLY_EXTERNAL` | one repository ref query |
+| exact-ref / fast-forward `git push` | `WRITES_REMOTE_GIT_REF` | only the ALC-007A branch; no tags/main/runtime/DB |
+| owner manual Basic Auth acceptance | `OWNER_MANUAL_EXTERNAL_AUTH` | performed by owner; no credential received by Codex |
+
+P1C performed no browser automation, production restart/reload, runtime mutation, or database write.
