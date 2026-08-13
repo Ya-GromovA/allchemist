@@ -25,25 +25,90 @@ SKIP_DIR_NAMES = {
     "build",
     "__pycache__",
     ".git",
+    ".next",
 }
+
+# Сборочные артефакты: минифицированные бандлы с хешами в именах. В них нет
+# авторского текста, зато есть случайные последовательности вроде BVIr1GLF,
+# которые снапшот формул принимал за химию.
+SKIP_PATH_FRAGMENTS = (
+    "web_public_react/assets/",
+)
 
 TEXT_EXTS = {
     ".py", ".ts", ".tsx", ".js", ".jsx", ".json", ".md", ".txt", ".html", ".css", ".yml", ".yaml", ".sql"
 }
 
 MOJIBAKE_PATTERNS = [
-    re.compile(r"�"),
-    re.compile(r"Ã[-¿]"),
-    re.compile(r"Ð[-¿]"),
-    re.compile(r"Ñ[-¿]"),
+    re.compile("[ÐÑÃ][-¿]"),
+    re.compile("�"),
     re.compile(r"â€”|â€“|â€˜|â€™|â€œ|â€�|â„–|â€¦"),
 ]
 
 TOKEN_RE = re.compile(r"\b[A-Za-z0-9]{3,}\b")
+
+# Не формулы: CSS-цвет (#F8FBFF), unicode-escape (Δ) и hex-литерал (0xFFAA).
+# Раньше первая ветка заканчивалась байтом 0x08 вместо \b — из-за этого ни один
+# цвет не вырезался, и весь набор дизайн-токенов уезжал в снапшот формул.
+NON_FORMULA_RE = re.compile(
+    r"#[0-9A-Fa-f]{3,8}\b"
+    r"|\\[uU][0-9A-Fa-f]{4,8}"
+    r"|\b0[xX][0-9A-Fa-f]+\b"
+)
+
+# Цвет может быть записан и без решётки: "F8FBFF". Отличить его от формулы по
+# самому токену нельзя (CF3CF3 — настоящее вещество и одновременно валидный hex),
+# поэтому голый hex вырезается только в строке, которая описывает цвет.
+COLOR_CONTEXT_RE = re.compile(
+    r"\b(?:color|colour|fill|stroke|background|tint|border|shadow|glow|palette|hex|rgba?|swatch)\b",
+    re.IGNORECASE,
+)
+BARE_HEX_RE = re.compile(r"\b[0-9A-Fa-f]{6}(?:[0-9A-Fa-f]{2})?\b")
+
 FORMULA_RE = re.compile(r"(?:[A-Z][a-z]?\d{0,3}){2,}")
+FORMULA_PART_RE = re.compile(r"([A-Z][a-z]?)(\d{0,3})")
+
+# Символы 118 элементов по IUPAC. Изотопные обозначения D и T намеренно
+# не включены: с ними hex-цвета FFD5C2 и FFF5DD снова стали бы «формулами»,
+# а тяжёлая вода в сканируемом контенте не встречается.
+ELEMENT_SYMBOLS = {
+    "H", "He", "Li", "Be", "B", "C", "N", "O", "F", "Ne",
+    "Na", "Mg", "Al", "Si", "P", "S", "Cl", "Ar", "K", "Ca",
+    "Sc", "Ti", "V", "Cr", "Mn", "Fe", "Co", "Ni", "Cu", "Zn",
+    "Ga", "Ge", "As", "Se", "Br", "Kr", "Rb", "Sr", "Y", "Zr",
+    "Nb", "Mo", "Tc", "Ru", "Rh", "Pd", "Ag", "Cd", "In", "Sn",
+    "Sb", "Te", "I", "Xe", "Cs", "Ba", "La", "Ce", "Pr", "Nd",
+    "Pm", "Sm", "Eu", "Gd", "Tb", "Dy", "Ho", "Er", "Tm", "Yb",
+    "Lu", "Hf", "Ta", "W", "Re", "Os", "Ir", "Pt", "Au", "Hg",
+    "Tl", "Pb", "Bi", "Po", "At", "Rn", "Fr", "Ra", "Ac", "Th",
+    "Pa", "U", "Np", "Pu", "Am", "Cm", "Bk", "Cf", "Es", "Fm",
+    "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
+    "Rg", "Cn", "Nh", "Fl", "Mc", "Lv", "Ts", "Og",
+}
 
 # explicit symbols list for stable checks
 SPECIAL_SYMBOLS = "→⇄≤≥±°αβγΔμ·×√∞≈≠ΩλνπΣθϕ"
+
+
+def is_chemical_formula(token: str) -> bool:
+    """Токен — формула, только если он целиком раскладывается на символы элементов.
+
+    Это и есть определение химической формулы. Цвет D7E8FF, код ошибки BLE001 и
+    имя бандла BVIr1GLF раскладываются на несуществующие «элементы» D, E, L, G
+    и формулами не являются.
+    """
+    if not FORMULA_RE.fullmatch(token):
+        return False
+    if not any(ch.isdigit() for ch in token):
+        return False
+    position = 0
+    for match in FORMULA_PART_RE.finditer(token):
+        if match.start() != position:
+            return False
+        position = match.end()
+        if match.group(1) not in ELEMENT_SYMBOLS:
+            return False
+    return position == len(token)
 
 
 def iter_text_files() -> List[Path]:
@@ -56,7 +121,10 @@ def iter_text_files() -> List[Path]:
                 continue
             if any(part in SKIP_DIR_NAMES for part in path.parts):
                 continue
-            if "tools/snapshots" in str(path):
+            posix = path.as_posix()
+            if "tools/snapshots" in posix:
+                continue
+            if any(fragment in posix for fragment in SKIP_PATH_FRAGMENTS):
                 continue
             if path.name == "content_quality_guard.py":
                 continue
@@ -90,6 +158,14 @@ def check_mojibake(files: List[Path]) -> List[str]:
     return findings
 
 
+def strip_non_formulas(line: str) -> str:
+    """Убирает из строки всё, что похоже на формулу, но ею не является."""
+    cleaned = NON_FORMULA_RE.sub(" ", line)
+    if COLOR_CONTEXT_RE.search(line):
+        cleaned = BARE_HEX_RE.sub(" ", cleaned)
+    return cleaned
+
+
 def collect_formula_snapshot(files: List[Path], limit: int = 500) -> Dict[str, List[str]]:
     formulas = set()
     symbols = set()
@@ -106,10 +182,9 @@ def collect_formula_snapshot(files: List[Path], limit: int = 500) -> Dict[str, L
             if not stripped:
                 continue
 
-            for token in TOKEN_RE.findall(stripped):
-                if not any(ch.isdigit() for ch in token):
-                    continue
-                if FORMULA_RE.fullmatch(token):
+            formula_source = strip_non_formulas(stripped)
+            for token in TOKEN_RE.findall(formula_source):
+                if is_chemical_formula(token):
                     formulas.add(token)
 
             if any(ch in stripped for ch in SPECIAL_SYMBOLS):
