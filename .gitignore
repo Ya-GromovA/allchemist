@@ -131,3 +131,9 @@ ops-secrets*
 *.sql.gz
 *.dump.gz
 backup/
+
+# Test artefacts (Playwright, build cache). Taken from the unmerged branch
+# fix/alc-004b3-preview-cyrillic-20260718-113842 before deleting it.
+.cache/
+playwright-report/
+test-results/
