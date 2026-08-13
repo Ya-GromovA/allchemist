@@ -1,7 +1,11 @@
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
+# Docker matches these patterns from the context ROOT only, so a bare
+# "__pycache__/" left 15 nested bytecode directories inside the image
+# (host build state leaking into an immutable artifact). "**/" makes the
+# exclusion recursive, which is what was always meant.
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
 
 .git
 .gitignore
@@ -12,3 +16,13 @@ venv/
 
 # Node/Expo мусор (если вдруг попадает в контекст)
 node_modules/
+
+# Host-only trees. The Dockerfile copies app/, alembic/, alembic.ini,
+# requirements.txt, wheels/ and docker-entrypoint.sh -- everything below only
+# inflates the build context (and the memory the daemon needs to tar it).
+.venv-test/
+.pytest_cache/
+data_host_backup/
+tests/
+conftest.py
+pytest.ini

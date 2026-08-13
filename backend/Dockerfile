@@ -15,6 +15,17 @@ RUN python -m pip install --no-cache-dir --no-index --find-links=/wheels -r /app
 
 COPY app /app/app
 
+# Migration authority. Without these two the entrypoint cannot bring the schema
+# to head, and the container would start against an unmigrated database.
+COPY alembic.ini /app/alembic.ini
+COPY alembic /app/alembic
+
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 8000
 
+# The entrypoint runs `alembic upgrade head` under an advisory lock and only
+# then execs the command below. A failed migration stops the container.
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--proxy-headers", "--forwarded-allow-ips", "*"]
