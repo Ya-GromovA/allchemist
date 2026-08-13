@@ -106,3 +106,28 @@ content_packs/*.bak*
 # Tools generated
 *.pyc
 __pycache__/
+
+# --- Secrets: hardened 2026-08-14 -------------------------------------------
+# `.env` / `.env.*` above did not match `infra/db.env`, which carries the real
+# production POSTGRES_PASSWORD. Any *.env file is a value file and stays out of
+# the repository; the *.env.example templates next to them are the versioned
+# contract.
+*.env
+!*.env.example
+
+# Operator secret bundles (/root/ops-secrets and any copy of it).
+ops-secrets/
+ops-secrets*
+
+# Private keys of every flavour (*.pem was already covered, *.key was not).
+*.key
+*.p12
+*.pfx
+
+# Database dumps and backup copies. `*.bak_*` was covered, `*.bak-20260814`
+# was not, so timestamped backups made during an incident leaked into
+# `git status` as untracked noise.
+*.bak*
+*.sql.gz
+*.dump.gz
+backup/
