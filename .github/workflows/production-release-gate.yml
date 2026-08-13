@@ -1,5 +1,11 @@
 name: Production Release Gate
 
+# Гейт остаётся ручным: выпуск в production запускает человек и подтверждает
+# внешние блокеры. Но раньше workflow не запускался вообще ничем, кроме
+# workflow_dispatch, поэтому его шаги проверялись только в день релиза.
+# Теперь те же шаги прогоняются на любой ветке и на pull request, когда меняется
+# то, что этот гейт проверяет. Ожидаемая версия APK при этом не задаётся —
+# метаданные проверяются на внутреннюю согласованность.
 on:
   workflow_dispatch:
     inputs:
@@ -11,16 +17,30 @@ on:
         description: Confirm external blockers are tracked outside CI
         required: true
         type: boolean
+  push:
+    branches:
+      - '**'
+    paths:
+      - '.github/workflows/production-release-gate.yml'
+      - 'content_packs/allchemist-apk-latest.json'
+      - 'backend/**'
+      - 'tools/**'
+  pull_request:
+    paths:
+      - '.github/workflows/production-release-gate.yml'
+      - 'content_packs/allchemist-apk-latest.json'
+      - 'backend/**'
+      - 'tools/**'
 
 concurrency:
-  group: allchemist-production-release
+  group: allchemist-production-release-${{ github.ref }}
   cancel-in-progress: false
 
 jobs:
   release-gate:
     name: Metadata and regression gate
     runs-on: ubuntu-latest
-    if: ${{ inputs.confirm_provider_blockers }}
+    if: ${{ github.event_name != 'workflow_dispatch' || inputs.confirm_provider_blockers }}
     services:
       postgres:
         image: postgres:16
@@ -60,8 +80,8 @@ jobs:
 
           path = Path('content_packs/allchemist-apk-latest.json')
           data = json.loads(path.read_text(encoding='utf-8'))
-          expected = os.environ['EXPECTED_APK_VERSION']
-          if data.get('versionName') != expected:
+          expected = os.environ.get('EXPECTED_APK_VERSION', '').strip()
+          if expected and data.get('versionName') != expected:
               raise SystemExit(f"versionName mismatch: {data.get('versionName')} != {expected}")
           for key in ['versionName', 'versionCode', 'apkFile', 'sha256', 'size']:
               if not data.get(key):
@@ -71,7 +91,10 @@ jobs:
               raise SystemExit(f'APK artifact missing: {apk}')
           if apk.stat().st_size != int(data['size']):
               raise SystemExit('APK size mismatch')
-          print('APK metadata OK')
+          if expected:
+              print(f"APK metadata OK for expected version {expected}")
+          else:
+              print(f"APK metadata self-consistent for version {data['versionName']}")
           PY
         env:
           EXPECTED_APK_VERSION: ${{ inputs.apk_version }}
@@ -85,10 +108,24 @@ jobs:
           POSTGRES_PASSWORD: synapse_ci_password
           PYTHONPATH: ${{ github.workspace }}/backend
         run: |
-          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py
+          # Same reason as in ci.yml: the access matrix is database-backed.
+          alembic upgrade head
+          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py tests/test_redaction.py
+      # Release must not ship an image that cannot migrate the database it will
+      # meet. See the 2026-08-14 incident: image at 0001, database at 0004, any
+      # restart -> 502. Chain integrity plus repo-to-image coverage are the two
+      # halves that would have caught it before release.
+      - name: Gate on migration coverage
+        run: |
+          tools/db/check_migration_coverage.sh --chain backend/alembic/versions
+          docker build -t allchemist-backend:release-gate -f backend/Dockerfile backend/
+          tools/db/check_migration_coverage.sh \
+            --repo backend/alembic/versions --image-ref allchemist-backend:release-gate
       - name: Check web syntax and ops scripts
         run: |
           node --check backend/app/web_public/app.js
           node --check backend/app/web_admin/app.js
           bash -n tools/backup_synapse.sh tools/stage11-production-preflight.sh tools/stage15-production-hardening-check.sh
           python -m py_compile tools/revoke_sessions.py
+      - name: Verify source encoding
+        run: node tools/verify-source-encoding.mjs

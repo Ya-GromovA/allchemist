@@ -1,18 +1,73 @@
 name: Allchemist CI
 
+# Проверки идут на любой ветке и на каждом pull request. Раньше push-триггер
+# был ограничен main/master/develop, поэтому на рабочей ветке
+# figma-full-ui-migration-20260602 не запускалось ничего.
 on:
-  pull_request:
   push:
     branches:
-      - main
-      - master
-      - develop
+      - '**'
+  pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: allchemist-ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
+  encoding:
+    name: Source encoding and Cyrillic
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Verify source encoding
+        run: node tools/verify-source-encoding.mjs
+
+  frontend:
+    name: Frontend typecheck and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - name: Install workspace dependencies
+        run: npm ci
+      - name: Typecheck shared packages
+        run: |
+          npm run typecheck:tokens
+          npm run typecheck:ui
+          npm run typecheck:science-core
+          npm run typecheck:chemistry-core
+          npm run typecheck:chemistry-lab-engine
+          npm run typecheck:physics-core
+          npm run typecheck:physics-sim-engine
+          npm run typecheck:biology-core
+          npm run typecheck:microscope-viewer
+          npm run typecheck:progress-core
+          npm run typecheck:content-core
+          npm run typecheck:content-qa-core
+          npm run typecheck:ai-assistant
+      - name: Typecheck apps
+        run: |
+          npm run typecheck:web
+          npm run typecheck:admin
+      - name: Verify contract layer and UI foundation
+        run: |
+          node tools/verify-contract-layer.mjs
+          node tools/verify-ui-foundation.mjs
+      - name: Build web and admin
+        env:
+          NODE_OPTIONS: --max-old-space-size=3072
+        run: |
+          npm run build:web
+          npm run build:admin
+
   backend:
     name: Backend contract tests
     runs-on: ubuntu-latest
@@ -57,7 +112,80 @@ jobs:
           POSTGRES_PASSWORD: synapse_ci_password
           PYTHONPATH: ${{ github.workspace }}/backend
         run: |
-          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py
+          # The role/permission matrix lives in the database now (revision 0002
+          # seeds roles, permissions and role_permissions), so the suite needs a
+          # migrated schema. Against an empty database every scope check answers
+          # "denied" and the failure says nothing about the code.
+          alembic upgrade head
+          pytest tests/test_auth_sync_contract.py tests/test_public_web.py tests/test_content_quality_snapshot.py tests/test_redaction.py
+
+  migrations:
+    name: Migration integrity
+    # On 2026-08-14 production ran an image containing only revision 0001 while
+    # the database was stamped 0004. The container served traffic but could not
+    # restart: the entrypoint's `alembic upgrade head` aborts with "Can't locate
+    # revision identified by '0004'" and exits 1, taking allchemist.ru and
+    # api.allchemist.ru to 502. Nothing in CI could have caught it, because
+    # nothing compared the revisions in the repo with the revisions in the image.
+    # These three steps close that gap.
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: synapse
+          POSTGRES_USER: synapse
+          POSTGRES_PASSWORD: synapse_ci_password
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd "pg_isready -U synapse -d synapse"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: pip
+          cache-dependency-path: backend/requirements.txt
+
+      # 1. Offline: the revision graph must be linear with one base and one head.
+      #    Multiple heads make `alembic upgrade head` ambiguous.
+      - name: Migration chain is linear with a single head
+        run: tools/db/check_migration_coverage.sh --chain backend/alembic/versions
+
+      # 2. The exact analogue of the outage: build the image and require that it
+      #    ships every revision present in the repo. This is what a stale build
+      #    or an over-broad .dockerignore silently breaks.
+      - name: Built image ships every repo revision
+        run: |
+          docker build -t allchemist-backend:ci -f backend/Dockerfile backend/
+          tools/db/check_migration_coverage.sh \
+            --repo backend/alembic/versions --image-ref allchemist-backend:ci
+
+      # 3. The revisions must actually apply to a real PostgreSQL from scratch,
+      #    and leave the database at the head the repo declares.
+      - name: Migrations apply cleanly and reach head
+        working-directory: backend
+        env:
+          POSTGRES_HOST: 127.0.0.1
+          POSTGRES_PORT: '5433'
+          POSTGRES_DB: synapse
+          POSTGRES_USER: synapse
+          POSTGRES_PASSWORD: synapse_ci_password
+          PYTHONPATH: ${{ github.workspace }}/backend
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r requirements.txt
+          alembic upgrade head
+          current=$(alembic current 2>/dev/null | tail -1)
+          echo "alembic current: $current"
+          case "$current" in
+            *"(head)"*) echo "OK: database reached head" ;;
+            *) echo "FAIL: database did not reach head: $current"; exit 1 ;;
+          esac
 
   web-static:
     name: Public/admin web static checks
@@ -84,6 +212,16 @@ jobs:
         run: |
           bash -n tools/backup_synapse.sh tools/stage11-production-preflight.sh tools/stage15-production-hardening-check.sh
           python -m py_compile tools/revoke_sessions.py tools/content_quality_guard.py
+      # `content_quality_guard.py --check` is deliberately NOT wired here yet.
+      # The snapshot it compares against describes the full source tree,
+      # including tools/brand/** and the reworked backend/app/web_public/**
+      # that the parallel UI branch has not committed. Enabling the gate
+      # against a checkout that lacks those files produces a red job about
+      # missing files, not about content -- a gate that cannot pass is worse
+      # than no gate, because it trains everyone to ignore red. Enable it in
+      # the same commit that lands the remaining source tree, with the
+      # snapshot regenerated from the repository rather than from a working
+      # directory.
 
   mobile:
     name: Mobile TypeScript
