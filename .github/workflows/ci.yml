@@ -212,16 +212,12 @@ jobs:
         run: |
           bash -n tools/backup_synapse.sh tools/stage11-production-preflight.sh tools/stage15-production-hardening-check.sh
           python -m py_compile tools/revoke_sessions.py tools/content_quality_guard.py
-      # `content_quality_guard.py --check` is deliberately NOT wired here yet.
-      # The snapshot it compares against describes the full source tree,
-      # including tools/brand/** and the reworked backend/app/web_public/**
-      # that the parallel UI branch has not committed. Enabling the gate
-      # against a checkout that lacks those files produces a red job about
-      # missing files, not about content -- a gate that cannot pass is worse
-      # than no gate, because it trains everyone to ignore red. Enable it in
-      # the same commit that lands the remaining source tree, with the
-      # snapshot regenerated from the repository rather than from a working
-      # directory.
+      # The snapshot describes the REPOSITORY, not somebody's working
+      # directory. Regenerate it with `--update-snapshot` from a clean
+      # checkout whenever scanned content changes, and commit the result in
+      # the same commit as the content.
+      - name: Run content quality guard
+        run: python tools/content_quality_guard.py --check
 
   mobile:
     name: Mobile TypeScript
