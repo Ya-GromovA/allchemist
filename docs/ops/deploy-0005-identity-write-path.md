@@ -195,3 +195,44 @@ DDL, и entrypoint не сможет применить следующую ми�
 docker rm -f synapse-backend-canary pg-canary
 docker network rm synapse-canary
 ```
+
+---
+
+## 6. БЛОКЕР ВЫКАТКИ: проекция live-уроков разорвана
+
+**Это регресс, внесённый данным изменением. Выкатывать шаг 1, пока он не
+закрыт, нельзя.**
+
+Что произошло. Раньше `ingest_learning_events` проецировал попытку ученика в
+`state["teacher_live"]["sessions"]` — тот же JSON-словарь, в который
+`role_cabinet.teacher_live_start` записывал live-урок. Обе стороны говорили с
+одним файлом, и доска учителя обновлялась.
+
+Теперь `_project_to_live_session` в `user_state_store.py` ищет урок в таблице
+`live_sessions`, а `role_cabinet.py:479 teacher_live_start` по-прежнему создаёт
+его только в JSON. Таблица пустая, поиск ничего не находит, проекция молча
+ничего не делает. Доска учителя перестанет наполняться попытками учеников.
+
+Почему это не поймали тесты: live-уроки не покрыты ни одним тестом
+(`grep teacher_live backend/tests/` — пусто). Отсутствие теста и есть причина,
+по которой разрыв дожил до этого документа, а не упал на CI.
+
+Что нужно сделать до выкатки — перевести домен live-уроков целиком, а не
+наполовину. Схема и репозиторий уже есть (`app/models/live.py`,
+`LiveSessionRepository` в `app/repositories/events.py`):
+
+1. `teacher_live_start` → `LiveSessionRepository.create(...)`, join-код в
+   колонку `join_code` (частичный уникальный индекс среди активных уроков).
+2. `teacher_live_close` → `LiveSessionRepository.close(...)`.
+3. `teacher_live_status` и `teacher_live_events` → `students_joined()`,
+   `attempt_tallies()`, `events()` вместо вложенных словарей.
+4. `cabinet/live/join` → `LiveSessionRepository.join(...)`.
+5. Тест на сквозной путь: учитель начал урок → ученик прислал
+   `learning_event` с `sessionId` → доска учителя показывает попытку.
+   Именно этого теста не хватало.
+
+Оценка: около шести эндпоинтов в `role_cabinet.py`, плюс тест. Пока это не
+сделано, у выкатки шага 1 есть два честных варианта: закрыть блокер, либо
+временно вернуть `_project_to_live_session` к записи в JSON — но второе
+означает вернуть файл в путь записи, чего требование «заглушек быть не должно»
+не допускает.
