@@ -53,7 +53,21 @@ cd "$BACKEND"
 ALEMBIC_DATABASE_URL="$URL" .venv-test/bin/alembic upgrade head
 
 echo
-echo "=== GATE 2: pg_dump structural diff (clone vs migrated) ==="
+echo "=== GATE 2a: pending revisions applied to the production clone ==="
+# The clone carries production's alembic_version, so `upgrade head` here runs
+# exactly the revisions that are not yet in production -- against production
+# data, with its real row counts and real constraint violations if any. This is
+# the rehearsal; the diff below only proves the result is the same schema a
+# from-scratch build produces.
+before_rev=$(docker exec "$CONTAINER" psql -U postgres -d clone -At -c   "select version_num from alembic_version" 2>/dev/null || echo "<none>")
+echo "clone is at revision: $before_rev"
+CLONE_URL="postgresql+psycopg://postgres:verify@127.0.0.1:${PORT}/clone"
+ALEMBIC_DATABASE_URL="$CLONE_URL" .venv-test/bin/alembic upgrade head
+after_rev=$(docker exec "$CONTAINER" psql -U postgres -d clone -At -c   "select version_num from alembic_version")
+echo "clone is now at revision: $after_rev"
+
+echo
+echo "=== GATE 2b: pg_dump structural diff (upgraded clone vs from-scratch) ==="
 "$REPO_ROOT/tools/db/schema_diff.sh" "$CONTAINER" clone migrated postgres
 
 echo

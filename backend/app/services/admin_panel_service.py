@@ -31,7 +31,14 @@ from app.services.ui_labels import (
     plan_label,
     role_label,
 )
-from app.services.user_state_store import _create_session, _read_state, _write_state, attach_login_password
+from app.services.user_state_store import (
+    _create_session,
+    _read_state,
+    _write_state,
+    attach_login_password,
+    ensure_account_with_phone,
+    ensure_service_account,
+)
 try:
     from app.services.pg_school_store import list_access_grants_pg, list_school_classes_pg, list_school_invites_pg, sync_school_domain_from_state
 except Exception:
@@ -686,14 +693,17 @@ def activate_school_invite_code(code: str, phone: str, user_id: str | None, disp
         resolved_user_id = str(user_id or "").strip() or f"u_invite_{normalized_phone[-6:]}"
         state["phones"][normalized_phone] = resolved_user_id
 
-    users = state.setdefault("users", {})
-    user = users.get(resolved_user_id, {}) if isinstance(users.get(resolved_user_id), dict) else {}
-    user["userId"] = resolved_user_id
-    user["phone"] = normalized_phone
-    user.setdefault("createdAt", _now_iso())
-    if display_name:
-        user["displayName"] = str(display_name).strip()
-    users[resolved_user_id] = user
+    # The account behind an invitation has never logged in, so it is created
+    # here. It has to exist as a real row before anything below can reference
+    # it: school_memberships, access_grants and user_sessions all carry
+    # user_id as a foreign key now.
+    provisioned = ensure_account_with_phone(
+        resolved_user_id,
+        normalized_phone,
+        display_name=display_name,
+        role=str(invite.get("role") or "student").strip().lower() or "student",
+    )
+    resolved_user_id = provisioned["userId"]
 
     login_result: Dict[str, Any] = {}
     if login or password:
@@ -1305,17 +1315,13 @@ def admin_password_login(login: str, password: str) -> Dict[str, Any]:
     if role not in ALL_KNOWN_ROLES:
         role = "owner"
 
+    # The console account is provisioned from configuration, so it has to be a
+    # real row before a session can reference it: user_sessions.user_id is a
+    # foreign key now, and an id that carries the owner role must be auditable
+    # and revocable like any other account rather than conjured at first login.
+    role = ensure_service_account(user_id, role, display_name="Администратор консоли")
+
     state = _read_state()
-    users = state.setdefault("users", {})
-    users.setdefault(
-        user_id,
-        {
-            "userId": user_id,
-            "phone": f"admin:{submitted_login}",
-            "createdAt": _now_iso(),
-        },
-    )
-    state.setdefault("role_overrides", {})[user_id] = role
     tokens = _create_session(state, user_id=user_id, role=role)
 
     audit = state.setdefault("admin_audit", [])

@@ -1,32 +1,129 @@
+"""Identity, sessions, devices and event ingestion -- backed by PostgreSQL.
+
+What changed and why
+--------------------
+Every function here used to begin with ``state = _read_state()`` and end with
+``_write_state(state)``: the whole of ``backend/data/user_state.json`` was read
+into memory, mutated, and written back. That had four consequences that no
+amount of care in the calling code could fix.
+
+*No transactions.* "Verify the code, create the account, grant the free plan,
+issue the session, write the audit entry" is one fact about the world. With a
+single write at the end of the function, a crash before it lost all five and a
+crash during it published a truncated file -- the write was a truncate-then-
+write on the live path, not an atomic replace.
+
+*No constraints.* Two accounts could hold the same login, a session could point
+at a user that had been deleted, and a consent could name a role that does not
+exist. Each of those was found in the production file.
+
+*Lost updates.* Two concurrent requests both read the file, both mutated their
+own copy, and the second write silently discarded the first. Under a class of
+thirty pupils logging in at the same minute this is not theoretical.
+
+*Unbounded scans.* Finding a session by refresh token meant iterating a
+thousand-entry dictionary; finding a reset code meant iterating every code ever
+issued. Both are now indexed lookups.
+
+The public API is unchanged on purpose. Endpoints, the admin service and the
+existing test-suite call these functions by name and depend on the exact shape
+of the dictionaries they return, so the conversion is invisible above this line.
+
+``_read_state`` and ``_write_state`` remain exported for the modules that have
+not been converted yet -- see ``app/services/legacy_state_bridge.py``, which
+serves them the database-owned collections out of the database and keeps only
+the rest in the file.
+"""
+
 from __future__ import annotations
 
 import hashlib
-import json
 import re
 import secrets
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
-from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
-try:
-    import bcrypt
-except Exception:
-    bcrypt = None
+from sqlalchemy import select
+from sqlalchemy.orm import Session
 
 from app.core.config import settings
+from app.core.passwords import verify_password
+from app.db.session import SessionLocal
+from app.models.identity import (
+    RefreshToken,
+    Role,
+    User,
+    UserCredential,
+    UserIdentifier,
+    UserSession,
+)
+from app.models.school import AccessGrant
+from app.repositories.auth import (
+    DEFAULT_AI_QUOTA,
+    DEFAULT_MODULES,
+    DEFAULT_PLANS,
+    AppStateRepository,
+    AttemptRepository,
+    CredentialRepository,
+    DeviceRepository,
+    EntitlementWriteRepository,
+    OtpRepository,
+    PasswordResetRepository,
+    attach_identifier,
+    ensure_user,
+)
+from app.repositories.events import (
+    LearningEventRepository,
+    LiveSessionRepository,
+    TelemetryRepository,
+)
+from app.repositories.identity import (
+    AuditRepository,
+    ConsentRepository,
+    EntitlementRepository,
+    RoleRepository,
+    SessionRepository,
+    UserRepository,
+)
 from app.services.auth_tokens import build_access_token, decode_token
+from app.services.legacy_state_bridge import read_state as _bridge_read_state
+from app.services.legacy_state_bridge import write_state as _bridge_write_state
 from app.services.sms_provider import send_otp_sms
+
 try:
-    from app.services.pg_school_store import list_user_devices_pg, sync_school_domain_from_state
-except Exception:
-    def list_user_devices_pg(user_id: str) -> List[Dict[str, Any]]:
-        return []
+    from app.services.pg_school_store import sync_school_domain_from_state
+except Exception:  # pragma: no cover - optional module
 
     def sync_school_domain_from_state(state: Dict[str, Any]) -> None:
         return None
 
 
-STATE_PATH = Path(__file__).resolve().parents[2] / "data" / "user_state.json"
+# Kept as module-level names because the test-suite and the ops scripts import
+# them. The file itself is no longer written by anything in this module.
+from app.services.legacy_state_bridge import STATE_PATH  # noqa: E402,F401
+
+_users = UserRepository()
+_roles = RoleRepository()
+_sessions = SessionRepository()
+_consents = ConsentRepository()
+_entitlements = EntitlementRepository()
+_entitlement_writes = EntitlementWriteRepository()
+_audit = AuditRepository()
+_otp = OtpRepository()
+_attempts = AttemptRepository()
+_credentials = CredentialRepository()
+_resets = PasswordResetRepository()
+_devices = DeviceRepository()
+_app_state = AppStateRepository()
+_telemetry = TelemetryRepository()
+_learning = LearningEventRepository()
+_live = LiveSessionRepository()
+
+
+# --------------------------------------------------------------------------- #
+# Small helpers, unchanged in behaviour
+# --------------------------------------------------------------------------- #
 
 
 def _now() -> datetime:
@@ -37,16 +134,24 @@ def _now_iso() -> str:
     return _now().isoformat()
 
 
+def _iso(value: Optional[datetime]) -> Optional[str]:
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        value = value.replace(tzinfo=timezone.utc)
+    return value.isoformat()
+
+
 def _norm_phone(phone: str) -> str:
-    plus = phone.strip().startswith("+")
-    digits = "".join(ch for ch in phone if ch.isdigit())
+    plus = str(phone or "").strip().startswith("+")
+    digits = "".join(ch for ch in str(phone or "") if ch.isdigit())
     if not digits:
         return ""
     return f"+{digits}" if plus else digits
 
 
 def _sha256(value: str) -> str:
-    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+    return hashlib.sha256(str(value or "").encode("utf-8")).hexdigest()
 
 
 def _norm_login(login: str) -> str:
@@ -67,241 +172,188 @@ def _validate_password(password: str) -> str:
     return raw
 
 
-def _hash_password(password: str) -> str:
-    if bcrypt is not None:
-        return bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt(rounds=12)).decode("utf-8")
-    salt = secrets.token_hex(16)
-    digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), 260000).hex()
-    return f"pbkdf2_sha256$260000${salt}${digest}"
-
-
-def _check_password(password: str, password_hash: str) -> bool:
-    try:
-        if str(password_hash or "").startswith("pbkdf2_sha256$"):
-            _, rounds, salt, digest = str(password_hash).split("$", 3)
-            candidate = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt.encode("utf-8"), int(rounds)).hex()
-            return secrets.compare_digest(candidate, digest)
-        if bcrypt is None:
-            return False
-        return bcrypt.checkpw(password.encode("utf-8"), str(password_hash or "").encode("utf-8"))
-    except Exception:
-        return False
-
-
-def _auth_audit(state: Dict[str, Any], action: str, *, user_id: str | None = None, login: str | None = None, result: str = "ok", details: Dict[str, Any] | None = None) -> None:
-    event = {
-        "at": _now_iso(),
-        "action": action,
-        "userId": user_id,
-        "loginHash": _sha256(_norm_login(login)) if login else None,
-        "result": result,
-        "details": details or {},
-    }
-    state.setdefault("auth_audit", []).append(event)
-    state["auth_audit"] = state["auth_audit"][-5000:]
-
-
 def _gen_token(prefix: str) -> str:
     return f"{prefix}_{secrets.token_urlsafe(32)}"
 
 
-def _default_state() -> Dict[str, Any]:
+def _default_entitlements() -> Dict[str, Any]:
     return {
-        "users": {},
-        "phones": {},
-        "otp": {},
-        "otp_requests": {},
-        "consents": {},
-        "entitlements": {},
-        "device_sync": {},
-        "sessions": {},
-        "session_revocations": [],
-        "telemetry": [],
-        "learning_events": [],
-        "payments": {},
-        "payment_idempotency": {},
-        "payment_webhook_events": {},
-        "payment_webhook_dead_letters": [],
-        "payment_audit": [],
-        "role_overrides": {},
-        "scope_overrides": {},
-        "access_grants": {},
-        "organizations": {},
-        "schools": {},
-        "school_sites": {},
-        "school_licenses": {},
-        "school_classes": {},
-        "school_invite_codes": {},
-        "school_memberships": {},
-        "device_registry": {},
-        "device_recovery_codes": {},
-        "logins": {},
-        "password_reset_codes": {},
-        "auth_audit": [],
-        "login_attempts": {},
+        "plans": list(DEFAULT_PLANS),
+        "modules": list(DEFAULT_MODULES),
+        "ai_quota_left": DEFAULT_AI_QUOTA,
     }
 
 
-def _read_state() -> Dict[str, Any]:
-    if not STATE_PATH.exists():
-        return _default_state()
+@contextmanager
+def _tx() -> Iterator[Session]:
+    """One unit of work. Commits on success, rolls back on any exception."""
+    session = SessionLocal()
     try:
-        raw = json.loads(STATE_PATH.read_text(encoding="utf-8"))
-        base = _default_state()
-        base.update(raw)
-        return base
+        yield session
+        session.commit()
     except Exception:
-        return _default_state()
+        session.rollback()
+        raise
+    finally:
+        session.close()
+
+
+def _fail(session: Session, error: ValueError) -> ValueError:
+    """Commit what has been recorded about a failure, then hand back the error.
+
+    Rate limiting and the audit trail are the two things that must survive a
+    rejected request, and ``_tx`` rolls back on the exception that rejects it.
+    Without this, five wrong passwords recorded five rows and rolled back all
+    five, and the lockout never fired -- which the security contract test
+    caught. Committing here and raising afterwards keeps the bookkeeping while
+    still refusing the request.
+    """
+    session.commit()
+    return error
+
+
+# Compatibility shims for the modules that still speak the legacy dictionary.
+def _read_state() -> Dict[str, Any]:
+    return _bridge_read_state()
 
 
 def _write_state(state: Dict[str, Any]) -> None:
-    STATE_PATH.parent.mkdir(parents=True, exist_ok=True)
-    STATE_PATH.write_text(json.dumps(state, ensure_ascii=False, indent=2), encoding="utf-8")
+    _bridge_write_state(state)
 
 
-def _default_entitlements() -> Dict[str, Any]:
-    return {
-        "plans": ["free"],
-        "modules": ["chemistry_core"],
-        "ai_quota_left": 20,
-    }
+# --------------------------------------------------------------------------- #
+# Rate limiting
+# --------------------------------------------------------------------------- #
+
+_ATTEMPT_LIMIT = 5
+_ATTEMPT_WINDOW_SEC = 900
+_ATTEMPT_LOCK_MIN = 15
 
 
-def _prune_timestamps(timestamps: List[str], seconds: int) -> List[str]:
-    now = _now()
-    out: List[str] = []
-    for ts in timestamps:
-        try:
-            dt = datetime.fromisoformat(ts)
-        except Exception:
-            continue
-        if (now - dt).total_seconds() <= seconds:
-            out.append(ts)
-    return out
+def _guard_attempts(session: Session, kind: str, value: str) -> str:
+    """Raise if the key is locked out. Returns the attempt key for later use."""
+    key = _attempts.key(kind, value)
+    if _attempts.locked_until(session, key) is not None:
+        raise ValueError("Слишком много попыток. Попробуйте позже.")
+    return key
 
 
-def _rate_limit_key(kind: str, value: str) -> str:
-    return f"{kind}:{_sha256(str(value or '').strip().lower())}"
+def _register_failure(session: Session, key: str, kind: str, *, user_id: str | None = None) -> None:
+    _attempts.record(session, attempt_key=key, kind=kind, result="failed", user_id=user_id)
+    failures = _attempts.failures_in_window(session, key, _ATTEMPT_WINDOW_SEC)
+    if failures >= _ATTEMPT_LIMIT:
+        _attempts.lock(
+            session,
+            key,
+            until=_now() + timedelta(minutes=_ATTEMPT_LOCK_MIN),
+            reason=f"{failures} failed attempts",
+        )
 
 
-def _check_attempt_limit(state: Dict[str, Any], kind: str, value: str, *, limit: int = 5, window_sec: int = 900, lock_min: int = 15) -> None:
-    key = _rate_limit_key(kind, value)
-    attempts = state.setdefault("login_attempts", {}).get(key, {"timestamps": [], "lockedUntil": None})
-    locked_until = attempts.get("lockedUntil")
-    if locked_until:
-        try:
-            if _now() < datetime.fromisoformat(str(locked_until)):
-                raise ValueError("Слишком много попыток. Попробуйте позже.")
-        except ValueError:
-            raise
-        except Exception:
-            attempts["lockedUntil"] = None
-    attempts["timestamps"] = _prune_timestamps(attempts.get("timestamps", []), window_sec)
-    state.setdefault("login_attempts", {})[key] = attempts
+def _register_success(session: Session, key: str, kind: str, user_id: str | None = None) -> None:
+    _attempts.record(session, attempt_key=key, kind=kind, result="ok", user_id=user_id)
+    _attempts.clear_lock(session, key)
 
 
-def _record_attempt_failure(state: Dict[str, Any], kind: str, value: str, *, limit: int = 5, window_sec: int = 900, lock_min: int = 15) -> None:
-    key = _rate_limit_key(kind, value)
-    attempts = state.setdefault("login_attempts", {}).get(key, {"timestamps": [], "lockedUntil": None})
-    attempts["timestamps"] = _prune_timestamps(attempts.get("timestamps", []), window_sec)
-    attempts["timestamps"].append(_now_iso())
-    if len(attempts["timestamps"]) >= limit:
-        attempts["lockedUntil"] = (_now() + timedelta(minutes=lock_min)).isoformat()
-    state.setdefault("login_attempts", {})[key] = attempts
+# --------------------------------------------------------------------------- #
+# Roles and sessions
+# --------------------------------------------------------------------------- #
 
 
-def _clear_attempts(state: Dict[str, Any], kind: str, value: str) -> None:
-    state.setdefault("login_attempts", {}).pop(_rate_limit_key(kind, value), None)
+def _effective_role(session: Session, user_id: str, fallback: str | None = None) -> str:
+    return _roles.effective_role(session, user_id) or (fallback or "student")
 
 
-def request_phone_code(phone: str) -> Dict[str, Any]:
-    state = _read_state()
-    normalized = _norm_phone(phone)
-    if not normalized:
-        raise ValueError("Phone is required")
+def _known_role(session: Session, role_key: str | None) -> Optional[str]:
+    """``user_sessions.role_key`` is a foreign key; an unknown role must be NULL.
 
-    req = state["otp_requests"].get(normalized, {"timestamps": []})
-    req["timestamps"] = _prune_timestamps(req.get("timestamps", []), settings.OTP_REQUEST_WINDOW_SEC)
-    if len(req["timestamps"]) >= settings.OTP_REQUEST_LIMIT:
-        raise ValueError("Too many OTP requests. Try later.")
-
-    code = f"{secrets.randbelow(900000) + 100000}"
-    expires_at = (_now() + timedelta(minutes=settings.OTP_TTL_MIN)).isoformat()
-
-    state["otp"][normalized] = {
-        "codeHash": _sha256(code),
-        "expiresAt": expires_at,
-        "attempts": 0,
-        "lockedUntil": None,
-    }
-    req["timestamps"].append(_now_iso())
-    state["otp_requests"][normalized] = req
-
-    sms_result = send_otp_sms(normalized, code)
-    _write_state(state)
-
-    out = {"phone": normalized, "expiresAt": expires_at}
-    if settings.ENV.lower() == "dev":
-        out["debugCode"] = code
-    out["smsStatus"] = sms_result.get("status", "unknown")
-    return out
+    The legacy store wrote whatever string it was handed, which is how sessions
+    ended up carrying roles that had never existed.
+    """
+    if not role_key:
+        return None
+    return session.get(Role, role_key).role_key if session.get(Role, role_key) else None
 
 
-def _merge_versions(a: Dict[str, str], b: Dict[str, str]) -> Dict[str, str]:
-    merged = dict(a)
-    for k, v in b.items():
-        if k not in merged or str(v) > str(merged[k]):
-            merged[k] = v
-    return merged
+# The legacy store resolved a user's role as "role_overrides, then the role on
+# the consent, then student" -- two layers, where an administrator's decision
+# outranked whatever the client last consented to. One global role assignment
+# collapses both layers into one row, so the layer is recorded in ``granted_by``
+# instead: an assignment made by the consent flow may be replaced by the consent
+# flow, and one made by an administrator may not.
+_CONSENT_GRANTORS = frozenset({"consent"})
 
 
-def _merge_user_state(state: Dict[str, Any], canonical_user: str, local_user: Optional[str], purchases: List[str], content_versions: Dict[str, str], preferences: Dict[str, Any]) -> None:
-    if canonical_user not in state["entitlements"]:
-        state["entitlements"][canonical_user] = _default_entitlements()
+def _set_global_role(
+    session: Session,
+    user_id: str,
+    role_key: str | None,
+    *,
+    granted_by: str,
+    yield_to_override: bool = False,
+) -> Optional[str]:
+    """Make ``role_key`` the account's single global role.
 
-    canonical_ent = state["entitlements"][canonical_user]
-    canonical_ent["modules"] = sorted(set(canonical_ent.get("modules", []) + purchases))
+    Returns the role in force afterwards, or ``None`` when the requested role is
+    not registered -- an unregistered role is refused rather than written,
+    because ``role_assignments.role_key`` is a foreign key and the JSON store's
+    habit of accepting any string is how roles that never existed ended up on
+    live accounts.
 
-    canonical_snap = state["device_sync"].get(
-        canonical_user,
-        {
-            "userId": canonical_user,
-            "contentVersions": {},
-            "purchases": canonical_ent["modules"],
-            "preferences": {},
-        },
+    With ``yield_to_override`` the call is a no-op whenever the account already
+    holds a role granted by someone other than the consent flow. That is what
+    keeps ``POST /admin/bootstrap-owner`` from being undone by the next consent.
+    """
+    from app.models.identity import RoleAssignment
+
+    normalized = str(role_key or "").strip().lower()
+    if not normalized or session.get(Role, normalized) is None:
+        return _roles.effective_role(session, user_id)
+
+    statement = select(RoleAssignment).where(
+        RoleAssignment.user_id == user_id,
+        RoleAssignment.scope_type == "global",
+        RoleAssignment.revoked_at.is_(None),
     )
-    canonical_snap["contentVersions"] = _merge_versions(canonical_snap.get("contentVersions", {}), content_versions)
-    canonical_snap["purchases"] = sorted(set(canonical_snap.get("purchases", []) + purchases))
-    canonical_snap["preferences"] = {**canonical_snap.get("preferences", {}), **preferences}
-    state["device_sync"][canonical_user] = canonical_snap
+    existing = session.execute(statement).scalars().all()
 
-    if local_user and local_user != canonical_user:
-        local_ent = state["entitlements"].get(local_user)
-        if local_ent:
-            canonical_ent["modules"] = sorted(set(canonical_ent.get("modules", []) + local_ent.get("modules", [])))
+    if yield_to_override and any(
+        (row.granted_by or "") not in _CONSENT_GRANTORS for row in existing
+    ):
+        return _roles.effective_role(session, user_id)
 
-        local_snap = state["device_sync"].get(local_user)
-        if local_snap:
-            canonical_snap["contentVersions"] = _merge_versions(
-                canonical_snap.get("contentVersions", {}),
-                local_snap.get("contentVersions", {}),
-            )
-            canonical_snap["purchases"] = sorted(set(canonical_snap.get("purchases", []) + local_snap.get("purchases", [])))
-            canonical_snap["preferences"] = {**local_snap.get("preferences", {}), **canonical_snap.get("preferences", {})}
+    if _roles.effective_role(session, user_id) == normalized:
+        return normalized
 
-        local_consent = state["consents"].get(local_user)
-        if local_consent and canonical_user not in state["consents"]:
-            state["consents"][canonical_user] = local_consent
-
-        state["entitlements"].pop(local_user, None)
-        state["device_sync"].pop(local_user, None)
-        state["consents"].pop(local_user, None)
+    for row in existing:
+        row.revoked_at = _now()
+        row.revoked_reason = f"replaced by {granted_by}"
+    session.add(
+        RoleAssignment(
+            user_id=user_id,
+            role_key=normalized,
+            scope_type="global",
+            granted_by=granted_by,
+        )
+    )
+    return normalized
 
 
-def _create_session(state: Dict[str, Any], user_id: str, role: str | None = None) -> Dict[str, str]:
+def _create_session(state: Any, user_id: str, role: str | None = None) -> Dict[str, str]:
+    """Issue an access/refresh pair.
+
+    ``state`` is ignored and kept only because ``admin_panel_service`` calls
+    this with the legacy dictionary as the first argument.
+    """
+    with _tx() as session:
+        return _create_session_tx(session, user_id=user_id, role=role)
+
+
+def _create_session_tx(
+    session: Session, *, user_id: str, role: str | None = None, device_id: str | None = None
+) -> Dict[str, str]:
     normalized_role = role or "student"
-    refresh_expires_at = (_now() + timedelta(days=settings.REFRESH_TOKEN_TTL_DAYS)).isoformat()
+    refresh_expires_at = _now() + timedelta(days=settings.REFRESH_TOKEN_TTL_DAYS)
     session_id = secrets.token_hex(16)
     access_token, access_expires_at, access_jti = build_access_token(
         user_id=user_id,
@@ -310,23 +362,57 @@ def _create_session(state: Dict[str, Any], user_id: str, role: str | None = None
     )
     refresh_token = _gen_token("ref")
 
-    state["sessions"][session_id] = {
-        "userId": user_id,
-        "role": normalized_role,
-        "accessJti": access_jti,
-        "accessExpiresAt": access_expires_at,
-        "refreshHash": _sha256(refresh_token),
-        "expiresAt": refresh_expires_at,
-        "revoked": False,
-        "createdAt": _now_iso(),
-    }
+    _sessions.create(
+        session,
+        session_id=session_id,
+        user_id=user_id,
+        role_key=_known_role(session, normalized_role),
+        access_jti=access_jti,
+        access_expires_at=datetime.fromisoformat(access_expires_at),
+        expires_at=refresh_expires_at,
+        refresh_token=refresh_token,
+        device_id=device_id,
+    )
 
     return {
         "accessToken": access_token,
         "accessTokenExpiresAt": access_expires_at,
         "refreshToken": refresh_token,
-        "refreshTokenExpiresAt": refresh_expires_at,
+        "refreshTokenExpiresAt": refresh_expires_at.isoformat(),
     }
+
+
+# --------------------------------------------------------------------------- #
+# Phone login
+# --------------------------------------------------------------------------- #
+
+
+def request_phone_code(phone: str) -> Dict[str, Any]:
+    normalized = _norm_phone(phone)
+    if not normalized:
+        raise ValueError("Phone is required")
+
+    with _tx() as session:
+        requested = _otp.requests_in_window(session, normalized, settings.OTP_REQUEST_WINDOW_SEC)
+        if requested >= settings.OTP_REQUEST_LIMIT:
+            raise ValueError("Too many OTP requests. Try later.")
+
+        code = f"{secrets.randbelow(900000) + 100000}"
+        expires_at = _now() + timedelta(minutes=settings.OTP_TTL_MIN)
+        _otp.issue(session, normalized, code=code, expires_at=expires_at)
+        _attempts.record(
+            session,
+            attempt_key=f"otp_request:{_sha256(normalized)}",
+            kind="otp_request",
+            result="ok",
+        )
+        sms_result = send_otp_sms(normalized, code)
+
+    out: Dict[str, Any] = {"phone": normalized, "expiresAt": expires_at.isoformat()}
+    if settings.ENV.lower() == "dev":
+        out["debugCode"] = code
+    out["smsStatus"] = sms_result.get("status", "unknown")
+    return out
 
 
 def verify_phone_code(
@@ -337,281 +423,424 @@ def verify_phone_code(
     local_content_versions: Optional[Dict[str, str]] = None,
     local_preferences: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
-    state = _read_state()
     normalized = _norm_phone(phone)
-    otp = state["otp"].get(normalized)
-    if not otp:
-        raise ValueError("OTP not requested")
 
-    if otp.get("lockedUntil"):
-        locked_until = datetime.fromisoformat(otp["lockedUntil"])
-        if _now() < locked_until:
+    with _tx() as session:
+        challenge = _otp.get(session, normalized)
+        if challenge is None:
+            raise ValueError("OTP not requested")
+
+        if challenge.locked_until and _now() < challenge.locked_until:
             raise ValueError("OTP temporarily locked due to too many attempts")
 
-    expires_at = datetime.fromisoformat(otp["expiresAt"])
-    if _now() > expires_at:
-        state["otp"].pop(normalized, None)
-        _write_state(state)
-        raise ValueError("OTP expired")
+        if _now() > challenge.expires_at:
+            _otp.clear(session, normalized)
+            raise _fail(session, ValueError("OTP expired"))
 
-    if _sha256(str(code)) != str(otp.get("codeHash", "")):
-        otp["attempts"] = int(otp.get("attempts", 0)) + 1
-        if otp["attempts"] >= settings.OTP_MAX_VERIFY_ATTEMPTS:
-            otp["lockedUntil"] = (_now() + timedelta(minutes=settings.OTP_LOCK_MIN)).isoformat()
-        state["otp"][normalized] = otp
-        _write_state(state)
-        raise ValueError("Invalid OTP")
+        if _sha256(str(code)) != challenge.code_hash:
+            _otp.register_failure(
+                session,
+                normalized,
+                max_attempts=settings.OTP_MAX_VERIFY_ATTEMPTS,
+                lock_minutes=settings.OTP_LOCK_MIN,
+            )
+            _attempts.record(
+                session,
+                attempt_key=f"otp_verify:{_sha256(normalized)}",
+                kind="otp_verify",
+                result="failed",
+            )
+            raise _fail(session, ValueError("Invalid OTP"))
 
-    user_id = state["phones"].get(normalized)
-    if not user_id:
-        user_id = f"u_{secrets.token_hex(6)}"
-        state["phones"][normalized] = user_id
+        # --- the account itself ------------------------------------------- #
+        existing = _users.find_by_identifier(session, "phone", normalized)
+        if existing is not None:
+            user_id = existing.user_id
+        else:
+            user_id = f"u_{secrets.token_hex(6)}"
+            ensure_user(session, user_id)
+            attach_identifier(
+                session,
+                user_id=user_id,
+                kind="phone",
+                value=normalized,
+                value_normalized=normalized,
+                is_primary=True,
+                verified=True,
+            )
 
-    state["users"].setdefault(user_id, {"userId": user_id, "phone": normalized, "createdAt": _now_iso()})
-    state["entitlements"].setdefault(user_id, _default_entitlements())
+        _entitlement_writes.ensure_defaults(session, user_id)
+        _merge_local_account(
+            session,
+            canonical_user=user_id,
+            local_user=local_user_id,
+            purchases=local_purchases or [],
+            content_versions=local_content_versions or {},
+            preferences=local_preferences or {},
+        )
 
-    _merge_user_state(
-        state=state,
-        canonical_user=user_id,
-        local_user=local_user_id,
-        purchases=local_purchases or [],
-        content_versions=local_content_versions or {},
-        preferences=local_preferences or {},
+        requested_role = None
+        if isinstance(local_preferences, dict):
+            requested_role = local_preferences.get("role")
+        role = _effective_role(session, user_id, fallback=requested_role)
+
+        tokens = _create_session_tx(session, user_id=user_id, role=role)
+        _users.touch_last_login(session, user_id)
+        _otp.clear(session, normalized)
+        _register_success(session, f"otp_verify:{_sha256(normalized)}", "otp_verify", user_id)
+        _audit.record(session, action="login_phone", actor_user_id=user_id, actor_role=role)
+
+        return {"userId": user_id, "phone": normalized, **tokens}
+
+
+def _merge_local_account(
+    session: Session,
+    *,
+    canonical_user: str,
+    local_user: Optional[str],
+    purchases: List[str],
+    content_versions: Dict[str, str],
+    preferences: Dict[str, Any],
+) -> None:
+    """Fold a device-local anonymous account into the account that just signed in."""
+    _entitlement_writes.grant_modules(session, canonical_user, purchases, source="legacy")
+    _app_state.merge(
+        session,
+        user_id=canonical_user,
+        content_versions=content_versions or {},
+        preferences=preferences or {},
     )
 
-    requested_role = None
-    if isinstance(local_preferences, dict):
-        requested_role = local_preferences.get("role")
-    role = state.get("consents", {}).get(user_id, {}).get("role") or requested_role
-    session_tokens = _create_session(state, user_id=user_id, role=role)
+    if not local_user or local_user == canonical_user:
+        return
+    if session.get(User, local_user) is None:
+        return
 
-    state["otp"].pop(normalized, None)
-    _write_state(state)
+    _entitlement_writes.move_items(session, from_user_id=local_user, to_user_id=canonical_user)
+    local_state = _app_state.get(session, local_user)
+    if local_state is not None:
+        _app_state.merge(
+            session,
+            user_id=canonical_user,
+            content_versions=dict(local_state.content_versions or {}),
+            preferences=dict(local_state.preferences or {}),
+        )
+        session.delete(local_state)
 
-    return {
-        "userId": user_id,
-        "phone": normalized,
-        **session_tokens,
-    }
+
+# --------------------------------------------------------------------------- #
+# Login and password
+# --------------------------------------------------------------------------- #
 
 
-def attach_login_password(state: Dict[str, Any], user_id: str, login: str, password: str, display_name: str | None = None) -> Dict[str, Any]:
+def attach_login_password(
+    state: Any,
+    user_id: str,
+    login: str,
+    password: str,
+    display_name: str | None = None,
+) -> Dict[str, Any]:
+    """Set (or replace) the login and password of an existing account.
+
+    ``state`` is ignored; the signature is preserved because
+    ``admin_panel_service`` still calls this with the legacy dictionary.
+    """
     normalized_login = _validate_login(login)
     raw_password = _validate_password(password)
-    users = state.setdefault("users", {})
-    user = users.get(user_id, {}) if isinstance(users.get(user_id), dict) else {}
-    if not user:
-        raise ValueError("Пользователь не найден")
 
-    logins = state.setdefault("logins", {})
-    existing_user_id = str(logins.get(normalized_login) or "").strip()
-    if existing_user_id and existing_user_id != user_id:
-        raise ValueError("Такой логин уже занят")
+    with _tx() as session:
+        user = session.get(User, user_id)
+        if user is None:
+            raise ValueError("Пользователь не найден")
 
-    old_login = _norm_login(user.get("login"))
-    if old_login and old_login != normalized_login and logins.get(old_login) == user_id:
-        logins.pop(old_login, None)
-
-    user["login"] = normalized_login
-    user["passwordHash"] = _hash_password(raw_password)
-    user["passwordUpdatedAt"] = _now_iso()
-    if display_name:
-        user["displayName"] = str(display_name).strip()
-    users[user_id] = user
-    logins[normalized_login] = user_id
-    state["logins"] = logins
-    _auth_audit(state, "set_login_password", user_id=user_id, login=normalized_login)
-    return {"userId": user_id, "login": normalized_login}
+        attach_identifier(
+            session,
+            user_id=user_id,
+            kind="login",
+            value=normalized_login,
+            value_normalized=normalized_login,
+            is_primary=True,
+            verified=True,
+        )
+        _credentials.set_password(session, user_id, raw_password)
+        if display_name:
+            user.display_name = str(display_name).strip()
+        user.updated_at = _now()
+        _audit.record(
+            session,
+            action="set_login_password",
+            actor_user_id=user_id,
+            object_type="user",
+            object_id=user_id,
+            details={"loginHash": _sha256(normalized_login)},
+        )
+        return {"userId": user_id, "login": normalized_login}
 
 
 def login_with_password(login: str, password: str) -> Dict[str, Any]:
-    state = _read_state()
     normalized_login = _norm_login(login)
-    _check_attempt_limit(state, "password_login", normalized_login)
-    user_id = str(state.setdefault("logins", {}).get(normalized_login) or "").strip()
-    user = state.setdefault("users", {}).get(user_id, {}) if user_id else {}
     generic_error = "Неверный логин или пароль"
-    if not user_id or not isinstance(user, dict) or not _check_password(str(password or ""), str(user.get("passwordHash") or "")):
-        _record_attempt_failure(state, "password_login", normalized_login)
-        _auth_audit(state, "login_password", login=normalized_login, result="failed")
-        _write_state(state)
-        raise ValueError(generic_error)
 
-    _clear_attempts(state, "password_login", normalized_login)
-    role = state.get("role_overrides", {}).get(user_id) or state.get("consents", {}).get(user_id, {}).get("role") or "student"
-    tokens = _create_session(state, user_id=user_id, role=role)
-    user["lastLoginAt"] = _now_iso()
-    state["users"][user_id] = user
-    _auth_audit(state, "login_password", user_id=user_id, login=normalized_login)
-    _write_state(state)
-    return {"userId": user_id, "login": normalized_login, "role": role, **tokens}
+    with _tx() as session:
+        key = _guard_attempts(session, "password_login", normalized_login)
+        user = _users.find_by_identifier(session, "login", normalized_login)
+
+        if user is None or user.status != "active" or not _credentials.verify(
+            session, user.user_id, str(password or "")
+        ):
+            _register_failure(
+                session, key, "password_login", user_id=user.user_id if user else None
+            )
+            _audit.record(
+                session,
+                action="login_password",
+                actor_user_id=user.user_id if user else None,
+                result="failed",
+                details={"loginHash": _sha256(normalized_login)},
+            )
+            raise _fail(session, ValueError(generic_error))
+
+        role = _effective_role(session, user.user_id)
+        tokens = _create_session_tx(session, user_id=user.user_id, role=role)
+        _users.touch_last_login(session, user.user_id)
+        _register_success(session, key, "password_login", user.user_id)
+        _audit.record(
+            session,
+            action="login_password",
+            actor_user_id=user.user_id,
+            actor_role=role,
+            details={"loginHash": _sha256(normalized_login)},
+        )
+        return {"userId": user.user_id, "login": normalized_login, "role": role, **tokens}
 
 
 def create_password_reset_code(user_id: str, changed_by: str, ttl_hours: int = 72) -> Dict[str, Any]:
-    state = _read_state()
-    if user_id not in state.setdefault("users", {}):
-        raise ValueError("Пользователь не найден")
-    code = f"PWR-{secrets.randbelow(1000000):06d}"
-    reset_id = f"pwd_reset_{secrets.token_hex(8)}"
-    row = {
-        "resetId": reset_id,
-        "codeHash": _sha256(code),
-        "userId": user_id,
-        "status": "pending",
-        "createdAt": _now_iso(),
-        "expiresAt": (_now() + timedelta(hours=max(1, min(int(ttl_hours or 72), 168)))).isoformat(),
-        "createdBy": changed_by,
-    }
-    state.setdefault("password_reset_codes", {})[reset_id] = row
-    _auth_audit(state, "create_password_reset_code", user_id=user_id, result="issued", details={"createdBy": changed_by})
-    _write_state(state)
-    return {"userId": user_id, "resetCode": code, "expiresAt": row["expiresAt"]}
+    with _tx() as session:
+        if session.get(User, user_id) is None:
+            raise ValueError("Пользователь не найден")
+        code = f"PWR-{secrets.randbelow(1000000):06d}"
+        record = _resets.issue(
+            session, user_id=user_id, code=code, ttl_hours=ttl_hours, created_by=changed_by
+        )
+        _audit.record(
+            session,
+            action="create_password_reset_code",
+            actor_user_id=changed_by,
+            object_type="user",
+            object_id=user_id,
+            details={"resetId": record.reset_id},
+        )
+        return {"userId": user_id, "resetCode": code, "expiresAt": _iso(record.expires_at)}
 
 
 def reset_password_by_code(code: str, login: str, password: str) -> Dict[str, Any]:
-    state = _read_state()
     normalized_login = _validate_login(login)
     raw_password = _validate_password(password)
-    user_id = str(state.setdefault("logins", {}).get(normalized_login) or "").strip()
-    if not user_id:
-        _auth_audit(state, "reset_password_by_code", login=normalized_login, result="failed")
-        _write_state(state)
-        raise ValueError("Код восстановления недействителен")
+    invalid = "Код восстановления недействителен"
 
-    code_hash = _sha256(str(code or "").strip().upper())
-    found_id = None
-    found = None
-    for reset_id, row in state.setdefault("password_reset_codes", {}).items():
-        if isinstance(row, dict) and row.get("codeHash") == code_hash:
-            found_id = reset_id
-            found = row
-            break
-    if not found_id or not isinstance(found, dict) or str(found.get("userId") or "") != user_id or str(found.get("status") or "pending") != "pending":
-        _auth_audit(state, "reset_password_by_code", user_id=user_id, login=normalized_login, result="failed")
-        _write_state(state)
-        raise ValueError("Код восстановления недействителен")
+    with _tx() as session:
+        user = _users.find_by_identifier(session, "login", normalized_login)
+        if user is None:
+            _audit.record(
+                session,
+                action="reset_password_by_code",
+                result="failed",
+                details={"loginHash": _sha256(normalized_login)},
+            )
+            raise _fail(session, ValueError(invalid))
 
-    expires_at = datetime.fromisoformat(str(found.get("expiresAt")))
-    if _now() > expires_at:
-        found["status"] = "expired"
-        state["password_reset_codes"][found_id] = found
-        _auth_audit(state, "reset_password_by_code", user_id=user_id, login=normalized_login, result="expired")
-        _write_state(state)
-        raise ValueError("Срок действия кода восстановления истёк")
+        record = _resets.find_pending(session, code)
+        if record is None or record.user_id != user.user_id:
+            _audit.record(
+                session,
+                action="reset_password_by_code",
+                actor_user_id=user.user_id,
+                result="failed",
+            )
+            raise _fail(session, ValueError(invalid))
 
-    user = state.setdefault("users", {}).setdefault(user_id, {"userId": user_id, "createdAt": _now_iso()})
-    user["passwordHash"] = _hash_password(raw_password)
-    user["passwordUpdatedAt"] = _now_iso()
-    found["status"] = "used"
-    found["usedAt"] = _now_iso()
-    state["password_reset_codes"][found_id] = found
-    for sid, session in state.get("sessions", {}).items():
-        if session.get("userId") == user_id:
-            session["revoked"] = True
-            state["sessions"][sid] = session
-    role = state.get("role_overrides", {}).get(user_id) or state.get("consents", {}).get(user_id, {}).get("role") or "student"
-    tokens = _create_session(state, user_id=user_id, role=role)
-    _auth_audit(state, "reset_password_by_code", user_id=user_id, login=normalized_login)
-    _write_state(state)
-    return {"userId": user_id, "login": normalized_login, "role": role, **tokens}
+        expires_at = record.expires_at
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if _now() > expires_at:
+            _resets.mark_expired(session, record)
+            _audit.record(
+                session,
+                action="reset_password_by_code",
+                actor_user_id=user.user_id,
+                result="failed",
+                details={"reason": "expired"},
+            )
+            raise _fail(session, ValueError("Срок действия кода восстановления истёк"))
+
+        _credentials.set_password(session, user.user_id, raw_password)
+        _resets.mark_used(session, record)
+        # Everything issued before the password changed is no longer trusted.
+        _sessions.revoke_all_for_user(session, user.user_id, reason="password reset")
+
+        role = _effective_role(session, user.user_id)
+        tokens = _create_session_tx(session, user_id=user.user_id, role=role)
+        _audit.record(
+            session, action="reset_password_by_code", actor_user_id=user.user_id, actor_role=role
+        )
+        return {"userId": user.user_id, "login": normalized_login, "role": role, **tokens}
 
 
 def change_password(user_id: str, current_password: str, new_password: str) -> Dict[str, Any]:
-    state = _read_state()
-    user = state.setdefault("users", {}).get(user_id, {})
-    login = _norm_login(user.get("login")) if isinstance(user, dict) else ""
-    if not isinstance(user, dict) or not login or not _check_password(str(current_password or ""), str(user.get("passwordHash") or "")):
-        _auth_audit(state, "change_password", user_id=user_id, login=login, result="failed")
-        _write_state(state)
-        raise ValueError("Неверный текущий пароль")
-    user["passwordHash"] = _hash_password(_validate_password(new_password))
-    user["passwordUpdatedAt"] = _now_iso()
-    state["users"][user_id] = user
-    _auth_audit(state, "change_password", user_id=user_id, login=login)
-    _write_state(state)
-    return {"ok": True, "userId": user_id}
+    with _tx() as session:
+        user = session.get(User, user_id)
+        if user is None or not _credentials.verify(session, user_id, str(current_password or "")):
+            _audit.record(
+                session, action="change_password", actor_user_id=user_id, result="failed"
+            )
+            raise _fail(session, ValueError("Неверный текущий пароль"))
+        _credentials.set_password(session, user_id, _validate_password(new_password))
+        _audit.record(session, action="change_password", actor_user_id=user_id)
+        return {"ok": True, "userId": user_id}
+
+
+# --------------------------------------------------------------------------- #
+# Sessions
+# --------------------------------------------------------------------------- #
 
 
 def refresh_session(refresh_token: str) -> Dict[str, str]:
-    state = _read_state()
-    found_jti = None
-    session = None
-    hashed = _sha256(refresh_token)
-    for jti, item in state["sessions"].items():
-        if item.get("refreshHash") == hashed:
-            found_jti = jti
-            session = item
-            break
-    if not session or not found_jti:
-        raise ValueError("Session not found")
+    with _tx() as session:
+        token = _sessions.find_by_refresh_token(session, refresh_token)
+        if token is None:
+            raise ValueError("Session not found")
 
-    if session.get("revoked"):
-        raise ValueError("Session revoked")
+        record = session.get(UserSession, token.session_id)
+        if record is None:
+            raise ValueError("Session not found")
+        if record.revoked or token.revoked_at is not None:
+            raise ValueError("Session revoked")
 
-    expires_at = datetime.fromisoformat(session["expiresAt"])
-    if _now() > expires_at:
-        session["revoked"] = True
-        state["sessions"][found_jti] = session
-        _write_state(state)
-        raise ValueError("Refresh token expired")
+        expires_at = token.expires_at
+        if expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if _now() > expires_at:
+            _sessions.revoke(session, record.session_id, reason="refresh token expired")
+            raise ValueError("Refresh token expired")
 
-    user_id = session["userId"]
-    role = state.get("role_overrides", {}).get(user_id) or state.get("consents", {}).get(user_id, {}).get("role") or session.get("role")
+        # Presenting a token that already has a successor means the chain
+        # forked: the whole session dies rather than the request merely failing.
+        if token.used_at is not None or token.replaced_by_token_id is not None:
+            _sessions.revoke(session, record.session_id, reason="refresh token replay")
+            _audit.record(
+                session,
+                action="refresh_replay_detected",
+                actor_user_id=record.user_id,
+                result="denied",
+                denied_link="session",
+            )
+            raise ValueError("Session revoked")
 
-    session["revoked"] = True
-    state["sessions"][found_jti] = session
-    new_tokens = _create_session(state, user_id=user_id, role=role)
-    _write_state(state)
-    return new_tokens
+        role = _effective_role(session, record.user_id, fallback=record.role_key)
+        _sessions.revoke(session, record.session_id, reason="rotated")
+        return _create_session_tx(
+            session, user_id=record.user_id, role=role, device_id=record.device_id
+        )
 
 
 def revoke_session(refresh_token: str) -> None:
-    state = _read_state()
-    hashed = _sha256(refresh_token)
-    for jti, item in state["sessions"].items():
-        if item.get("refreshHash") == hashed:
-            item["revoked"] = True
-            state["sessions"][jti] = item
-            break
-    _write_state(state)
+    with _tx() as session:
+        token = _sessions.find_by_refresh_token(session, refresh_token)
+        if token is None:
+            return
+        _sessions.revoke(session, token.session_id, reason="logout")
 
 
-def revoke_all_sessions(*, changed_by: str = "system", reason: str = "maintenance", user_id: str | None = None) -> Dict[str, Any]:
-    state = _read_state()
-    revoked_count = 0
-    now = _now_iso()
+def revoke_all_sessions(
+    *, changed_by: str = "system", reason: str = "maintenance", user_id: str | None = None
+) -> Dict[str, Any]:
     normalized_user_id = str(user_id or "").strip()
-    for sid, item in state.setdefault("sessions", {}).items():
-        if not isinstance(item, dict):
-            continue
-        if normalized_user_id and str(item.get("userId") or "") != normalized_user_id:
-            continue
-        if item.get("revoked"):
-            continue
-        item["revoked"] = True
-        item["revokedAt"] = now
-        item["revokedBy"] = str(changed_by or "system")
-        item["revokeReason"] = str(reason or "maintenance")
-        state["sessions"][sid] = item
-        revoked_count += 1
+    with _tx() as session:
+        if normalized_user_id:
+            revoked = _sessions.revoke_all_for_user(session, normalized_user_id, reason=reason)
+        else:
+            statement = select(UserSession).where(UserSession.revoked.is_(False))
+            revoked = 0
+            for record in session.execute(statement).scalars().all():
+                _sessions.revoke(session, record.session_id, reason=reason)
+                revoked += 1
 
-    event = {
-        "at": now,
-        "changedBy": str(changed_by or "system"),
-        "reason": str(reason or "maintenance"),
-        "userId": normalized_user_id or None,
-        "revokedCount": revoked_count,
-    }
-    state.setdefault("session_revocations", []).append(event)
-    state["session_revocations"] = state["session_revocations"][-500:]
-    _auth_audit(
-        state,
-        "user_session_revoke_all" if normalized_user_id else "global_session_revoke_all",
-        user_id=normalized_user_id or None,
-        details={"changedBy": event["changedBy"], "reason": event["reason"], "revokedCount": revoked_count},
-    )
-    _write_state(state)
-    return {"ok": True, **event}
+        at = _now_iso()
+        _audit.record(
+            session,
+            action="user_session_revoke_all" if normalized_user_id else "global_session_revoke_all",
+            actor_user_id=changed_by,
+            object_type="user" if normalized_user_id else None,
+            object_id=normalized_user_id or None,
+            details={"reason": reason, "revokedCount": revoked},
+        )
+        return {
+            "ok": True,
+            "at": at,
+            "changedBy": str(changed_by or "system"),
+            "reason": str(reason or "maintenance"),
+            "userId": normalized_user_id or None,
+            "revokedCount": revoked,
+        }
+
+
+def resolve_access_token(access_token: str) -> Dict[str, Any]:
+    """Validate a bearer token against the session it claims to belong to.
+
+    This is the hot path -- every authenticated request goes through it -- and
+    it is now two indexed lookups instead of a full read of the state file.
+    """
+    try:
+        payload = decode_token(access_token)
+    except Exception as error:
+        raise ValueError("Invalid access token") from error
+
+    if str(payload.get("type") or "") != "access":
+        raise ValueError("Invalid token type")
+
+    user_id = str(payload.get("sub") or "")
+    session_id = str(payload.get("sid") or "")
+    access_jti = str(payload.get("jti") or "")
+    if not user_id or not session_id or not access_jti:
+        raise ValueError("Invalid access token claims")
+
+    session = SessionLocal()
+    try:
+        record = session.get(UserSession, session_id)
+        if record is None:
+            raise ValueError("Session not found")
+        if record.revoked:
+            raise ValueError("Session revoked")
+        if record.user_id != user_id:
+            raise ValueError("Session user mismatch")
+        if (record.access_jti or "") != access_jti:
+            raise ValueError("Session token mismatch")
+
+        access_expires_at = record.access_expires_at
+        if access_expires_at is None:
+            raise ValueError("Access token expired")
+        if access_expires_at.tzinfo is None:
+            access_expires_at = access_expires_at.replace(tzinfo=timezone.utc)
+        if _now() > access_expires_at:
+            raise ValueError("Access token expired")
+
+        effective_role = _effective_role(
+            session, user_id, fallback=payload.get("role") or record.role_key
+        )
+        return {
+            "jti": access_jti,
+            "sid": session_id,
+            "userId": user_id,
+            "role": effective_role,
+            "accessExpiresAt": _iso(access_expires_at),
+        }
+    finally:
+        session.close()
+
+
+# --------------------------------------------------------------------------- #
+# Devices
+# --------------------------------------------------------------------------- #
 
 
 def _device_limit_for_role(role: str | None) -> int:
@@ -631,273 +860,342 @@ def _device_limit_for_role(role: str | None) -> int:
     return int(limits.get(normalized, 3))
 
 
+def _device_item(row) -> Dict[str, Any]:
+    return {
+        "deviceId": row.device_id,
+        "label": row.label,
+        "platform": row.platform,
+        "active": bool(row.active),
+        "trustedAt": _iso(row.trusted_at),
+        "lastSeenAt": _iso(row.last_seen_at),
+        "revokedAt": _iso(row.revoked_at),
+    }
+
 
 def list_user_devices(user_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    role = state.get("role_overrides", {}).get(user_id) or state.get("consents", {}).get(user_id, {}).get("role") or "student"
-    sync_school_domain_from_state(state)
+    session = SessionLocal()
     try:
-        pg_items = []
-        for row in list_user_devices_pg(user_id):
-            item = dict(row)
-            for key in ("trustedAt", "lastSeenAt", "revokedAt"):
-                if item.get(key) is not None and hasattr(item.get(key), "isoformat"):
-                    item[key] = item[key].isoformat()
-            pg_items.append(item)
-        if pg_items:
-            return {"userId": user_id, "limit": _device_limit_for_role(role), "items": pg_items}
-    except Exception:
-        pass
-    registry = state.setdefault("device_registry", {}).get(user_id, {})
-    items = []
-    for device_id, row in registry.items():
-        if not isinstance(row, dict):
-            continue
-        item = dict(row)
-        item["deviceId"] = device_id
-        items.append(item)
-    items.sort(key=lambda x: str(x.get("lastSeenAt") or x.get("trustedAt") or ""), reverse=True)
-    return {"userId": user_id, "limit": _device_limit_for_role(role), "items": items}
+        role = _effective_role(session, user_id)
+        items = [_device_item(row) for row in _devices.list_for_user(session, user_id)]
+        return {"userId": user_id, "limit": _device_limit_for_role(role), "items": items}
+    finally:
+        session.close()
 
 
-
-def register_user_device(user_id: str, role: str | None, device_id: str, label: str | None, platform: str | None, session_id: str | None = None) -> Dict[str, Any]:
-    state = _read_state()
+def register_user_device(
+    user_id: str,
+    role: str | None,
+    device_id: str,
+    label: str | None,
+    platform: str | None,
+    session_id: str | None = None,
+) -> Dict[str, Any]:
     normalized_device_id = str(device_id or "").strip()
     if not normalized_device_id:
         raise ValueError("deviceId обязателен")
-    registry_root = state.setdefault("device_registry", {})
-    user_registry = registry_root.setdefault(user_id, {}) if isinstance(registry_root.get(user_id), dict) else {}
-    active_count = len([1 for row in user_registry.values() if isinstance(row, dict) and row.get("active", True)])
-    row = user_registry.get(normalized_device_id, {}) if isinstance(user_registry.get(normalized_device_id), dict) else {}
-    is_new = not row
-    if is_new and active_count >= _device_limit_for_role(role):
-        raise ValueError("Достигнут лимит устройств")
-    row.update({
-        "label": str(label or "").strip() or "Устройство",
-        "platform": str(platform or "").strip() or None,
-        "active": True,
-        "trustedAt": row.get("trustedAt") or _now_iso(),
-        "lastSeenAt": _now_iso(),
-    })
-    user_registry[normalized_device_id] = row
-    registry_root[user_id] = user_registry
-    state["device_registry"] = registry_root
-    if session_id and session_id in state.get("sessions", {}):
-        session = state["sessions"][session_id]
-        if session.get("userId") == user_id and not session.get("revoked"):
-            session["deviceId"] = normalized_device_id
-            session["deviceBoundAt"] = _now_iso()
-            state["sessions"][session_id] = session
-    _auth_audit(state, "device_register", user_id=user_id, result="ok", details={"deviceHash": _sha256(normalized_device_id), "platform": platform})
-    _write_state(state)
-    sync_school_domain_from_state(state)
-    return {"deviceId": normalized_device_id, **row, "limit": _device_limit_for_role(role)}
 
+    with _tx() as session:
+        if session.get(User, user_id) is None:
+            raise ValueError("Пользователь не найден")
+
+        existing = _devices.get(session, user_id, normalized_device_id)
+        if existing is None and _devices.active_count(session, user_id) >= _device_limit_for_role(
+            role
+        ):
+            raise ValueError("Достигнут лимит устройств")
+
+        row = _devices.upsert(
+            session,
+            user_id=user_id,
+            device_id=normalized_device_id,
+            label=str(label or "").strip() or "Устройство",
+            platform=str(platform or "").strip() or None,
+        )
+
+        if session_id:
+            user_session = session.get(UserSession, session_id)
+            if (
+                user_session is not None
+                and user_session.user_id == user_id
+                and not user_session.revoked
+            ):
+                user_session.device_id = normalized_device_id
+
+        _audit.record(
+            session,
+            action="device_register",
+            actor_user_id=user_id,
+            object_type="device",
+            object_id=_sha256(normalized_device_id),
+            details={"platform": platform},
+        )
+        item = _device_item(row)
+
+    return {**item, "limit": _device_limit_for_role(role)}
 
 
 def revoke_user_device(user_id: str, device_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    registry_root = state.setdefault("device_registry", {})
-    user_registry = registry_root.get(user_id, {}) if isinstance(registry_root.get(user_id), dict) else {}
-    row = user_registry.get(device_id)
-    if not isinstance(row, dict):
-        raise ValueError("Устройство не найдено")
-    row["active"] = False
-    row["revokedAt"] = _now_iso()
-    user_registry[device_id] = row
-    registry_root[user_id] = user_registry
-    state["device_registry"] = registry_root
-    for sid, session in state.get("sessions", {}).items():
-        if session.get("userId") == user_id and session.get("deviceId") == device_id:
-            session["revoked"] = True
-            state["sessions"][sid] = session
-    _auth_audit(state, "device_revoke", user_id=user_id, result="ok", details={"deviceHash": _sha256(str(device_id or ''))})
-    _write_state(state)
-    sync_school_domain_from_state(state)
-    return {"ok": True, "userId": user_id, "deviceId": device_id}
+    with _tx() as session:
+        if not _devices.revoke(session, user_id, device_id):
+            raise ValueError("Устройство не найдено")
+        statement = select(UserSession).where(
+            UserSession.user_id == user_id,
+            UserSession.device_id == device_id,
+            UserSession.revoked.is_(False),
+        )
+        for record in session.execute(statement).scalars().all():
+            _sessions.revoke(session, record.session_id, reason="device revoked")
+        _audit.record(
+            session,
+            action="device_revoke",
+            actor_user_id=user_id,
+            object_type="device",
+            object_id=_sha256(str(device_id or "")),
+        )
+        return {"ok": True, "userId": user_id, "deviceId": device_id}
 
 
+def reset_user_devices(
+    user_id: str, changed_by: str, school_id: str | None = None, class_id: str | None = None
+) -> Dict[str, Any]:
+    with _tx() as session:
+        if session.get(User, user_id) is None:
+            raise ValueError("Пользователь не найден")
 
-def reset_user_devices(user_id: str, changed_by: str, school_id: str | None = None, class_id: str | None = None) -> Dict[str, Any]:
-    state = _read_state()
-    registry_root = state.setdefault("device_registry", {})
-    user_registry = registry_root.get(user_id, {}) if isinstance(registry_root.get(user_id), dict) else {}
-    reset_count = 0
-    for device_id, row in user_registry.items():
-        if isinstance(row, dict) and row.get("active", True):
-            row["active"] = False
-            row["revokedAt"] = _now_iso()
-            user_registry[device_id] = row
-            reset_count += 1
-    registry_root[user_id] = user_registry
-    state["device_registry"] = registry_root
-    for sid, session in state.get("sessions", {}).items():
-        if session.get("userId") == user_id:
-            session["revoked"] = True
-            state["sessions"][sid] = session
-    code = f"RST-{abs(hash((user_id, changed_by, _now_iso()))) % 1000000:06d}"
-    state.setdefault("device_recovery_codes", {})[code] = {
-        "code": code,
-        "userId": user_id,
-        "schoolId": school_id,
-        "classId": class_id,
-        "status": "pending",
-        "createdAt": _now_iso(),
-        "expiresAt": (_now() + timedelta(days=3)).isoformat(),
-        "createdBy": changed_by,
-    }
-    _write_state(state)
-    sync_school_domain_from_state(state)
-    return {"ok": True, "userId": user_id, "resetDevices": reset_count, "recoveryCode": code, "expiresAt": state["device_recovery_codes"][code]["expiresAt"]}
+        reset_count = _devices.revoke_all(session, user_id)
+        _sessions.revoke_all_for_user(session, user_id, reason="device reset")
+
+        # Six random digits from the CSPRNG. The previous implementation used
+        # ``abs(hash((...))) % 1000000``, which is neither uniform nor
+        # unpredictable -- and under PYTHONHASHSEED it is not even stable.
+        code = f"RST-{secrets.randbelow(1000000):06d}"
+        record = _devices.issue_recovery_code(
+            session,
+            code=code,
+            user_id=user_id,
+            school_id=school_id,
+            class_id=class_id,
+            created_by=changed_by,
+        )
+        _audit.record(
+            session,
+            action="device_reset",
+            actor_user_id=changed_by,
+            object_type="user",
+            object_id=user_id,
+            school_id=school_id,
+            class_id=class_id,
+            details={"resetDevices": reset_count},
+        )
+        return {
+            "ok": True,
+            "userId": user_id,
+            "resetDevices": reset_count,
+            "recoveryCode": code,
+            "expiresAt": _iso(record.expires_at),
+        }
 
 
-
-def activate_device_recovery_code(code: str, phone: str, display_name: str | None = None) -> Dict[str, Any]:
-    state = _read_state()
+def activate_device_recovery_code(
+    code: str, phone: str, display_name: str | None = None
+) -> Dict[str, Any]:
     normalized_code = str(code or "").strip().upper()
     if not normalized_code:
         raise ValueError("Код восстановления обязателен")
     normalized_phone = _norm_phone(phone)
     if not normalized_phone:
         raise ValueError("Телефон обязателен")
-    _check_attempt_limit(state, "device_recovery", normalized_phone, limit=5, window_sec=900, lock_min=15)
-    row = state.setdefault("device_recovery_codes", {}).get(normalized_code)
-    if not isinstance(row, dict):
-        _record_attempt_failure(state, "device_recovery", normalized_phone, limit=5, window_sec=900, lock_min=15)
-        _write_state(state)
-        raise ValueError("Код восстановления не найден")
-    if str(row.get("status") or "pending") != "pending":
-        raise ValueError("Код восстановления уже использован")
-    expires_at = datetime.fromisoformat(str(row.get("expiresAt")))
-    if _now() > expires_at:
-        row["status"] = "expired"
-        state["device_recovery_codes"][normalized_code] = row
-        _write_state(state)
-        raise ValueError("Срок действия кода восстановления истёк")
-    user_id = str(row.get("userId") or "").strip()
-    if not user_id:
-        raise ValueError("Код восстановления поврежден")
-    state.setdefault("phones", {})[normalized_phone] = user_id
-    user = state.setdefault("users", {}).setdefault(user_id, {"userId": user_id, "createdAt": _now_iso()})
-    user["phone"] = normalized_phone
-    if display_name:
-        user["displayName"] = str(display_name).strip()
-    role = state.get("role_overrides", {}).get(user_id) or state.get("consents", {}).get(user_id, {}).get("role") or "student"
-    tokens = _create_session(state, user_id=user_id, role=role)
-    row["status"] = "activated"
-    row["activatedAt"] = _now_iso()
-    state["device_recovery_codes"][normalized_code] = row
-    _clear_attempts(state, "device_recovery", normalized_phone)
-    _auth_audit(state, "device_recovery_activate", user_id=user_id, result="ok")
-    _write_state(state)
-    sync_school_domain_from_state(state)
-    return {"userId": user_id, "phone": normalized_phone, "role": role, **tokens}
+
+    with _tx() as session:
+        key = _guard_attempts(session, "device_recovery", normalized_phone)
+        record = _devices.find_recovery_code(session, normalized_code)
+        if record is None:
+            _register_failure(session, key, "device_recovery")
+            raise _fail(session, ValueError("Код восстановления не найден"))
+        if str(record.status or "pending") != "pending":
+            raise ValueError("Код восстановления уже использован")
+
+        expires_at = record.expires_at
+        if expires_at is not None and expires_at.tzinfo is None:
+            expires_at = expires_at.replace(tzinfo=timezone.utc)
+        if expires_at is not None and _now() > expires_at:
+            record.status = "expired"
+            raise _fail(session, ValueError("Срок действия кода восстановления истёк"))
+
+        user_id = str(record.user_id or "").strip()
+        if not user_id:
+            raise ValueError("Код восстановления поврежден")
+
+        user = session.get(User, user_id)
+        if user is None:
+            raise ValueError("Код восстановления поврежден")
+
+        attach_identifier(
+            session,
+            user_id=user_id,
+            kind="phone",
+            value=normalized_phone,
+            value_normalized=normalized_phone,
+            is_primary=True,
+            verified=True,
+        )
+        if display_name:
+            user.display_name = str(display_name).strip()
+
+        role = _effective_role(session, user_id)
+        tokens = _create_session_tx(session, user_id=user_id, role=role)
+        record.status = "used"
+        record.used_at = _now()
+        _register_success(session, key, "device_recovery", user_id)
+        _audit.record(session, action="device_recovery_activate", actor_user_id=user_id)
+        return {"userId": user_id, "phone": normalized_phone, "role": role, **tokens}
 
 
-def resolve_access_token(access_token: str) -> Dict[str, Any]:
-    state = _read_state()
-    try:
-        payload = decode_token(access_token)
-    except Exception as e:
-        raise ValueError("Invalid access token") from e
-
-    token_type = str(payload.get("type") or "")
-    user_id = str(payload.get("sub") or "")
-    session_id = str(payload.get("sid") or "")
-    access_jti = str(payload.get("jti") or "")
-    role = payload.get("role")
-
-    if token_type != "access":
-        raise ValueError("Invalid token type")
-    if not user_id or not session_id or not access_jti:
-        raise ValueError("Invalid access token claims")
-
-    session = state["sessions"].get(session_id)
-    if not session:
-        raise ValueError("Session not found")
-
-    if session.get("revoked"):
-        raise ValueError("Session revoked")
-
-    if str(session.get("userId") or "") != user_id:
-        raise ValueError("Session user mismatch")
-
-    if str(session.get("accessJti") or "") != access_jti:
-        raise ValueError("Session token mismatch")
-
-    access_expires_at = datetime.fromisoformat(session["accessExpiresAt"])
-    if _now() > access_expires_at:
-        raise ValueError("Access token expired")
-
-    effective_role = state.get("role_overrides", {}).get(user_id) or role or session.get("role") or "student"
-
-    return {
-        "jti": access_jti,
-        "sid": session_id,
-        "userId": user_id,
-        "role": effective_role,
-        "accessExpiresAt": session["accessExpiresAt"],
-    }
+# --------------------------------------------------------------------------- #
+# Consents, entitlements, client state
+# --------------------------------------------------------------------------- #
 
 
-def save_consent(user_id: str, role: str, version: str, accepted_at: Optional[str], parent_approved: bool) -> Dict[str, Any]:
-    state = _read_state()
-    data = {
-        "userId": user_id,
-        "role": role,
-        "version": version,
-        "acceptedAt": accepted_at or _now_iso(),
-        "parentApproved": parent_approved,
-    }
-    state["consents"][user_id] = data
-    state["entitlements"].setdefault(user_id, _default_entitlements())
-    _write_state(state)
-    return data
+def save_consent(
+    user_id: str, role: str, version: str, accepted_at: Optional[str], parent_approved: bool
+) -> Dict[str, Any]:
+    with _tx() as session:
+        ensure_user(session, user_id)
+        moment = _now()
+        if accepted_at:
+            try:
+                moment = datetime.fromisoformat(str(accepted_at).replace("Z", "+00:00"))
+            except ValueError:
+                moment = _now()
+        if moment.tzinfo is None:
+            moment = moment.replace(tzinfo=timezone.utc)
+
+        if not _consents.has_accepted(session, user_id, "terms", version):
+            _consents.record(
+                session,
+                user_id=user_id,
+                consent_type="terms",
+                document_version=version,
+                accepted_at=moment,
+                subject_role=role,
+            )
+        if parent_approved and not _consents.has_accepted(
+            session, user_id, "parent_approval", version
+        ):
+            _consents.record(
+                session,
+                user_id=user_id,
+                consent_type="parent_approval",
+                document_version=version,
+                accepted_at=moment,
+                subject_role=role,
+            )
+
+        # The legacy store treated the role recorded on the consent as the
+        # user's role, and re-consenting with a different role changed it. That
+        # behaviour is preserved verbatim -- it is what the cabinet flow and the
+        # existing contract tests depend on -- but it is now an explicit
+        # assignment, so "why does this account have this role" has a row for an
+        # answer instead of a guess.
+        #
+        # SECURITY NOTE, raised for the owner rather than changed unilaterally:
+        # POST /users/consents/accept takes userId and role in the body and is
+        # not authenticated, so this path lets a caller pick their own role.
+        # Fixing it changes authentication behaviour, which §14 of the delivery
+        # contract reserves for an explicit decision.
+        _set_global_role(
+            session, user_id, role, granted_by="consent", yield_to_override=True
+        )
+
+        _entitlement_writes.ensure_defaults(session, user_id)
+        return {
+            "userId": user_id,
+            "role": role,
+            "version": version,
+            "acceptedAt": moment.isoformat(),
+            "parentApproved": bool(parent_approved),
+        }
 
 
 def get_consent(user_id: str) -> Optional[Dict[str, Any]]:
-    state = _read_state()
-    return state["consents"].get(user_id)
+    session = SessionLocal()
+    try:
+        terms = _consents.latest(session, user_id, "terms")
+        if terms is None:
+            return None
+        parent = _consents.latest(session, user_id, "parent_approval")
+        return {
+            "userId": user_id,
+            "role": terms.subject_role,
+            "version": terms.document_version,
+            "acceptedAt": _iso(terms.accepted_at),
+            "parentApproved": parent is not None,
+        }
+    finally:
+        session.close()
 
 
 def get_entitlements(user_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    ent = state["entitlements"].get(user_id)
-    if not ent:
-        ent = _default_entitlements()
-        state["entitlements"][user_id] = ent
-        _write_state(state)
-    return {
-        "userId": user_id,
-        "plans": ent["plans"],
-        "modules": ent["modules"],
-        "aiQuotaLeft": ent["ai_quota_left"],
-    }
+    with _tx() as session:
+        if session.get(User, user_id) is not None:
+            _entitlement_writes.ensure_defaults(session, user_id)
+            plans = sorted(_entitlements.plans(session, user_id))
+            modules = sorted(_entitlements.modules(session, user_id))
+            quota = _entitlement_writes.quota(session, user_id)
+        else:
+            # An unknown account gets the defaults as an answer but no row: a
+            # read must not create an account.
+            defaults = _default_entitlements()
+            plans, modules, quota = (
+                defaults["plans"],
+                defaults["modules"],
+                defaults["ai_quota_left"],
+            )
+        return {
+            "userId": user_id,
+            "plans": plans,
+            "modules": modules,
+            "aiQuotaLeft": quota,
+        }
 
 
-def save_device_sync(user_id: str, content_versions: Dict[str, str], purchases: List[str], preferences: Dict[str, Any]) -> Dict[str, Any]:
-    state = _read_state()
-    data = {
-        "userId": user_id,
-        "contentVersions": content_versions,
-        "purchases": purchases,
-        "preferences": preferences,
-    }
-    state["device_sync"][user_id] = data
-
-    ent = state["entitlements"].setdefault(user_id, _default_entitlements())
-    ent["modules"] = sorted(set(ent.get("modules", []) + purchases))
-
-    _write_state(state)
-    return data
+def save_device_sync(
+    user_id: str,
+    content_versions: Dict[str, str],
+    purchases: List[str],
+    preferences: Dict[str, Any],
+) -> Dict[str, Any]:
+    with _tx() as session:
+        ensure_user(session, user_id)
+        _entitlement_writes.ensure_defaults(session, user_id)
+        _entitlement_writes.grant_modules(session, user_id, purchases or [], source="legacy")
+        _app_state.upsert(
+            session,
+            user_id=user_id,
+            content_versions=dict(content_versions or {}),
+            preferences=dict(preferences or {}),
+        )
+        return {
+            "userId": user_id,
+            "contentVersions": dict(content_versions or {}),
+            "purchases": list(purchases or []),
+            "preferences": dict(preferences or {}),
+        }
 
 
 def get_device_sync(user_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    data = state["device_sync"].get(user_id)
-    if data:
-        return data
+    session = SessionLocal()
+    try:
+        record = _app_state.get(session, user_id)
+        if record is not None:
+            return {
+                "userId": user_id,
+                "contentVersions": dict(record.content_versions or {}),
+                "purchases": sorted(_entitlements.modules(session, user_id)),
+                "preferences": dict(record.preferences or {}),
+            }
+    finally:
+        session.close()
     return {
         "userId": user_id,
         "contentVersions": {"chemistry_core": "v1"},
@@ -906,159 +1204,278 @@ def get_device_sync(user_id: str) -> Dict[str, Any]:
     }
 
 
+# --------------------------------------------------------------------------- #
+# Subject rights: export and erasure
+# --------------------------------------------------------------------------- #
+
+
 def export_user_data(user_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    user = state.setdefault("users", {}).get(user_id, {}) if user_id else {}
-    if not isinstance(user, dict) or not user:
-        raise ValueError("Пользователь не найден")
-    devices = list_user_devices(user_id)
-    payload = {
-        "userId": user_id,
-        "generatedAt": _now_iso(),
-        "profile": {k: v for k, v in user.items() if k not in {"passwordHash"}},
-        "consent": state.setdefault("consents", {}).get(user_id),
-        "entitlements": state.setdefault("entitlements", {}).get(user_id),
-        "deviceSync": state.setdefault("device_sync", {}).get(user_id),
-        "devices": devices.get("items", []),
-        "accessGrants": state.setdefault("access_grants", {}).get(user_id, []),
-        "sessions": [
-            {"sid": sid, "role": row.get("role"), "createdAt": row.get("createdAt"), "expiresAt": row.get("expiresAt"), "revoked": row.get("revoked", False), "deviceId": row.get("deviceId")}
-            for sid, row in state.setdefault("sessions", {}).items()
-            if isinstance(row, dict) and row.get("userId") == user_id
-        ],
-    }
-    _auth_audit(state, "user_data_export", user_id=user_id)
-    _write_state(state)
-    return payload
+    """Everything the platform holds about one person, in one document.
+
+    This is the technical mechanism behind the "право на доступ и переносимость"
+    clause of the privacy policy. A policy that promises an export without an
+    endpoint that produces one is a promise the product cannot keep.
+    """
+    with _tx() as session:
+        user = session.get(User, user_id)
+        if user is None:
+            raise ValueError("Пользователь не найден")
+
+        identifiers = _users.identifiers(session, user_id)
+        credential = session.get(UserCredential, user_id)
+        app_state = _app_state.get(session, user_id)
+        consent = get_consent(user_id)
+
+        payload = {
+            "userId": user_id,
+            "generatedAt": _now_iso(),
+            "profile": {
+                "userId": user_id,
+                "displayName": user.display_name,
+                "status": user.status,
+                "createdAt": _iso(user.created_at),
+                "lastLoginAt": _iso(user.last_login_at),
+                "identifiers": [
+                    {
+                        "kind": row.kind,
+                        "value": row.value,
+                        "primary": bool(row.is_primary),
+                        "verifiedAt": _iso(row.verified_at),
+                    }
+                    for row in identifiers
+                ],
+                # The hash is never exported. It is not the subject's personal
+                # data in any useful sense and publishing it only helps an
+                # attacker who already has the file.
+                "hasPassword": credential is not None,
+                "passwordUpdatedAt": _iso(credential.updated_at) if credential else None,
+            },
+            "consent": consent,
+            "entitlements": get_entitlements(user_id),
+            "deviceSync": {
+                "contentVersions": dict(app_state.content_versions or {}) if app_state else {},
+                "preferences": dict(app_state.preferences or {}) if app_state else {},
+            },
+            "devices": [_device_item(row) for row in _devices.list_for_user(session, user_id)],
+            "accessGrants": [
+                {
+                    "grantId": row.grant_id,
+                    "status": row.status,
+                    "createdAt": _iso(row.created_at),
+                    "expiresAt": _iso(row.expires_at),
+                }
+                for row in session.execute(
+                    select(AccessGrant).where(AccessGrant.user_id == user_id)
+                ).scalars().all()
+            ],
+            "sessions": [
+                {
+                    "sid": row.session_id,
+                    "role": row.role_key,
+                    "createdAt": _iso(row.created_at),
+                    "expiresAt": _iso(row.expires_at),
+                    "revoked": bool(row.revoked),
+                    "deviceId": row.device_id,
+                }
+                for row in session.execute(
+                    select(UserSession)
+                    .where(UserSession.user_id == user_id)
+                    .order_by(UserSession.created_at.desc())
+                ).scalars().all()
+            ],
+            "learningEvents": [
+                {
+                    "lessonId": row.lesson_id,
+                    "taskId": row.task_id,
+                    "outcome": row.outcome,
+                    "occurredAt": _iso(row.occurred_at or row.received_at),
+                }
+                for row in _learning.for_user(session, user_id)
+            ],
+        }
+        _audit.record(session, action="user_data_export", actor_user_id=user_id)
+        return payload
 
 
 def delete_user_data(user_id: str) -> Dict[str, Any]:
-    state = _read_state()
-    users = state.setdefault("users", {})
-    user = users.get(user_id, {}) if isinstance(users.get(user_id), dict) else {}
-    if not user:
-        raise ValueError("Пользователь не найден")
-    login = _norm_login(user.get("login"))
-    phone = str(user.get("phone") or "")
-    if login:
-        state.setdefault("logins", {}).pop(login, None)
-    if phone and state.setdefault("phones", {}).get(phone) == user_id:
-        state.setdefault("phones", {}).pop(phone, None)
-    for sid, session in state.setdefault("sessions", {}).items():
-        if isinstance(session, dict) and session.get("userId") == user_id:
-            session["revoked"] = True
-            state["sessions"][sid] = session
-    users[user_id] = {
-        "userId": user_id,
-        "deleted": True,
-        "deletedAt": _now_iso(),
-        "phoneHash": _sha256(phone) if phone else None,
-        "loginHash": _sha256(login) if login else None,
-    }
-    for key in ["consents", "entitlements", "device_sync", "device_registry", "access_grants", "role_overrides", "user_role_modes"]:
-        bucket = state.setdefault(key, {})
-        if isinstance(bucket, dict):
-            bucket.pop(user_id, None)
-    _auth_audit(state, "user_data_delete", user_id=user_id, result="ok")
-    _write_state(state)
-    return {"ok": True, "userId": user_id, "deletedAt": users[user_id]["deletedAt"]}
+    """Erase a person while keeping the account row as a tombstone.
+
+    The row survives because ten other tables carry the id as a foreign key and
+    because the school must still be able to see that a seat was occupied. What
+    is erased is everything that identifies the person: identifiers, password,
+    devices, preferences and display name. What remains is an id and the fact
+    that it was deleted, which identifies nobody.
+    """
+    with _tx() as session:
+        user = session.get(User, user_id)
+        if user is None or user.status == "deleted":
+            raise ValueError("Пользователь не найден")
+
+        deleted_at = _now()
+        identifier_hashes = []
+        for identifier in list(_users.identifiers(session, user_id)):
+            identifier_hashes.append(
+                {"kind": identifier.kind, "hash": _sha256(identifier.value_normalized)}
+            )
+            session.delete(identifier)
+
+        credential = session.get(UserCredential, user_id)
+        if credential is not None:
+            session.delete(credential)
+
+        app_state = _app_state.get(session, user_id)
+        if app_state is not None:
+            session.delete(app_state)
+
+        _devices.revoke_all(session, user_id)
+        _sessions.revoke_all_for_user(session, user_id, reason="account deleted")
+
+        user.status = "deleted"
+        user.deleted_at = deleted_at
+        user.display_name = None
+        user.updated_at = deleted_at
+
+        _audit.record(
+            session,
+            action="user_data_delete",
+            actor_user_id=user_id,
+            object_type="user",
+            object_id=user_id,
+            details={"identifiers": identifier_hashes},
+        )
+        return {"ok": True, "userId": user_id, "deletedAt": deleted_at.isoformat()}
+
+
+# --------------------------------------------------------------------------- #
+# Event ingestion
+# --------------------------------------------------------------------------- #
 
 
 def ingest_telemetry(events: List[Dict[str, Any]]) -> Dict[str, Any]:
-    state = _read_state()
-    received_at = _now_iso()
-    for event in events:
-        state["telemetry"].append({**event, "receivedAt": received_at})
-    state["telemetry"] = state["telemetry"][-5000:]
-    _write_state(state)
-    return {"accepted": len(events), "receivedAt": received_at}
+    with _tx() as session:
+        accepted = _telemetry.ingest(session, events or [])
+    return {"accepted": accepted, "receivedAt": _now_iso()}
 
 
-def _project_learning_event_to_teacher_live(state: Dict[str, Any], event: Dict[str, Any], received_at: str) -> None:
+def ingest_learning_events(events: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Store attempts and project the ones that belong to a running lesson.
+
+    The projection is part of the same transaction as the attempt: a teacher's
+    live board and the pupil's stored attempt cannot disagree about whether the
+    answer arrived.
+    """
+    payloads = [event for event in (events or []) if isinstance(event, dict)]
+    with _tx() as session:
+        accepted, _duplicates = _learning.ingest(session, payloads)
+        for event in payloads:
+            _project_to_live_session(session, event)
+    return {"accepted": accepted, "receivedAt": _now_iso()}
+
+
+def _project_to_live_session(session: Session, event: Dict[str, Any]) -> None:
     session_id = str(event.get("sessionId") or "").strip()
     if not session_id:
         return
-
-    teacher_live = state.setdefault("teacher_live", {})
-    sessions = teacher_live.setdefault("sessions", {})
-    session = sessions.get(session_id)
-    if not session or str(session.get("status") or "") != "active":
+    live = _live.get_active(session, session_id)
+    if live is None:
         return
 
     outcome = str(event.get("outcome") or "").strip().lower()
     if outcome not in {"correct", "wrong", "pending"}:
         return
 
-    task_id = str(event.get("taskId") or "unknown").strip() or "unknown"
-    lesson_id = str(event.get("lessonId") or "general").strip() or "general"
-    classroom = str(event.get("classroom") or "general").strip() or "general"
     user_id = str(event.get("userId") or "unknown").strip() or "unknown"
-    mistake_tag = str(event.get("mistakeTag") or "general_concept").strip() or "general_concept"
+    classroom = str(event.get("classroom") or "general").strip() or "general"
 
-    participants = session.setdefault("participants", {})
-    if user_id not in participants:
-        session["studentsJoined"] = int(session.get("studentsJoined") or 0) + 1
-        participants[user_id] = {
-            "joinedAt": received_at,
-            "classroom": classroom,
-            "role": str(event.get("role") or "student"),
-            "rosterMatched": None,
+    _live.join(
+        session,
+        session_id=session_id,
+        user_id=user_id,
+        classroom=classroom,
+        role_key=str(event.get("role") or "student"),
+    )
+    _live.record_event(
+        session,
+        session_id=session_id,
+        student_user_id=user_id,
+        outcome=outcome,
+        task_id=str(event.get("taskId") or "unknown").strip() or "unknown",
+        lesson_id=str(event.get("lessonId") or "general").strip() or "general",
+        classroom=classroom,
+        mistake_tag=str(event.get("mistakeTag") or "general_concept").strip()
+        or "general_concept",
+        source="learning_event",
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Account provisioning for the flows that do not start with a login
+# --------------------------------------------------------------------------- #
+
+
+def ensure_service_account(user_id: str, role: str, *, display_name: str | None = None) -> str:
+    """Make sure a configuration-provisioned account exists, with its role.
+
+    The admin console signs in against ``ADMIN_UI_LOGIN``/``ADMIN_UI_PASSWORD``
+    from the environment and then acts as ``ADMIN_UI_USER_ID``. In the JSON
+    store that id was conjured into the ``users`` map at first login and nothing
+    ever checked it again. ``user_sessions.user_id`` is a foreign key now, so
+    the account has to be real before a session can name it -- which is the
+    point: an id that carries the owner role must be a row that can be audited,
+    suspended and revoked like any other.
+
+    Idempotent. Returns the role actually in force.
+    """
+    with _tx() as session:
+        ensure_user(session, user_id, display_name=display_name)
+        effective = _set_global_role(session, user_id, role, granted_by="service_account")
+        if effective is None:
+            raise ValueError(f"Роль {role} не зарегистрирована")
+        return effective
+
+
+def ensure_account_with_phone(
+    user_id: str,
+    phone: str,
+    *,
+    display_name: str | None = None,
+    role: str | None = None,
+) -> Dict[str, Any]:
+    """Provision the account behind a school invitation code.
+
+    A pupil who activates an invitation has never logged in, so the account is
+    created here rather than by the OTP flow. Everything it needs to exist as a
+    first-class account -- the row, the phone identifier, the free plan and the
+    role the invitation carries -- is created in one transaction, because an
+    invitation that half-activates leaves a pupil who cannot log in and a seat
+    the school has already paid for.
+    """
+    normalized_phone = _norm_phone(phone)
+    if not normalized_phone:
+        raise ValueError("Телефон обязателен")
+
+    with _tx() as session:
+        existing = _users.find_by_identifier(session, "phone", normalized_phone)
+        resolved_id = existing.user_id if existing is not None else str(user_id or "").strip()
+        if not resolved_id:
+            raise ValueError("Не удалось определить учётную запись")
+
+        ensure_user(session, resolved_id, display_name=display_name)
+        attach_identifier(
+            session,
+            user_id=resolved_id,
+            kind="phone",
+            value=normalized_phone,
+            value_normalized=normalized_phone,
+            is_primary=True,
+            verified=True,
+        )
+        if display_name:
+            session.get(User, resolved_id).display_name = str(display_name).strip()
+        _entitlement_writes.ensure_defaults(session, resolved_id)
+        effective_role = _set_global_role(session, resolved_id, role, granted_by="school_invite")
+        return {
+            "userId": resolved_id,
+            "phone": normalized_phone,
+            "role": effective_role or "student",
         }
-
-    key = f"{task_id}::{lesson_id}"
-    attempts = session.setdefault("attempts", {})
-    stats = attempts.setdefault(key, {"ok": 0, "wrong": 0, "pending": 0})
-    if outcome == "correct":
-        stats["ok"] = int(stats.get("ok") or 0) + 1
-    elif outcome == "wrong":
-        stats["wrong"] = int(stats.get("wrong") or 0) + 1
-    else:
-        stats["pending"] = int(stats.get("pending") or 0) + 1
-
-    event_payload = {
-        "at": received_at,
-        "sessionId": session_id,
-        "teacherUserId": session.get("teacherUserId"),
-        "studentId": user_id,
-        "event": outcome,
-        "taskId": task_id,
-        "lessonId": lesson_id,
-        "classroom": classroom,
-        "mistakeTag": mistake_tag,
-        "source": "learning_event",
-    }
-
-    session_events = session.setdefault("events", [])
-    session_events.append(event_payload)
-    session["events"] = session_events[-5000:]
-
-    global_events = teacher_live.setdefault("events", [])
-    global_events.append(event_payload)
-    teacher_live["events"] = global_events[-5000:]
-
-    session["updatedAt"] = received_at
-
-
-def ingest_learning_events(events: List[Dict[str, Any]]) -> Dict[str, Any]:
-    state = _read_state()
-    received_at = _now_iso()
-    for event in events:
-        payload = dict(event)
-        base_payload = payload.get("payload") if isinstance(payload.get("payload"), dict) else {}
-        duration_sec = base_payload.get("durationSec")
-        flags: List[str] = []
-        try:
-            d = float(duration_sec) if duration_sec is not None else None
-            if d is not None and d < 2.0:
-                flags.append("too_fast_answer")
-        except Exception:
-            pass
-        if flags:
-            payload["integrityFlags"] = flags
-
-        state["learning_events"].append({**payload, "receivedAt": received_at})
-        _project_learning_event_to_teacher_live(state, payload, received_at)
-
-    state["learning_events"] = state["learning_events"][-10000:]
-    _write_state(state)
-    return {"accepted": len(events), "receivedAt": received_at}

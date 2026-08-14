@@ -57,6 +57,9 @@ from app.models.identity import (
     UserSession,
 )
 from app.models.progress import UserProgressServer
+from app.models.live import LiveSession, LiveSessionEvent, LiveSessionParticipant
+from app.models.recovery import PasswordResetCode
+from app.models.telemetry import LearningEvent, TelemetryEvent
 from app.models.school import (
     AccessGrant,
     AccessGrantOrphaned,
@@ -72,6 +75,12 @@ from app.models.school import (
 )
 
 __all__ = [
+    "TelemetryEvent",
+    "PasswordResetCode",
+    "LiveSessionParticipant",
+    "LiveSessionEvent",
+    "LiveSession",
+    "LearningEvent",
     "AccessGrant",
     "AccessGrantOrphaned",
     "AiDoc",

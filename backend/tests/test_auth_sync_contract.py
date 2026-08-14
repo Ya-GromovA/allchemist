@@ -166,10 +166,30 @@ class AuthSyncContractTest(unittest.TestCase):
         new_password = self.client.post("/api/v1/auth/login", json={"login": "ivan_10f", "password": "NewPassw0rd2"})
         self.assertEqual(new_password.status_code, 200, new_password.text)
 
+        # The password hash lives in user_credentials, and is deliberately not
+        # projected into the legacy dictionary: nothing above the credential
+        # repository has any business reading it. What is asserted here is what
+        # the old assertion meant -- the password is stored hashed, not as it
+        # was typed -- plus the algorithm it is now stored with.
+        from app.db.session import SessionLocal
+        from app.models.identity import UserCredential
+
+        session = SessionLocal()
+        try:
+            credential = session.get(UserCredential, activated_json["userId"])
+            self.assertIsNotNone(credential)
+            self.assertEqual(credential.algorithm, "argon2id")
+            self.assertTrue(credential.password_hash.startswith("$argon2id$"))
+            self.assertNotIn("NewPassw0rd2", credential.password_hash)
+            self.assertFalse(credential.needs_rehash)
+        finally:
+            session.close()
+
         stored = store._read_state()
         user = stored["users"][activated_json["userId"]]
-        self.assertNotEqual(user.get("passwordHash"), "NewPassw0rd2")
-        self.assertTrue(str(user.get("passwordHash") or "").startswith(("$2", "pbkdf2_sha256$")))
+        self.assertTrue(user.get("hasPassword"))
+        self.assertEqual(user.get("passwordAlgorithm"), "argon2id")
+        self.assertNotIn("passwordHash", user)
         self.assertTrue(any(row.get("action") == "login_password" for row in stored.get("auth_audit", [])))
 
     def test_school_invite_preview_errors_are_russian(self) -> None:
