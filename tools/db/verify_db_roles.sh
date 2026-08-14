@@ -117,6 +117,33 @@ must_succeed "CREATE then DROP TABLE" synapse_migrate "$SYNAPSE_MIGRATE_PASSWORD
   "CREATE TABLE role_probe_migrate (id int); DROP TABLE role_probe_migrate"
 
 echo
+echo "=== a table created by the NEXT migration must be writable by the app ==="
+# This is the check the canary earned. Membership in synapse_owner is not
+# ownership: a table created *as* synapse_migrate is owned by synapse_migrate,
+# the default privileges recorded for synapse_owner do not apply to it, and the
+# application gets "permission denied" the first time a migration adds a table.
+# Everything that makes that impossible is asserted here rather than assumed.
+must_succeed "migration creates a table" synapse_migrate "$SYNAPSE_MIGRATE_PASSWORD" \
+  "CREATE TABLE role_probe_future (id bigserial primary key, note text)"
+checks=$((checks + 1))
+owner=$(as_role synapse_migrate "$SYNAPSE_MIGRATE_PASSWORD" \
+  "SELECT pg_get_userbyid(relowner) FROM pg_class WHERE relname='role_probe_future'")
+if [[ "$owner" == "synapse_owner" ]]; then
+  echo "  ok:   new table is owned by synapse_owner (got: $owner)"
+else
+  echo "  FAIL: new table is owned by '$owner', expected synapse_owner"
+  failures=$((failures + 1))
+fi
+must_succeed "app can INSERT into it"  synapse_app "$SYNAPSE_APP_PASSWORD" \
+  "INSERT INTO role_probe_future (note) VALUES ('inherited grant')"
+must_succeed "app can SELECT from it"  synapse_app "$SYNAPSE_APP_PASSWORD" \
+  "SELECT count(*) FROM role_probe_future"
+must_fail    "app still cannot ALTER it" synapse_app "$SYNAPSE_APP_PASSWORD" \
+  "ALTER TABLE role_probe_future ADD COLUMN probe text"
+must_succeed "migration drops it"      synapse_migrate "$SYNAPSE_MIGRATE_PASSWORD" \
+  "DROP TABLE role_probe_future"
+
+echo
 echo "=== cleanup ==="
 docker exec -i "$CONTAINER" psql -U "$SUPERUSER" -d "$DATABASE" -q \
   -c "DELETE FROM telemetry_events WHERE event_name = 'role_probe'" >/dev/null 2>&1 || true

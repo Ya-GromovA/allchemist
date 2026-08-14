@@ -65,6 +65,16 @@ ALTER ROLE synapse_backup   NOSUPERUSER NOCREATEDB NOCREATEROLE NOBYPASSRLS;
 
 GRANT synapse_owner TO synapse_migrate;
 
+-- Membership alone is not enough, and the canary proved it: a table created by
+-- synapse_migrate is OWNED BY synapse_migrate, so the ALTER DEFAULT PRIVILEGES
+-- below -- which are recorded FOR ROLE synapse_owner -- did not apply to it,
+-- and the application got "permission denied for table telemetry_events" the
+-- first time a migration added a table. Making every synapse_migrate session
+-- start as synapse_owner puts ownership, and therefore the default privileges,
+-- where they belong. Without this line the role split works exactly until the
+-- next migration.
+ALTER ROLE synapse_migrate SET ROLE synapse_owner;
+
 -- pg_read_all_data exists from PostgreSQL 14. The server here is 16.
 GRANT pg_read_all_data TO synapse_backup;
 
@@ -153,6 +163,22 @@ ALTER DEFAULT PRIVILEGES FOR ROLE synapse_owner IN SCHEMA public
 ALTER DEFAULT PRIVILEGES FOR ROLE synapse_owner IN SCHEMA public
   GRANT SELECT ON TABLES TO synapse_readonly;
 ALTER DEFAULT PRIVILEGES FOR ROLE synapse_owner IN SCHEMA public
+  GRANT SELECT ON SEQUENCES TO synapse_readonly;
+
+-- Belt and braces. `ALTER ROLE synapse_migrate SET ROLE synapse_owner` above
+-- should mean nothing is ever created as synapse_migrate, but a session that
+-- explicitly resets its role would slip through, and the failure mode is a
+-- table the application cannot write. Recording the same defaults for
+-- synapse_migrate costs nothing and removes the sharp edge.
+ALTER DEFAULT PRIVILEGES FOR ROLE synapse_migrate IN SCHEMA public
+  GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO synapse_app;
+ALTER DEFAULT PRIVILEGES FOR ROLE synapse_migrate IN SCHEMA public
+  GRANT USAGE, SELECT ON SEQUENCES TO synapse_app;
+ALTER DEFAULT PRIVILEGES FOR ROLE synapse_migrate IN SCHEMA public
+  GRANT EXECUTE ON FUNCTIONS TO synapse_app;
+ALTER DEFAULT PRIVILEGES FOR ROLE synapse_migrate IN SCHEMA public
+  GRANT SELECT ON TABLES TO synapse_readonly;
+ALTER DEFAULT PRIVILEGES FOR ROLE synapse_migrate IN SCHEMA public
   GRANT SELECT ON SEQUENCES TO synapse_readonly;
 
 -- --------------------------------------------------------------------------
