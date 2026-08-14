@@ -1,6 +1,7 @@
+import logging
 from typing import Any, Dict
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Query, Response
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request, Response
 
 from app.schemas.content import (
     AdminBulkSubscriptionIn,
@@ -18,6 +19,16 @@ from app.schemas.content import (
 )
 from app.security.policies import can, normalize_role
 from app.services.admin_panel_service import (
+    admin_global_search,
+    admin_dashboard_activity_totals,
+    admin_dashboard_attention,
+    admin_subjects_activity,
+    admin_schools_map,
+    admin_recent_events,
+    admin_directory,
+    admin_dashboard_summary,
+    admin_dashboard_activity,
+    admin_content_qa_summary,
     admin_form_options,
     admin_password_login,
     bulk_update_subscriptions,
@@ -69,6 +80,11 @@ from app.services.user_state_store import resolve_access_token, list_user_device
 from app.services.user_state_store import create_password_reset_code as store_create_password_reset_code
 
 router = APIRouter()
+logger = logging.getLogger(__name__)
+
+ADMIN_AUTH_INVALID_MESSAGE = "Не удалось войти. Проверь логин и пароль."
+ADMIN_AUTH_BAD_REQUEST_MESSAGE = "Некорректный запрос."
+ADMIN_AUTH_UNAVAILABLE_MESSAGE = "Сервис входа временно недоступен."
 
 
 @router.post("/admin/bootstrap-owner", response_model=dict, tags=["admin"])
@@ -81,14 +97,35 @@ async def admin_bootstrap_owner(payload: AdminBootstrapOwnerIn):
 
 
 @router.post("/admin/auth/login-password", response_model=dict, tags=["admin"])
-async def admin_auth_login_password(payload: Dict[str, Any]):
+async def admin_auth_login_password(request: Request):
     try:
-        return admin_password_login(
-            login=str(payload.get("login") or ""),
-            password=str(payload.get("password") or ""),
-        )
-    except ValueError as e:
-        raise HTTPException(status_code=400, detail=str(e)) from e
+        payload = await request.json()
+    except Exception as error:
+        raise HTTPException(status_code=400, detail=ADMIN_AUTH_BAD_REQUEST_MESSAGE) from error
+
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail=ADMIN_AUTH_BAD_REQUEST_MESSAGE)
+
+    login = payload.get("login")
+    password = payload.get("password")
+    if login is None or password is None:
+        raise HTTPException(status_code=401, detail=ADMIN_AUTH_INVALID_MESSAGE)
+    if not isinstance(login, str) or not isinstance(password, str):
+        raise HTTPException(status_code=400, detail=ADMIN_AUTH_BAD_REQUEST_MESSAGE)
+
+    if not login.strip() or not password.strip():
+        raise HTTPException(status_code=401, detail=ADMIN_AUTH_INVALID_MESSAGE)
+
+    if not str(settings.ADMIN_UI_LOGIN or "").strip() or not str(settings.ADMIN_UI_PASSWORD or "").strip():
+        raise HTTPException(status_code=503, detail=ADMIN_AUTH_UNAVAILABLE_MESSAGE)
+
+    try:
+        return admin_password_login(login=login, password=password)
+    except ValueError as error:
+        raise HTTPException(status_code=401, detail=ADMIN_AUTH_INVALID_MESSAGE) from error
+    except Exception as error:
+        logger.exception("Unexpected admin password authentication failure")
+        raise HTTPException(status_code=503, detail=ADMIN_AUTH_UNAVAILABLE_MESSAGE) from error
 
 
 def _require_auth_user(authorization: str | None = Header(default=None)) -> Dict[str, Any]:
@@ -118,6 +155,87 @@ def _require_system_admin(auth_user: Dict[str, Any]) -> str:
         raise HTTPException(status_code=403, detail="System admin role is required")
     return role
 
+
+
+@router.get("/admin/dashboard/summary", response_model=dict, tags=["admin"])
+async def admin_dashboard_summary_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_summary()
+
+
+@router.get("/admin/dashboard/activity", response_model=dict, tags=["admin"])
+async def admin_dashboard_activity_endpoint(
+    period: int = Query(default=30),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_dashboard_activity(period=period)
+
+
+@router.get("/admin/dashboard/subjects-activity", response_model=dict, tags=["admin"])
+async def admin_dashboard_subjects_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_subjects_activity()
+
+
+@router.get("/admin/dashboard/schools-map", response_model=dict, tags=["admin"])
+async def admin_dashboard_schools_map_endpoint(
+    region: str | None = Query(default=None),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_schools_map(region=region)
+
+
+
+@router.get("/admin/dashboard/attention", response_model=dict, tags=["admin"])
+async def admin_dashboard_attention_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_attention()
+
+
+@router.get("/admin/dashboard/activity-totals", response_model=dict, tags=["admin"])
+async def admin_dashboard_activity_totals_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_dashboard_activity_totals()
+
+
+@router.get("/admin/search", response_model=dict, tags=["admin"])
+async def admin_search_endpoint(
+    q: str = Query(default="", max_length=120),
+    limit: int = Query(default=20, ge=1, le=100),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_global_search(q, limit=limit)
+
+@router.get("/admin/events/recent", response_model=dict, tags=["admin"])
+async def admin_recent_events_endpoint(
+    limit: int = Query(default=20, ge=1, le=100),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    return admin_recent_events(limit=limit)
+
+
+@router.get("/admin/content/qa/summary", response_model=dict, tags=["admin"])
+async def admin_content_qa_summary_endpoint(auth_user: Dict[str, Any] = Depends(_require_auth_user)):
+    _require_system_admin(auth_user)
+    return admin_content_qa_summary()
+
+
+@router.get("/admin/directory/{section}", response_model=dict, tags=["admin"])
+async def admin_directory_endpoint(
+    section: str,
+    limit: int = Query(default=50, ge=1, le=200),
+    query: str | None = Query(default=None),
+    auth_user: Dict[str, Any] = Depends(_require_auth_user),
+):
+    _require_system_admin(auth_user)
+    try:
+        return admin_directory(section, limit=limit, query=query)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
 
 @router.get("/admin/users", response_model=list[dict], tags=["admin"])
 async def admin_users(
